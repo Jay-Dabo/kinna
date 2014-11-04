@@ -1,7 +1,7 @@
 
 = Kinna - basic accounting software
 
-Kinna atempts to be a basic accounting software for the organizations in Sweden.
+Kinna atempts to be a basic accounting software for organizations in Sweden.
 
   - It should use the BAS 2014 konto plan.
 
