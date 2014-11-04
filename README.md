@@ -49,6 +49,7 @@ Kinna atempts to be a basic accounting software for organizations in Sweden.
       has_one :related_verificate # another verificate
       has_many :verificate_items
       has_many :comments
+      has_many :documents
         - date
         - description
 
@@ -63,7 +64,12 @@ Kinna atempts to be a basic accounting software for organizations in Sweden.
         - description (text)
         - amount (integer)
 
-    Comments
+    Document
+      # Uploaded document or pictures, probably receipts
+      belongs_to :verfificate
+        - paperclip columns
+
+    Comment
       # A series of comments can be added to a verificate.
       belongs_to :parent (Verificate)
         - user_id
