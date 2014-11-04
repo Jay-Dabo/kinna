@@ -3,7 +3,7 @@
 
 Kinna atempts to be a basic accounting software for organizations in Sweden.
 
-  - It should use the BAS 2014 konto plan.
+  - It should implement a subset of the "BAS 2014 konto plan".
 
   - All data should be exportable using the SIE format.
 
