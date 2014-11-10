@@ -1,7 +1,7 @@
-require 'resque'
-require File.dirname(__FILE__)+'/redis'
+#require 'resque'
+#require File.dirname(__FILE__)+'/redis'
 
-worker_processes 4
+worker_processes 2
 timeout 15
 preload_app true
 
@@ -12,10 +12,10 @@ before_fork do |server, worker|
     Rails.logger.info "Disconnected from db"
   end
 
-  if defined?(Resque)
-    Resque.redis.quit
-    Rails.logger.info('Disconnected from Redis')
-  end
+#  if defined?(Resque)
+#    Resque.redis.quit
+#    Rails.logger.info('Disconnected from Redis')
+#  end
 end
 
 after_fork do |server, worker|
@@ -25,8 +25,8 @@ after_fork do |server, worker|
     Rails.logger.info "Connecting to db"
   end
 
-  if defined?(Resque)
-    Resque.redis = REDIS_CONNECTION
-    Rails.logger.info('Connected to Redis')
-  end
+#  if defined?(Resque)
+#    Resque.redis = REDIS_CONNECTION
+#    Rails.logger.info('Connected to Redis')
+#  end
 end
