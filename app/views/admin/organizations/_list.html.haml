@@ -1,0 +1,25 @@
+%p
+  = link_to "#{t(:create)} #{t(:organization)}", new_admin_organization_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table'}
+    %thead
+      %tr
+        %th= t(:organization)
+        %th= t(:address)
+        %th= t(:zip)
+        %th= t(:city)
+        %th
+        %th
+    %tbody{}
+      - @organizations.each do |organization|
+        %tr
+          %td= link_to organization.name, admin_organization_path(organization)
+          %th= organization.address
+          %th= organization.zip
+          %th= organization.city
+          %td= link_to settings_icon, admin_organization_path(organization)
+          %td= delete_modal_for organization, admin_organization_path(organization)
+
+  = paginate @organizations, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

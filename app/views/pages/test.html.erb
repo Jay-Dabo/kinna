@@ -1,0 +1,43 @@
+<div class="popover-wrapper">
+  <button href="#" class="btn btn-primary trigger-popover">click me</button>
+  <div class="head hide">THE HEAD</div>
+  <div class="content hide">the body with bla</div>
+</div>
+
+
+<div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+  <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+  <span class="add-on"><i class="icon-calendar"></i></span>
+</div>
+
+<hr>
+<div class='input-group date' id='datetimepicker2'>
+  <input type='text' class="form-control"/>
+  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+  </span>
+</div>
+
+
+<form>
+  <div>
+    currency:
+    <input type=number name=number>
+  </div>
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.popover-wrapper .trigger-popover').popover({
+            html: true,
+            title: function () {
+                return $(this).parent().find('.head').html();
+            },
+            content: function () {
+                return $(this).parent().find('.content').html();
+            },
+            container: 'body',
+            placement: 'bottom'
+        });
+    });
+</script>

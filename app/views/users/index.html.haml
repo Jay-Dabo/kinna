@@ -1,0 +1,24 @@
+- if can? :create, @invite
+  = link_to "#{t(:invite)} #{t(:user)}", new_user_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:user)
+        %th= t(:email)
+        %th= t(:telephone)
+        %th= t(:roles)
+        %th
+    %tbody
+      - @users.each do |user|
+        - user = user.decorate
+        %tr
+          %td= user.name
+          %td= link_to user.email, user_path(user)
+          %td= user.contacts.search_by_org(current_organization).first.telephone if !user.contacts.search_by_org(current_organization).first.nil?
+          %td= user.roles(current_organization.id)
+          %td= link_to settings_icon, user_path(user)
+
+  = paginate @users, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

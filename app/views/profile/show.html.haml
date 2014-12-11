@@ -1,0 +1,10 @@
+%ul{:class => 'nav nav-tabs'}
+  %li.active= link_to t(:base_information), "#user-form", {"data-toggle" => "tab"}
+  - if @contact_relation
+    %li= link_to t(:contact), "#contact", {"data-toggle" => "tab"}
+.tab-content.after-nav-tabs
+  #user-form.tab-pane.active
+    = render 'form'
+  - if @contact_relation
+    #contact.tab-pane
+      = render partial: 'contact_relations/form', locals: {email: @user.email}

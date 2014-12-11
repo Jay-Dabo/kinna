@@ -20,4 +20,25 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  about: "about"
+  about_lead_text: "Kinna is an app to handle economics for a small organization."
+  about_sub_text: "It's currently in beta, if you already have an account please"
+  account: "Account"
+  admin: "Admin"
+  email: "Email"
+  employees: "Employees"
+  feedback_at: "Feedback/Bugg reporting at"
+  forgot_your_password: "Forgot your password?"
+  fork_me: "Fork me"
+  organization: "Organization"
+  organization_selector: "Organization selector"
+  password: "Password"
+  profile: "Profile"
+  reports: "Reports"
+  result_units: "Result units"
+  sign_in: "Sign in"
+  sign_out: "Sign out"
+  users: "Users"
+  welcome: "Welcome"
+  welcome_to_kinna: "Welcome to Kinna, the app to handle economics for small organizations."
+

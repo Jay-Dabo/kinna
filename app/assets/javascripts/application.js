@@ -10,7 +10,13 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require turbolinks
+
+//= require angular
 //= require_tree .
+
+//= require angular-ui-bootstrap-tpls

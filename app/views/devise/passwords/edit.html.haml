@@ -1,0 +1,21 @@
+.container
+  .panel.panel-default.single-center
+    .panel-heading
+      .panel-title= t(:change_your_password)
+    .panel-body
+      = simple_form_for(resource,
+        as: resource_name,
+        url: password_path(resource_name),
+        wrapper: :bare,
+        html: {method: :put, class: 'form-changepassword'}) do |f|
+
+        = f.error_notification
+        = f.input :reset_password_token, as: :hidden
+        = f.full_error :reset_password_token
+        .form-group
+          = f.input :password, placeholder: t(:'simple_form.labels.user.password')
+          = f.input :password_confirmation, placeholder: t(:'simple_form.labels.user.password_confirmation')
+        .form-group
+          = f.submit "#{t(:update)} #{t(:'simple_form.labels.user.password')}",
+            class: 'btn btn-primary full-width'
+      = render partial: "devise/shared/links"

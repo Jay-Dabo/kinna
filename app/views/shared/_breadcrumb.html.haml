@@ -1,0 +1,6 @@
+%ul.breadcrumb
+  -@breadcrumbs.each do |item|
+    - if item.size > 1
+      %li= link_to item[0], item[1]
+    -else
+      %li.active=item[0]

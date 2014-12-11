@@ -1,0 +1,11 @@
+= simple_form_for(@user, url: admin_users_path(organization_id: @organization.id), wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+
+  = f.input :name
+  = f.input :email
+  = f.input :password
+  = f.input :password_confirmation
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'

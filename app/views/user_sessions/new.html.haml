@@ -1,0 +1,14 @@
+.container
+  .panel.panel-default.single-center
+    .panel-heading
+      .panel-title= t(:sign_in)
+    .panel-body
+      = simple_form_for( resource, as: resource_name, url: session_path(resource_name), wrapper: :bare, html:{class:'form-signin'}) do |f|
+        .form-group
+          = f.input :email, autofocus: true, label:false, placeholder: t(:email), type: 'email'
+          = f.input :password, label: false, placeholder: t(:password)
+          = f.input :remember_me, as: :boolean, inline_label: true
+        .form-group
+          = f.submit t(:sign_in), class: 'btn btn-primary full-width'
+      = render partial: "devise/shared/links"
+

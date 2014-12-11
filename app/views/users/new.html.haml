@@ -1,0 +1,7 @@
+= simple_form_for(@invite, url: users_path, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+  = f.input :email
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+

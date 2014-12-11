@@ -1,0 +1,61 @@
+.navbar.navbar-inverse
+  .container-fluid
+    .navbar-header
+      %button.navbar-toggle{'data-toggle' => 'collapse', 'data-target' => '#navbar-collapse'}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      =link_to 'Kinna', root_path, class: 'navbar-brand'
+
+    #navbar-collapse.collapse.navbar-collapse
+      - if user_signed_in?
+        %ul.nav.navbar-nav
+          - if current_organization
+            = nav_link "Dashboard", dashboard_path
+          %li.dropdown
+            %a.dropdown-toggle{'href' => '#'}
+              = t(:account)
+              %b.caret
+            %ul.dropdown-menu
+              = nav_link t(:organization_selector), organization_selector_path
+              - if current_organization
+                = nav_link t(:organization), organization_path
+                = nav_link t(:users), users_path
+          - if current_organization
+            %li.dropdown
+              %a.dropdown-toggle{'href' => '#'}
+                = t(:employees)
+                %b.caret
+              %ul.dropdown-menu
+
+            %li.dropdown
+              %a.dropdown-toggle{'href' => '#'}
+                = t(:result_units)
+                %b.caret
+              %ul.dropdown-menu
+
+            %li.dropdown
+              %a.dropdown-toggle{'href' => '#'}
+                = t(:reports)
+                %b.caret
+              %ul.dropdown-menu
+
+
+        %ul.nav.navbar-nav.navbar-right
+          %li.dropdown
+            %a.dropdown-toggle{'href' => '#'}
+              = current_user.name
+              %b.caret
+            %ul.dropdown-menu
+              - if current_user.superadmin?
+                %li=link_to t(:admin), admin_dashboard_path
+              %li=link_to t(:profile), profile_path
+              %li=link_to t(:sign_out), destroy_user_session_path, method: :delete
+
+      - else
+        %ul.nav.navbar-nav
+          %li
+            =link_to t(:about), about_path
+          %li
+            =link_to t(:sign_in), new_user_session_path

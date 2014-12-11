@@ -1,0 +1,19 @@
+!!! 5
+%html
+  %head
+    %title Kinna
+    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+    %meta{:name=>"viewport", :content=>"width=device-width", 'initial-scale'=>"1"}
+  %body
+    = include_gon
+    .page-wrapper
+      = render partial: 'shared/navigation'
+      = render partial: 'shared/notifications'
+      = render(partial: 'shared/breadcrumb') if @breadcrumbs
+      .container-fluid
+        = yield
+      .foot-pusher
+        &nbsp;
+    = render partial: 'shared/footer'

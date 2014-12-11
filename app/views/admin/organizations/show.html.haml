@@ -1,0 +1,9 @@
+%ul{class: 'nav nav-tabs'}
+  %li.active= link_to t(:base_information), "#organization-form", {'data-toggle' => 'tab'}
+  %li= link_to (:users), "#user-index", {'data-toggle' => 'tab'}
+
+.tab-content.after-nav-tabs
+  #organization-form.tab-pane.active
+    = render 'form'
+  #user-index.tab-pane
+    = render partial: '/admin/users/list'

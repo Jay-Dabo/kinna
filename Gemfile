@@ -42,11 +42,17 @@ gem 'bootstrap-sass', '~> 3'
 gem 'resque', '~> 1.25'
 gem 'devise', '~> 3.4'
 
+gem 'simple_form', git: 'https://github.com/plataformatec/simple_form.git'
+gem 'protected_attributes', '~> 1.0.5'
+
 gem 'foreman'
 gem 'cancancan', '~> 1.9'
 gem 'state_machine', '~> 1.2'
 gem 'draper', '~> 1.3'
 gem 'haml', '~> 4.0'
+gem 'angularjs-rails'
+gem 'gon'
+gem 'angular-ui-bootstrap-rails'
 gem 'kaminari', '~> 0.16'
 gem 'paperclip', '~> 4.2'
 

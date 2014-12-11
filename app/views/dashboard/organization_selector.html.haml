@@ -1,0 +1,5 @@
+%h1= t(:your_organizations)
+%p= t(:which_organization_do_you_want_to_work_on)
+%ul.list-group
+- @organizations.each do |org|
+  %li.list-group-item= link_to org.name, dashboard_path(organization_slug: org.slug)

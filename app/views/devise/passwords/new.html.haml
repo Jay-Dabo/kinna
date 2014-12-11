@@ -1,0 +1,17 @@
+.container
+  .panel.panel-default.single-center
+    .panel-heading
+      .panel-title= t(:recover_account)
+    .panel-body
+      = simple_form_for(resource,
+        as: resource_name,
+        url: password_path(resource_name),
+        wrapper: :bare,
+        html: {method: :post}) do |f|
+
+        = f.error_notification
+        .form-group
+          = f.input :email, label: false, placeholder: t(:email), type: 'email'
+        .form-group
+          = f.submit t(:send_me_reset_password_instructions), class: 'btn btn-primary full-width'
+      = render partial: "devise/shared/links"

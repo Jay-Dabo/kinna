@@ -1,0 +1,77 @@
+.hidden {
+  @extend .hide;
+}
+
+.alert-notice {
+  @extend .alert-success;
+}
+
+.flash {
+  margin-top: -$line-height-computed;
+  position: absolute;
+  width: 100%;
+}
+
+.error_notification {
+  @extend .alert-danger;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.breadcrumb {
+  margin-top: -$line-height-computed;
+}
+
+.translation_missing {
+  background: #c00;
+  color: #fff;
+}
+
+.state-change-form {
+  form {
+    @extend .well;
+    margin-left: 1em;
+    top: 0;
+    background: $body-bg;
+    z-index: 10;
+    position: absolute;
+
+    /* Since absolute, the width needs to be enforced. */
+    width: 179px;
+
+  }
+}
+
+.numeric {
+  text-align: right;
+  width: 8em;
+  white-space: nowrap;
+}
+
+.tabnum {
+  text-align: right;
+}
+
+.date {
+  width: 260px;
+}
+
+.short {
+  width: 160px;
+}
+
+.medium {
+  width: 260px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.tab-content.after-nav-tabs {
+  margin-top: 1.5em;
+}
+
+.clear {
+  clear: both;
+}

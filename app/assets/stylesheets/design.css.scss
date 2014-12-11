@@ -1,0 +1,220 @@
+/*
+  This is sad, why can't this be specified in the variables file?
+  Well, the font-family-base can be set,
+  and then you can specify font-family for headlines,
+  but not input textarea select button and a tags...
+ */
+/*
+body {
+  font-family: $font-family-serif;
+}
+h1,h2,h3,h4,h5,input,textarea,select,a,button,label,thead, .panel-heading, .control-label, .label, .breadcrumb {
+  font-family: $font-family-sans-serif;
+}*/
+
+/* end default style customizations */
+
+.single-center {
+  margin: 0 auto;
+  width: 300px;
+}
+
+a:hover .delete-icon {
+  color: $state-danger-text;
+}
+
+a:hover .settings-icon:hover {
+  color: $state-success-text;
+}
+
+a {
+  transition: color .2s ease-in-out;
+}
+
+select.btn {
+  text-align: left;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.btn-default {
+  color: black;
+  border-color: #adadad;
+  background-color: #e6e6e6;
+  &:hover {
+    border-color: darken(#adadad, 10%);
+    background-color: darken(#e6e6e6, 10%);
+  }
+}
+
+select.btn-default {
+  color: #333;
+  border-color: #ccc;
+  background-color: #fff;
+  &:hover {
+    border-color: #adadad;
+    background-color: #e6e6e6;
+  }
+}
+
+.form-button-group {
+  clear: both;
+  border-top: 2px solid darken($body-bg, 15%);
+  padding: 1em 0;
+  background: darken($body-bg, 5%);
+  @extend .row;
+  .actions {
+    @extend .col-sm-offset-11;
+    @extend .col-md-offset-8;
+    @extend .col-lg-offset-7;
+    @extend .col-sm-30;
+    @extend .col-md-30;
+    @extend .col-lg-30;
+  }
+}
+
+.form-button-group .btn {
+  float: left;
+  margin-right: 0.2em;
+  * .btn {
+    float: none;
+    margin-right: 0;
+  }
+}
+
+.navbar-inverse {
+  border-radius: 0;
+}
+
+form.form-signin {
+  input[type=email] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  input[type=password] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+form.form-changepassword {
+  input#user_password {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  input#user_password_confirmation {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.labels_width {
+  @extend .col-sm-11;
+  @extend .col-md-9;
+  @extend .col-lg-7;
+}
+
+.fields_width {
+  @extend .col-sm-20;
+  @extend .col-md-20;
+  @extend .col-lg-12;
+
+  .table-border {
+    margin-bottom: 0; // The margin is already there when in form-group/fields_width
+  }
+}
+
+.error_width {
+  @extend .col-sm-offset-11;
+  @extend .col-md-offset-9;
+  @extend .col-lg-offset-7;
+}
+
+.panel_form_width {
+  @extend .col-sm-offset-4;
+  @extend .col-sm-40;
+  @extend .col-md-32;
+  @extend .col-lg-28;
+}
+
+.table-border {
+  border: 2px solid lightgray;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.fix-bottom {
+  margin-bottom: 5px;
+}
+
+// put footer at the bottom
+html, body {
+  height: 100%;
+}
+
+.page-wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -2.5em;
+}
+
+.foot-pusher {
+  clear: both;
+  height: 2.5em;
+}
+
+footer {
+  height: 2.5em;
+  box-sizing: border-box;
+  border-top: 2px solid $table-border-color;
+  background: $breadcrumb-bg;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    padding-top: .5em;
+    float: left;
+    margin-right: 1em;
+  }
+}
+
+.form-control-text {
+  @extend .form-control;
+  border: 0;
+  box-shadow: none;
+  background: $body-bg;
+}
+
+.form-horizontal .form-suffix-text {
+  @extend .control-label;
+  text-align: left;
+  @extend .col-md-7;
+  @extend .col-sm-10;
+}
+
+.form-field-suffix {
+  @extend .col-sm-offset-32;
+  @extend .col-md-offset-30;
+  @extend .col-lg-offset-20;
+  text-align: left;
+  @extend .col-sm-44;
+}
+
+.center-content {
+  @extend .col-lg-14;
+  @extend .col-lg-offset-17;
+  @extend .col-md-24;
+  @extend .col-md-offset-12;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

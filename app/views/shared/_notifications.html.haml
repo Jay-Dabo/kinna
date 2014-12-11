@@ -1,0 +1,12 @@
+- if flash
+
+  // @todo move this into angular, a more generic .js file,
+  //       or come up with a pure css solution that works.
+  :javascript
+    function flashup() { $('.flash').slideUp(500); }
+    setTimeout(flashup, 2000);
+
+  - flash.each do |key, message|
+    .flash.alert{:class => "alert-#{key} "}
+      .container-fluid
+        = message

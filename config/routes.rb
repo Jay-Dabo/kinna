@@ -1,4 +1,39 @@
+require 'resque/server'
 Rails.application.routes.draw do
+  get 'profile', to: 'profile#show'
+  patch 'profile', to: 'profile#update'
+
+  root 'pages#start'
+  devise_for :users, controllers: {sessions: 'user_sessions'}
+  [:about, :start, :formats, :test].each do |p|
+    get "/#{p}", to: "pages##{p}"
+  end
+
+  namespace :admin do
+    resources :organizations
+    resources :users do
+      member do
+        patch 'update_roles', as: :update_roles
+      end
+    end
+    get 'dashboard', to: 'dashboard#index'
+    constraints lambda { |request| request.env['warden'].authenticate? && request.env['warden'].user.superadmin? } do
+      mount Resque::Server.new, at: "resque"
+    end
+  end
+
+  get "organization_selector", to: "dashboard#organization_selector"
+  get ':organization_slug', to: 'organizations#show', as: 'organization'
+  patch ':organization_slug', to: 'organizations#update'
+
+  scope ':organization_slug' do
+    get "dashboard", to: "dashboard#index"
+    resources :users do
+      member do
+        patch :update_roles, as: :update_roles
+      end
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

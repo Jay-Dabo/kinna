@@ -1,0 +1,28 @@
+%ul{:class => 'nav nav-tabs'}
+  %li.active= link_to "Base information", "#organization-form", {"data-toggle" => "tab"}
+  %li= link_to "Contacts", "#contact-index", {"data-toggle" => "tab"}
+  %li= link_to "Comments", "#comment-index", {"data-toggle" => "tab"}
+.tab-content
+  #organization-form.tab-pane.active
+    %br
+    = render 'form'
+  #contact-index.tab-pane
+    = render partial: 'contacts/index', locals: {contacts: @organization.contacts, parent: @organization}
+  #comment-index.tab-pane
+    = render partial: 'comments/index', locals: {comments: @organization.comments, parent: @organization}
+
+:javascript
+  $(document).ready(function() {
+
+  $('a[data-toggle="tab"]').on("click", function(e) {
+   localStorage.setItem('organization_tab', $(e.target).attr("href").substr(1));
+  });
+
+  var lastTab = localStorage.getItem('organization_tab');
+  if (lastTab) {
+    $('ul.nav-tabs').children().removeClass('active');
+    $('a[href=#'+ lastTab +']').parents('li:first').addClass('active');
+    $('div.tab-content').children().removeClass('active');
+    $('#'+lastTab).addClass('active');
+  }
+  });

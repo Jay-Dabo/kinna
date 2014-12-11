@@ -1,0 +1,9 @@
+%ul{:class => 'nav nav-tabs'}
+  %li.active= link_to t(:base_information), "#user-form", {"data-toggle" => "tab"}
+  %li= link_to t(:authority), "#authority", {"data-toggle" => "tab"}
+
+.tab-content.after-nav-tabs
+  #user-form.tab-pane.active
+    = render 'form'
+  #authority.tab-pane
+    = render "authority"
