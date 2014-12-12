@@ -33,6 +33,7 @@ class Ability
   end
 
   def staff_roles_for(oids)
+    can :manage, AccountingPeriod, organization_id: oids
     can :read, Organization, id: oids
   end
 

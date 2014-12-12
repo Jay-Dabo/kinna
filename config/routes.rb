@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         patch :update_roles, as: :update_roles
       end
     end
+    resources :accounting_periods
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,14 @@
+%div{ng_controller: 'accounting_period_form_ctrl', ng_init: 'init()' }
+  = simple_form_for(@accounting_period, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    = f.input :name
+    = render partial: 'shared/date_field', locals: {form: f, field: :accounting_from, in_id: 'in_from', in_value: @accounting_period.accounting_from, out_id: 'accounting_period[accounting_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'ftom_options', dp_click: 'open_from_date($event)'}
+    .error_width
+      = f.error :accounting_from
+    = render partial: 'shared/date_field', locals: {form: f, field: :accounting_to, in_id: 'in_to', in_value: @accounting_period.accounting_to, out_id: 'accounting_period[accounting_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
+    .error_width
+      = f.error :accounting_to
+
+    .form-button-group
+      .actions
+        = f.submit class: 'btn btn-primary'

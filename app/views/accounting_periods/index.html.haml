@@ -1,0 +1,23 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:accounting_period)}", new_accounting_period_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th.numeric= t(:from)
+        %th.numeric= t(:to)
+        %th
+        %th
+    %tbody{}
+      - @accounting_periods.each do |accounting_period|
+        %tr
+          %td= accounting_period.name
+          %td.numeric= accounting_period.accounting_from
+          %td.numeric= accounting_period.accounting_to
+          %td.numeric= link_to settings_icon, edit_accounting_period_path(accounting_period)
+          %td.numeric= delete_modal_for accounting_period
+
+  = paginate @accounting_periods, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

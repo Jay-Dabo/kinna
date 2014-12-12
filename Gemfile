@@ -54,6 +54,7 @@ gem 'angularjs-rails'
 gem 'gon'
 gem 'angular-ui-bootstrap-rails'
 gem 'kaminari', '~> 0.16'
+gem 'bootstrap-kaminari-views'
 gem 'paperclip', '~> 4.2'
 
 group :test, :development do

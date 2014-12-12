@@ -1,0 +1,7 @@
+%script{ :type=>"text/ng_template", :id=>idx}
+  .modal-header
+    %h3{ :class=>"modal-title"}
+      = t(:confirm_delete)
+  .modal-body
+    = link_to t(:confirm), '{{obj}}', method: :delete,  class: 'btn btn-primary'
+    = button_tag t(:back), class: 'btn btn-default reseter', type: 'reset', :ng_click=>"cancel()"

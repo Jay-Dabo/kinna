@@ -15,7 +15,7 @@
             = nav_link "Dashboard", dashboard_path
           %li.dropdown
             %a.dropdown-toggle{'href' => '#'}
-              = t(:account)
+              = t(:general)
               %b.caret
             %ul.dropdown-menu
               = nav_link t(:organization_selector), organization_selector_path
@@ -25,9 +25,10 @@
           - if current_organization
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
-                = t(:employees)
+                = t(:accounting)
                 %b.caret
               %ul.dropdown-menu
+                = nav_link t(:accounting_periods), accounting_periods_path
 
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
