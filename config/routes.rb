@@ -34,8 +34,11 @@ Rails.application.routes.draw do
       end
     end
     resources :accounting_periods
+
+    post 'accounting_plan_import', to: 'accounting_plans#import', as: 'accounting_plan_import'
     resources :accounting_plans do
       resources :accounting_classes
+      resources :accounts
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

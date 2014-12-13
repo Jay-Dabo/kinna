@@ -8,7 +8,7 @@ class AccountingPlansController < ApplicationController
   # GET /vats
   # GET /vats.json
   def index
-    @breadcrumbs = [['Accounting_plans']]
+    @breadcrumbs = [["#{t(:accounting_plans)}"]]
     @accounting_plans = current_organization.accounting_plans.order(:name)
     @accounting_plans = @accounting_plans.page(params[:page])
   end
@@ -32,9 +32,9 @@ class AccountingPlansController < ApplicationController
     @accounting_plan.organization = current_organization
     respond_to do |format|
       if @accounting_plan.save
-        format.html { redirect_to accounting_plans_url, notice: 'Account plan was successfully created.' }
+        format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_created)}" }
       else
-        flash.now[:danger] = "#{t(:failed_to_create)} #{"Accounting_plan"}"
+        flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_plan)}"
         format.html { render action: 'new' }
       end
     end
@@ -45,7 +45,7 @@ class AccountingPlansController < ApplicationController
   def update
     respond_to do |format|
       if @accounting_plan.update(accounting_plan_params)
-        format.html { redirect_to accounting_plans_url, notice: 'Account plan was successfully updated.' }
+        format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_updated)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:accounting_plan)}"
         format.html { render action: 'show' }
@@ -58,7 +58,19 @@ class AccountingPlansController < ApplicationController
   def destroy
     @accounting_plan.destroy
     respond_to do |format|
-      format.html { redirect_to accounting_plans_url, notice: 'Account plan was successfully deleted.' }
+      format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_deleted)}" }
+    end
+  end
+
+  def import
+    @accounting_plan_creator = Services::AccountingPlanCreator.new(current_organization, current_user)
+    respond_to do |format|
+      if @accounting_plan_creator.read_and_save_file
+        format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_created)}" }
+      else
+        flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_plan)}"
+        format.html { redirect_to accounting_plans_url }
+      end
     end
   end
 
@@ -70,10 +82,10 @@ class AccountingPlansController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [['Accounting plans', accounting_plans_path], ["#{t(:new)} #{t(:accounting_plan)}"]]
+    @breadcrumbs = [["#{t(:accounting_plan)}", accounting_plans_path], ["#{t(:new)} #{t(:accounting_plan)}"]]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [['Accounting plans', accounting_plans_path], [@accounting_plan.name]]
+    @breadcrumbs = [["#{t(:accounting_plan)}", accounting_plans_path], [@accounting_plan.name]]
   end
 end

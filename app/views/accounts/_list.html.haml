@@ -1,0 +1,22 @@
+- @accounts = @accounting_plan.accounts.order('number').page(params[:page])
+.btn-group
+  = link_to "#{t(:create)} #{t(:account)}", new_accounting_plan_account_path(accounting_plan), class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:number)
+        %th= t(:name)
+        %th
+        %th
+    %tbody{}
+      - @accounts.each do |account|
+        %tr
+          %td= account.number
+          %td= account.name
+          %td.numeric= link_to settings_icon, edit_accounting_plan_account_path(@accounting_plan, account)
+          %td.numeric= delete_modal_for account, accounting_plan_account_path(@accounting_plan, account)
+
+  = paginate @accounts, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

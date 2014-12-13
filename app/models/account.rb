@@ -1,4 +1,4 @@
-class AccountingClass < ActiveRecord::Base
+class Account < ActiveRecord::Base
   # t.string   :number
   # t.string   :name
   # t.integer  :organization_id

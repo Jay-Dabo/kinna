@@ -7,9 +7,10 @@ class AccountingPlan < ActiveRecord::Base
   attr_accessible :name, :description
 
   belongs_to :organization
-  has_many :accounting_classes
+  has_many :accounting_classes, dependent: :destroy
+  has_many :accounts, dependent: :destroy
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: {scope: :organization_id}
 
   def can_delete?
     true

@@ -1,3 +1,4 @@
+- @accounting_classes = @accounting_plan.accounting_classes.order('number').page(params[:page])
 .btn-group
   = link_to "#{t(:create)} #{t(:accounting_class)}", new_accounting_plan_accounting_class_path(accounting_plan), class: 'btn btn-success'
 
@@ -10,11 +11,12 @@
         %th
         %th
     %tbody{}
-      - @accounting_plan.accounting_classes.each do |accounting_class|
+      - @accounting_classes.each do |accounting_class|
         %tr
           %td= accounting_class.number
           %td= accounting_class.name
           %td.numeric= link_to settings_icon, edit_accounting_plan_accounting_class_path(@accounting_plan, accounting_class)
           %td.numeric= delete_modal_for accounting_class, accounting_plan_accounting_class_path(@accounting_plan, accounting_class)
 
+  = paginate @accounting_classes, :theme => 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

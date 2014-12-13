@@ -9,8 +9,9 @@
   #account_classes-index.tab-pane
     %br
     = render partial: 'accounting_classes/list', locals: {accounting_plan: @accounting_plan}
-  #account-index.tab-pane
-
+  #accounts-index.tab-pane
+    %br
+    = render partial: 'accounts/list', locals: {accounting_plan: @accounting_plan}
 
 :javascript
   $(document).ready(function() {

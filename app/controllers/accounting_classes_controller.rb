@@ -6,46 +6,43 @@ class AccountingClassesController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /vats
-  # GET /vats.json
+  # GET
   def index
     @breadcrumbs = [['Accounting_classes']]
   end
 
-  # GET /vats/new
+  # GET
   def new
   end
 
-  # GET /vats/1
+  # GET
   def show
   end
 
-  # GET /vat/1/edit
+  # GET
   def edit
   end
 
-  # POST /vats
-  # POST /vats.json
+  # POST
   def create
     @accounting_plan = current_organization.accounting_plans.find(params[:accounting_plan_id])
     @accounting_class = @accounting_plan.accounting_classes.build accounting_class_params
     @accounting_class.organization = current_organization
     respond_to do |format|
       if @accounting_class.save
-        format.html { redirect_to accounting_plan_path(@accounting_plan), notice: 'Account class was successfully created.' }
+        format.html { redirect_to accounting_plan_path(@accounting_plan), notice: "#{t(:accounting_class)} #{t(:was_successfully_created)}" }
       else
-        flash.now[:danger] = "#{t(:failed_to_create)} #{"Accounting_class"}"
+        flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_class)}"
         format.html { render action: 'new' }
       end
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT
   def update
     respond_to do |format|
       if @accounting_class.update(accounting_class_params)
-        format.html { redirect_to accounting_plan_path(@accounting_plan), notice: 'Account class was successfully updated.' }
+        format.html { redirect_to accounting_plan_path(@accounting_plan), notice: "#{t(:accounting_class)} #{t(:was_successfully_updated)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:accounting_class)}"
         format.html { render action: 'show' }
@@ -53,12 +50,11 @@ class AccountingClassesController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE
   def destroy
     @accounting_class.destroy
     respond_to do |format|
-      format.html { redirect_to accounting_plan_path(@accounting_plan), notice: 'Account class was successfully deleted.' }
+      format.html { redirect_to accounting_plan_path(@accounting_plan), notice:  "#{t(:accounting_class)} #{t(:was_successfully_deleted)}" }
     end
   end
 

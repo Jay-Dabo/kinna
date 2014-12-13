@@ -1,6 +1,5 @@
 .btn-group
   = link_to "#{t(:create)} #{t(:accounting_plan)}", new_accounting_plan_path, class: 'btn btn-success'
-  = link_to "Import", accounting_plan_import_path, method: 'post', class: 'btn btn-default'
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
