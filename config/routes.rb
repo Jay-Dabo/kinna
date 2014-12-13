@@ -34,6 +34,9 @@ Rails.application.routes.draw do
       end
     end
     resources :accounting_periods
+    resources :accounting_plans do
+      resources :accounting_classes
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

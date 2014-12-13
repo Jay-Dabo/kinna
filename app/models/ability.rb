@@ -34,6 +34,8 @@ class Ability
 
   def staff_roles_for(oids)
     can :manage, AccountingPeriod, organization_id: oids
+    can :manage, AccountingPlan, organization_id: oids
+    can :manage, AccountingClass, organization_id: oids
     can :read, Organization, id: oids
   end
 

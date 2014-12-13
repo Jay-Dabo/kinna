@@ -22,6 +22,7 @@
               - if current_organization
                 = nav_link t(:organization), organization_path
                 = nav_link t(:users), users_path
+                = nav_link t(:accounting_plans), accounting_plans_path
           - if current_organization
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
@@ -41,7 +42,11 @@
                 = t(:reports)
                 %b.caret
               %ul.dropdown-menu
-
+                = nav_link t(:verifications), accounting_periods_path
+                = nav_link t(:ledger), accounting_periods_path
+                = nav_link t(:vat_report), accounting_periods_path
+                = nav_link t(:result_report), accounting_periods_path
+                = nav_link t(:balans_report), accounting_periods_path
 
         %ul.nav.navbar-nav.navbar-right
           %li.dropdown

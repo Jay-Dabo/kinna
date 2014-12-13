@@ -1,0 +1,20 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:accounting_class)}", new_accounting_plan_accounting_class_path(accounting_plan), class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:number)
+        %th= t(:name)
+        %th
+        %th
+    %tbody{}
+      - @accounting_plan.accounting_classes.each do |accounting_class|
+        %tr
+          %td= accounting_class.number
+          %td= accounting_class.name
+          %td.numeric= link_to settings_icon, edit_accounting_plan_accounting_class_path(@accounting_plan, accounting_class)
+          %td.numeric= delete_modal_for accounting_class, accounting_plan_accounting_class_path(@accounting_plan, accounting_class)
+
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
