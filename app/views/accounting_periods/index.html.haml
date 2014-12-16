@@ -8,6 +8,7 @@
         %th= t(:name)
         %th.numeric= t(:from)
         %th.numeric= t(:to)
+        %th= t(:active)
         %th
         %th
     %tbody{}
@@ -16,6 +17,7 @@
           %td= accounting_period.name
           %td.numeric= accounting_period.accounting_from
           %td.numeric= accounting_period.accounting_to
+          %th= accounting_period.active
           %td.numeric= link_to settings_icon, edit_accounting_period_path(accounting_period)
           %td.numeric= delete_modal_for accounting_period
 

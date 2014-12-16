@@ -1,0 +1,36 @@
+- @verificate_items = @verificate.verificate_items.order('account').page(params[:page])
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:account)
+        %th= t(:description)
+        %th.numeric6= t(:debit)
+        %th.numeric6= t(:credit)
+        %th.nowrap= t(:result_unit)
+        %th
+    %tbody{}
+      - @verificate_items.each do |verificate_item|
+        %tr
+          %td= verificate_item.account
+          %td= verificate_item.description
+          %td.numeric6= verificate_item.debit
+          %td.numeric6= verificate_item.credit
+          %td
+          %td= delete_modal_for verificate_item, verificate_verificate_item_path(@verificate, verificate_item)
+      %tr
+        %td
+        %td
+          = t(:total)
+        %td.numeric
+          = @verificate.total_debit
+        %td.numeric
+          = @verificate.total_credit
+        %td
+        %td
+  = paginate @verificate_items, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
+
+
+

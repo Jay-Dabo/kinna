@@ -1,10 +1,10 @@
 module Admin
   class UsersController < Admin::ApplicationController
     load_and_authorize_resource :organization
-    load_and_authorize_resource :user, through : :organization
+    load_and_authorize_resource :user, through: :organization
     before_filter :set_breadcrumbs
-    before_filter :new_breadcrumbs, only : [:new, :create]
-    before_filter :show_breadcrumbs, only : [:show, :update_role]
+    before_filter :new_breadcrumbs, only: [:new, :create]
+    before_filter :show_breadcrumbs, only: [:show, :update_role]
 
     def new
     end
@@ -17,13 +17,13 @@ module Admin
     def create
       @user = User.new(user_params)
       #@user.organization_roles.build(organization_id: @organization.id, name: OrganizationRole::ROLE_STAFF)
-      new_role = @user.organization_roles.build(name : OrganizationRole::ROLE_STAFF)
+      new_role = @user.organization_roles.build(name: OrganizationRole::ROLE_STAFF)
       new_role.organization_id = @organization.id
 
       @user.default_organization = @organization
       if @user.save
         redirect_to admin_organization_path(@organization),
-                    notice : "#{t(:new)} #{t(:user)} #{t(:was_successfully_created)}"
+                    notice: "#{t(:new)} #{t(:user)} #{t(:was_successfully_created)}"
       else
         render :new
       end

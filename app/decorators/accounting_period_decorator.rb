@@ -10,4 +10,5 @@ class AccountingPeriodDecorator < Draper::Decorator
     return l(object.accounting_to, format: "%Y-%m-%d") if object.accounting_to
     ""
   end
+
 end

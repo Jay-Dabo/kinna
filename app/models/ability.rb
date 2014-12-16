@@ -38,6 +38,7 @@ class Ability
     can :manage, AccountingPlan, organization_id: oids
     can :manage, AccountingClass, organization_id: oids
     can :read, Organization, id: oids
+    can :manage, Verificate, organization_id: oids
   end
 
 end

@@ -8,6 +8,7 @@
     = render partial: 'shared/date_field', locals: {form: f, field: :accounting_to, in_id: 'in_to', in_value: @accounting_period.accounting_to, out_id: 'accounting_period[accounting_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
     .error_width
       = f.error :accounting_to
+    = f.input :active
 
     .form-button-group
       .actions

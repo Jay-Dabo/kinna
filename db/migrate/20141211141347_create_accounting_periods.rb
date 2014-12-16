@@ -4,6 +4,7 @@ class CreateAccountingPeriods < ActiveRecord::Migration
       t.string   :name
       t.datetime :accounting_from
       t.datetime :accounting_to
+      t.boolean  :active
       t.integer  :organization_id
 
       t.timestamps

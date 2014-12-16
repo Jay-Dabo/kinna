@@ -125,7 +125,15 @@ form.form-changepassword {
     margin-bottom: 0; // The margin is already there when in form-group/fields_width
   }
 }
+.tables_width {
+  @extend .col-sm-35;
+  @extend .col-md-31;
+  @extend .col-lg-26;
 
+  .table-border {
+    margin-bottom: 0; // The margin is already there when in form-group/fields_width
+  }
+}
 .error_width {
   @extend .col-sm-offset-11;
   @extend .col-md-offset-9;

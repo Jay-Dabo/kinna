@@ -1,0 +1,32 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:verificate)}", new_verificate_path, class: 'btn btn-success'
+
+.col-sm-40.col-md-40.pull-right.text-right
+  = form_tag verificates_path, class: 'form-inline submit-on-change', method: :get do
+    = select_tag(:accounting_period_id,
+      options_for_select(@accounting_periods.each.collect{|w| [w.name, w.id]}, params[:accounting_period_id]),
+      class: 'btn btn-default')
+.clear &nbsp;
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:number)
+        %th= t(:posting_date)
+        %th= t(:description)
+        %th= t(:state)
+        %th
+        %th
+    %tbody{}
+      - @verificates.each do |verificate|
+        %tr
+          %td= verificate.number
+          %td= verificate.posting_date
+          %td= verificate.description
+          %td= verificate.pretty_state
+          %td.numeric= link_to settings_icon, verificate_path(verificate)
+          %td.numeric= delete_modal_for verificate
+
+  = paginate @verificates, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

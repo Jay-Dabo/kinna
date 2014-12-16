@@ -5,7 +5,7 @@
     = hidden_field_tag in_id, in_value
     = hidden_field_tag out_id, out_value
     .input-group.date
-      = text_field_tag field_id, '', class: 'form-control', ng_model: model, datepicker_popup: 'yyyy-MM-dd', is_open: dp_open, datepicker_options: dp_options, show_button_bar: 'false', readonly: true
+      = text_field_tag field_id, '', class: 'form-control', ng_model: model, datepicker_popup: 'yyyy-MM-dd', is_open: dp_open, min_date: 'min_date', max_date: 'max_date', datepicker_options: dp_options, show_button_bar: 'false', readonly: true
       %span{:class => "input-group-btn"}
         %button{:class => "btn btn-default", :ng_click=> dp_click }
           %span{ :class => "glyphicon glyphicon-calendar"}

@@ -5,9 +5,10 @@ class AccountingPeriod < ActiveRecord::Base
   # t.integer  :organization_id
   # t.timestamps
 
-  attr_accessible :name, :accounting_from, :accounting_to
+  attr_accessible :name, :accounting_from, :accounting_to, :active
 
   belongs_to :organization
+  has_many :verificates
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
   validates :accounting_from, presence: true
@@ -28,6 +29,16 @@ class AccountingPeriod < ActiveRecord::Base
     else
       errors.add(:accounting_to, I18n.t(:within_period)) if p > 1
     end
+  end
+
+  def allow_from
+    return accounting_from if verificates.count == 0
+    verificates.where("state = 'final'").maximum(:posting_date)
+  end
+
+  def allow_to
+    return accounting_to if DateTime.now > accounting_to
+    DateTime.now.strftime("%Y-%m-%d")
   end
 
   def can_delete?

@@ -1,0 +1,31 @@
+= simple_form_for([@verificate, @verificate_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+  .form-group
+    .labels_width.control-label
+      %label= t(:search)
+    .fields_width
+      = select_tag(:name,
+           options_for_select(Account.all.each.collect{|a| [truncate(a.name,length:70), a.number]},
+           params[:state]),
+           class: 'btn btn-default')
+  = f.input :account
+  = f.input :description
+
+  = f.input :debit
+  = f.input :credit
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+
+:javascript
+  $(document).on('ready page:load', function () {
+    var a = $('#name').val();
+    $('#account').val(a);
+  });
+  $( '#name' ).change(function() {
+    var a = $('#name').val();
+    var n = $("#name option:selected").text();
+    $('#verificate_item_account').val(a);
+    $('#verificate_item_description').val(n);
+  });

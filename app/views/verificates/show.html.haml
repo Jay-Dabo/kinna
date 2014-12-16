@@ -1,0 +1,11 @@
+= render 'form'
+= render partial: 'verificate_items/list'
+- if !@verificate.final?
+  .form-button-group
+    .actions
+      = link_to "#{t(:create)} #{t(:verificate_item)}", new_verificate_verificate_item_path(@verificate), class: 'btn btn-primary'
+      - if @verificate.balanced?
+        = form_tag state_change_verificate_path(@verificate), class: 'form-inline', method: :post do
+          = hidden_field_tag 'event', 'mark_final'
+          = submit_tag t(:confirm), class: 'btn btn-primary'
+

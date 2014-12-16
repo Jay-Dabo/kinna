@@ -33,7 +33,14 @@ Rails.application.routes.draw do
         patch :update_roles, as: :update_roles
       end
     end
-    resources :accounting_periods
+    resources :verificates do
+      resources :verificate_items
+      member do
+        post 'state_change', as: :state_change
+      end
+    end
+    resources :accounting_periods do
+    end
 
     post 'accounting_plan_import', to: 'accounting_plans#import', as: 'accounting_plan_import'
     resources :accounting_plans do
