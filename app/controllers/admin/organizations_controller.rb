@@ -27,7 +27,7 @@ module Admin
       @organization = Organization.new(organization_params)
       if Services::OrganizationCreator.new(@organization, current_user).save
         redirect_to admin_organization_path(@organization),
-                    notice : "#{t(:organization)} #{t(:was_successfully_created)}"
+                    notice: "#{t(:organization)} #{t(:was_successfully_created)}"
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:organization)}"
         render :new
@@ -37,7 +37,7 @@ module Admin
     # PATCH/PUT /organizations/1
     def update
       if @organization.update(organization_params)
-        redirect_to admin_organizations_path, notice : 'Organization was successfully updated.'
+        redirect_to admin_organizations_path, notice: 'Organization was successfully updated.'
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:organization)}"
         @users = @organization.users
@@ -49,7 +49,7 @@ module Admin
     # DELETE /organizations/1
     def destroy
       @organization.destroy
-      redirect_to admin_organizations_path, notice : 'Organization was successfully destroyed.'
+      redirect_to admin_organizations_path, notice: 'Organization was successfully destroyed.'
     end
 
     private

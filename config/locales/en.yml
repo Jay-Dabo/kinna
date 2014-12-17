@@ -62,6 +62,7 @@ en:
   new: "New"
   number: "Number"
   organization: "Organization"
+  organizations: "Organizations"
   organization_roles: "Organization Roles"
   organization_selector: "Organization selector"
   password: "Password"
