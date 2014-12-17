@@ -28,6 +28,8 @@ Rails.application.routes.draw do
 
   scope ':organization_slug' do
     get "dashboard", to: "dashboard#index"
+    resources :contact_relations
+    resources :contacts
     resources :users do
       member do
         patch :update_roles, as: :update_roles

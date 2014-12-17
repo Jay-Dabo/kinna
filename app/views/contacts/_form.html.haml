@@ -1,0 +1,15 @@
+= simple_form_for(@contact, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+
+  = f.input :name
+  = f.input :email, disabled: @contact.user_parent?
+  = f.input :telephone, :input_html => {:class => 'medium'}
+  = f.input :address
+  = f.input :zip, :input_html => {:class => 'short'}
+  = f.input :city
+  = f.input :country, :input_html => {:class => 'medium'}
+  = f.input :comment, as: :text
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'

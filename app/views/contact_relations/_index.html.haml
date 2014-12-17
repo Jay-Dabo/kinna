@@ -1,0 +1,20 @@
+%br
+- add_url = new_contact_relation_path({parent_id: parent.id, parent_type: parent.class.name})
+= link_to t(:add_contact), add_url, class: 'btn btn-success'
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th= t(:email)
+        %th= t(:telephone)
+        %th
+      %tbody
+        - contact_relations.each do |contact_relation|
+          %tr
+            %td= contact_relation.contact.name
+            %td= contact_relation.contact.email
+            %td= contact_relation.contact.telephone
+            %td= link_to settings_icon, contact_relation_path(contact_relation)
+            %td= delete_modal_for contact_relation
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

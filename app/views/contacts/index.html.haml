@@ -1,0 +1,20 @@
+= link_to t(:add_contact), new_contact_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th= t(:email)
+        %th= t(:telephone)
+        %th
+      %tbody
+        - @contacts.each do |contact|
+          %tr
+            %td= contact.name
+            %td= contact.email
+            %td= contact.telephone
+            %td= link_to settings_icon, contact_path(contact)
+            %td= delete_modal_for contact
+  = paginate @contacts, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
