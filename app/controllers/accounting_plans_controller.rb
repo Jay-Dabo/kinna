@@ -9,8 +9,7 @@ class AccountingPlansController < ApplicationController
   # GET /vats.json
   def index
     @breadcrumbs = [["#{t(:accounting_plans)}"]]
-    @accounting_plans = current_organization.accounting_plans.order(:name)
-    @accounting_plans = @accounting_plans.page(params[:page])
+    init
   end
 
   # GET /vats/new
@@ -65,7 +64,7 @@ class AccountingPlansController < ApplicationController
   def import
     @accounting_plan_creator = Services::AccountingPlanCreator.new(current_organization, current_user)
     respond_to do |format|
-      if @accounting_plan_creator.read_and_save_file
+      if @accounting_plan_creator.K1_read_and_save
         format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_plan)}"
@@ -87,5 +86,10 @@ class AccountingPlansController < ApplicationController
 
   def show_breadcrumbs
     @breadcrumbs = [["#{t(:accounting_plan)}", accounting_plans_path], [@accounting_plan.name]]
+  end
+
+  def init
+    @accounting_plans = current_organization.accounting_plans.order(:name)
+    @accounting_plans = @accounting_plans.page(params[:page])
   end
 end

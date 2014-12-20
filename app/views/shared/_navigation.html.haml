@@ -23,6 +23,8 @@
                 = nav_link t(:organization), organization_path
                 = nav_link t(:users), users_path
                 = nav_link t(:accounting_plans), accounting_plans_path
+                = nav_link t(:templates), templates_path
+                = nav_link t(:result_units), templates_path
           - if current_organization
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
@@ -30,13 +32,9 @@
                 %b.caret
               %ul.dropdown-menu
                 = nav_link t(:accounting_periods), accounting_periods_path
+                = nav_link t(:opening_balance), opening_balances_path
                 = nav_link t(:verificates), verificates_path
-            %li.dropdown
-              %a.dropdown-toggle{'href' => '#'}
-                = t(:result_units)
-                %b.caret
-              %ul.dropdown-menu
-
+                = nav_link t(:closing_balance), accounting_periods_path
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
                 = t(:reports)
@@ -46,7 +44,7 @@
                 = nav_link t(:ledger), accounting_periods_path
                 = nav_link t(:vat_report), accounting_periods_path
                 = nav_link t(:result_report), accounting_periods_path
-                = nav_link t(:balans_report), accounting_periods_path
+                = nav_link t(:balance_report), accounting_periods_path
 
         %ul.nav.navbar-nav.navbar-right
           %li.dropdown

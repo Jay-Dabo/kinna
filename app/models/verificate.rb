@@ -5,12 +5,14 @@ class Verificate < ActiveRecord::Base
   # t.string   :description
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
+  # t.integer  :template_id
   # t.timestamps
 
-  attr_accessible :posting_date, :description, :accounting_period_id
+  attr_accessible :posting_date, :description, :accounting_period_id, :template_id
 
   belongs_to :organization
   belongs_to :accounting_period
+  belongs_to :template
   has_many   :verificate_items
 
   validates :accounting_period_id, presence: true
@@ -62,6 +64,10 @@ class Verificate < ActiveRecord::Base
     true
   end
 
+  def verificate_items?
+    return true if verificate_items.count > 0
+    false
+  end
   def posting_date_formatted
     return o if !final?
     posting_date.strftime("%Y-%m-%d")

@@ -1,0 +1,11 @@
+= simple_form_for(@opening_balance, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: true
+  = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
+  = f.input :description, disabled: true
+
+  = render partial: 'opening_balance_items/list'
+  .form-button-group
+    .actions
+      = link_to "#{t(:create)} #{t(:opening_balance_item)}", new_opening_balance_opening_balance_item_path(@opening_balance), class: 'btn btn-primary'
+
+

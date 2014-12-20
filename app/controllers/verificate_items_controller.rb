@@ -30,7 +30,7 @@ class VerificateItemsController < ApplicationController
     @verificate_item.organization = current_organization
     respond_to do |format|
       if @verificate_item.save
-        format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_items)} #{t(:was_successfully_created)}" }
+        format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_item)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificate_item)}"
         format.html { render action: 'new' }

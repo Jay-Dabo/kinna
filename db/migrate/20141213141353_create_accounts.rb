@@ -5,6 +5,8 @@ class CreateAccounts < ActiveRecord::Migration
       t.string   :name
       t.integer  :organization_id
       t.integer  :accounting_plan_id
+      t.integer  :accounting_class_id
+      t.integer  :accounting_group_id
       t.timestamps
     end
   end

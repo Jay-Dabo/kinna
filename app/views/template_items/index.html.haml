@@ -1,0 +1,25 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:template_item)}", new_template_item_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:account)
+        %th= t(:description)
+        %th= t(:debet)
+        %th= t(:kredit)
+        %th
+        %th
+    %tbody{}
+      - @template_items.each do |template_item|
+        %tr
+          %td= template_item.account
+          %td= template_item.description
+          %td= template_item.enable_debet
+          %td= template_item.enable_kredit
+          %td.numeric= link_to settings_icon, template_item_path(template_item)
+          %td.numeric= delete_modal_for template_item
+
+  = paginate @template_items, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

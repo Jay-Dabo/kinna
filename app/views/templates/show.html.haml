@@ -1,0 +1,7 @@
+= render 'form'
+= render partial: 'template_items/list'
+.form-button-group
+  .actions
+    = link_to "#{t(:create)} #{t(:template_item)}", new_template_template_item_path(@template), class: 'btn btn-primary'
+
+

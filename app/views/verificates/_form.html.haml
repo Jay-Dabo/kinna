@@ -12,6 +12,8 @@
     - if !@verificate.new_record?
       = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
     = f.input :description, disabled: !@verificate.new_record?
+    = f.association :template, disabled: !@verificate.new_record?
+
     - if !@verificate.new_record?
       = f.input :state, disabled: true
 

@@ -1,4 +1,4 @@
-- @verificate_items = @verificate.verificate_items.order('account').page(params[:page])
+- @verificate_items = @verificate.verificate_items.order('account').page(params[:page]).decorate
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
@@ -24,9 +24,9 @@
         %td
           = t(:total)
         %td.numeric
-          = @verificate.total_debit
+          = number_with_precision(@verificate.total_debit, precision: 2)
         %td.numeric
-          = @verificate.total_credit
+          = number_with_precision(@verificate.total_credit, precision: 2)
         %td
         %td
   = paginate @verificate_items, :theme => 'twitter-bootstrap-3'

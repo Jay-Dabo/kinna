@@ -1,5 +1,7 @@
 = simple_form_for([@accounting_plan, @account], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
+  = f.association :accounting_class, collection: @accounting_plan.accounting_classes
+  = f.association :accounting_group, collection: @accounting_plan.accounting_groups
   = f.input :number
   = f.input :name
 

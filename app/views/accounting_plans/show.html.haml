@@ -1,6 +1,7 @@
 %ul{:class => 'nav nav-tabs'}
   %li.active= link_to t(:base_information), "#accounting_plan-form", {"data-toggle" => "tab"}
   %li= link_to t(:classes), "#account_classes-index", {"data-toggle" => "tab"}
+  %li= link_to t(:groups), "#account_groups-index", {"data-toggle" => "tab"}
   %li= link_to t(:accounts), "#accounts-index", {"data-toggle" => "tab"}
 .tab-content
   #accounting_plan-form.tab-pane.active
@@ -9,6 +10,9 @@
   #account_classes-index.tab-pane
     %br
     = render partial: 'accounting_classes/list', locals: {accounting_plan: @accounting_plan}
+  #account_groups-index.tab-pane
+    %br
+    = render partial: 'accounting_groups/list', locals: {accounting_plan: @accounting_plan}
   #accounts-index.tab-pane
     %br
     = render partial: 'accounts/list', locals: {accounting_plan: @accounting_plan}

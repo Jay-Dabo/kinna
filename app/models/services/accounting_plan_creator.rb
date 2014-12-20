@@ -5,9 +5,37 @@ module Services
       @user = user
       @organization = organization
       @accounting_plan
+      @accounting_class
+      @accounting_group
     end
 
-    def read_and_save_file
+    def K1_read_and_save
+      class_id = 'x'
+      group_id = 'x'
+      first = true
+      CSV.foreach('Kontoplan_K1_2014_ver1.csv', { :col_sep => ';' }) do |row|
+        if first
+          save_account_plan(row[1],'importerat')
+          first = false
+        elsif row[1] && (row[1].at(1) == ' ' || row[1].at(3) == ' ')
+          i = row[1].index(' ')
+          class_id = save_account_class(row[1][0,i], row[1][i..99])
+        elsif row[1] && (row[1].at(2) == ' ' || row[1].at(5) == ' ')
+          i = row[1].index(' ')
+          group_id = save_account_group(row[1][0,i], row[1][i..99])
+        elsif row[1] && row[1].length == 4 && row[4].nil?
+          save_account(row[1], row[2], class_id, group_id)
+        elsif row[1] && row[1].length == 4 && row[4] && row[4].length == 4
+          save_account(row[1], row[2], class_id, group_id)
+          save_account(row[4], row[5], class_id, group_id)
+        elsif row[1].nil? && row[4] && row[4].length == 4
+          save_account(row[4], row[5], class_id, group_id)
+        end
+
+      end
+    end
+
+    def K1_mini_read_and_save
       first = true
       CSV.foreach('Kontoplan_K1_Mini_2014_ver1.csv', { :col_sep => ';' }) do |row|
         if first
@@ -51,14 +79,27 @@ module Services
       @accounting_class.organization_id = @organization.id
       @accounting_class.accounting_plan_id = @accounting_plan.id
       @accounting_class.save
+      return @accounting_class.id
     end
 
-    def save_account(number, name)
+    def save_account_group(number, name)
+      @accounting_group = @accounting_plan.accounting_groups.build
+      @accounting_group.number = number
+      @accounting_group.name = name
+      @accounting_group.organization_id = @organization.id
+      @accounting_group.accounting_plan_id = @accounting_plan.id
+      @accounting_group.save
+      return @accounting_group.id
+    end
+
+    def save_account(number, name, class_id, group_id)
       @account = @accounting_plan.accounts.build
       @account.number = number
       @account.name = name
       @account.organization_id = @organization.id
       @account.accounting_plan_id = @accounting_plan.id
+      @account.accounting_class_id = class_id
+      @account.accounting_group_id = group_id
       @account.save
     end
   end

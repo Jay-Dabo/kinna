@@ -7,6 +7,7 @@ class CreateVerificates < ActiveRecord::Migration
       t.string   :description
       t.integer  :organization_id
       t.integer  :accounting_period_id
+      t.integer  :template_id
       t.timestamps
     end
   end

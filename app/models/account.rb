@@ -3,12 +3,16 @@ class Account < ActiveRecord::Base
   # t.string   :name
   # t.integer  :organization_id
   # t.integer  :accounting_plan_id
+  # t.integer  :accounting_class_id
+  # t.integer  :accounting_group_id
   # t.timestamps
 
   attr_accessible :number, :name
 
   belongs_to :organization
   belongs_to :accounting_plan
+  belongs_to :accounting_class
+  belongs_to :accounting_group
 
   validates :number, presence: true, uniqueness: {scope: :organization_id}
   validates :name, presence: true

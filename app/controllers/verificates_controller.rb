@@ -22,6 +22,7 @@ class VerificatesController < ApplicationController
   def new
     @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
     gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
+    @templates = current_organization.templates
   end
 
   # GET
@@ -36,6 +37,11 @@ class VerificatesController < ApplicationController
 
   # POST
   def create
+    Rails.logger.info "#{params.inspect}"
+    if !params[:template].blank?
+      template = current_organization.templates.find(params[:template])
+      params[:verificate][:description] = template.description + params[:verificate][:description]
+    end
     #@accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
     #@verificate = @accounting_period.verificates.build verificate_params
     @verificate = Verificate.new(verificate_params)
@@ -83,6 +89,20 @@ class VerificatesController < ApplicationController
       msg_h = { alert: t(:fail) }
     end
     redirect_to @verificate, msg_h
+  end
+
+  def add_verificate_items
+    Rails.logger.info "Kolla: #{params.inspect}"
+    @verificate = current_organization.verificates.find(params[:id])
+    @verificate_items_creator = Services::VerificateItemsCreator.new(current_organization, current_user, @verificate, params)
+    respond_to do |format|
+      if @verificate_items_creator.save
+        format.html { redirect_to verificates_url, notice: "#{t(:verificates_items)} #{t(:was_successfully_created)}" }
+      else
+        flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificates_items)}"
+        format.html { redirect_to verificates_url }
+      end
+    end
   end
 
   private

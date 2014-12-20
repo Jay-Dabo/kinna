@@ -32,13 +32,13 @@ class AccountingPeriod < ActiveRecord::Base
   end
 
   def allow_from
-    return accounting_from if verificates.count == 0
+    return accounting_from if verificates.where("state = 'final'").count == 0
     verificates.where("state = 'final'").maximum(:posting_date)
   end
 
   def allow_to
     return accounting_to if DateTime.now > accounting_to
-    DateTime.now.strftime("%Y-%m-%d")
+    DateTime.now
   end
 
   def can_delete?

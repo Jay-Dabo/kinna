@@ -28,26 +28,39 @@ Rails.application.routes.draw do
 
   scope ':organization_slug' do
     get "dashboard", to: "dashboard#index"
+
+    resources :accounting_periods
+
+    post 'accounting_plan_import', to: 'accounting_plans#import', as: 'accounting_plan_import'
+    resources :accounting_plans do
+      resources :accounting_groups
+      resources :accounting_classes
+      resources :accounts
+    end
+
     resources :contact_relations
     resources :contacts
+
+    resources :opening_balances do
+      resources :opening_balance_items
+    end
+
+    resources :templates do
+      resources :template_items
+    end
+
     resources :users do
       member do
         patch :update_roles, as: :update_roles
       end
     end
+
     resources :verificates do
       resources :verificate_items
       member do
         post 'state_change', as: :state_change
+        post 'add_verificate_items', as: :add_verificate_items
       end
-    end
-    resources :accounting_periods do
-    end
-
-    post 'accounting_plan_import', to: 'accounting_plans#import', as: 'accounting_plan_import'
-    resources :accounting_plans do
-      resources :accounting_classes
-      resources :accounts
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,29 @@
+- @template_items = @template.template_items.page(params[:page])
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:account)
+        %th= t(:description)
+        %th.numeric6= t(:debit)
+        %th.numeric6= t(:credit)
+        %th
+    %tbody{}
+      - @template_items.each do |template_item|
+        %tr
+          %td= template_item.account
+          %td= template_item.description
+          %td
+            - if template_item.enable_debit
+              %input{class: 'numeric6 form-control', disabled: true}
+          %td
+            -if template_item.enable_credit
+              %input{class: 'numeric6 form-control', disabled: true}
+          %td= delete_modal_for template_item, template_template_item_path(@template, template_item)
+
+  = paginate @template_items, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
+
+
+

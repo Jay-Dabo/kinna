@@ -1,0 +1,23 @@
+- @templates = @accounting_period.templates.order('posting_date').page(params[:page])
+.btn-group
+  = link_to "#{t(:create)} #{t(:verificate)}", new_accounting_period_verificate_path(@accounting_period), class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:posting_date)
+        %th= t(:description)
+        %th
+        %th
+    %tbody{}
+      - @verificates.each do |verificate|
+        %tr
+          %td= verificate.posting_date
+          %td= verificate.description
+          %td.numeric= link_to settings_icon, edit_accounting_period_verificate_path(@accounting_period, verificate)
+          %td.numeric= delete_modal_for verificate, accounting_period_verificate_path(@accounting_period, verificate)
+
+  = paginate @verificates, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
+

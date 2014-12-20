@@ -1,11 +1,21 @@
-= render 'form'
-= render partial: 'verificate_items/list'
-- if !@verificate.final?
-  .form-button-group
-    .actions
-      = link_to "#{t(:create)} #{t(:verificate_item)}", new_verificate_verificate_item_path(@verificate), class: 'btn btn-primary'
-      - if @verificate.balanced?
-        = form_tag state_change_verificate_path(@verificate), class: 'form-inline', method: :post do
-          = hidden_field_tag 'event', 'mark_final'
-          = submit_tag t(:confirm), class: 'btn btn-primary'
+= simple_form_for(@verificate, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: true
+  - if @verificate.final?
+    = f.input :number, disabled: true
+  = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
+  = f.input :description, disabled: true
+  = f.input :state, disabled: true
+
+- if @verificate.template && !@verificate.verificate_items?
+  = render partial: 'template_items/edit_list'
+- else
+  = render partial: 'verificate_items/list'
+  - if !@verificate.final?
+    .form-button-group
+      .actions
+        = link_to "#{t(:create)} #{t(:verificate_item)}", new_verificate_verificate_item_path(@verificate), class: 'btn btn-primary'
+        - if @verificate.balanced?
+          = form_tag state_change_verificate_path(@verificate), class: 'form-inline', method: :post do
+            = hidden_field_tag 'event', 'mark_final'
+            = submit_tag t(:confirm), class: 'btn btn-primary'
 

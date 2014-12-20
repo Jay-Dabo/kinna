@@ -15,7 +15,6 @@ app.controller('verificate_form_ctrl', function ($scope) {
         set_date(min_date, max_date);
 
         $scope.period = gon.accounting_periods[0].id;
-
 		var posting = $('#in_posting').val().split(/\D/);
 		posting.length == 1 ? $scope.posting_date = min_date : $scope.posting_date = new Date(posting[0], --posting[1], posting[2]);
 

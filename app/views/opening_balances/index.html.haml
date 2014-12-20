@@ -1,0 +1,23 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:opening_balance)}", new_opening_balance_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:accounting_period)
+        %th= t(:posting_date)
+        %th= t(:description)
+        %th
+        %th
+    %tbody{}
+      - @opening_balances.each do |opening_balance|
+        %tr
+          %td= opening_balance.accounting_period.name
+          %td= opening_balance.posting_date
+          %td= opening_balance.description
+          %td.numeric= link_to settings_icon, opening_balance_path(opening_balance)
+          %td.numeric= delete_modal_for opening_balance
+
+  = paginate @opening_balances, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
