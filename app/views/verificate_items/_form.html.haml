@@ -1,31 +1,25 @@
-= simple_form_for([@verificate, @verificate_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
-  = f.error_notification
-  .form-group
-    .labels_width.control-label
-      %label= t(:search)
-    .fields_width
-      = select_tag(:name,
-           options_for_select(Account.all.each.collect{|a| [truncate(a.name,length:70), a.number]},
-           params[:state]),
-           class: 'btn btn-default')
-  = f.input :account
-  = f.input :description
+%div{ng_controller: 'verificate_item_form_ctrl'}
+  = simple_form_for([@verificate, @verificate_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    .form-group
+      .labels_width.control-label
+        %label= t(:accounting_group)
+      .fields_width
+        %select{ng_model: 'accounting_group', ng_options: "opt.number as opt.name for opt in options", ng_change: 'select_accounting_group();', class: 'select required form-control'}
 
-  = f.input :debit
-  = f.input :credit
+    .form-group
+      .labels_width.control-label
+        %label= t(:account)
+      .fields_width
+        %select{include_blank: false, ng_model: 'acc', ng_options: "account.number as account.name for account in accounts", ng_change: 'select_account();', class: 'select required form-control'}
+    %hr
+    = f.input :account
+    = f.input :description
 
-  .form-button-group
-    .actions
-      = f.submit class: 'btn btn-primary'
+    = f.input :debit
+    = f.input :credit
 
-:javascript
-  $(document).on('ready page:load', function () {
-    var a = $('#name').val();
-    $('#account').val(a);
-  });
-  $( '#name' ).change(function() {
-    var a = $('#name').val();
-    var n = $("#name option:selected").text();
-    $('#verificate_item_account').val(a);
-    $('#verificate_item_description').val(n);
-  });
+    .form-button-group
+      .actions
+        = f.submit class: 'btn btn-primary'
+
