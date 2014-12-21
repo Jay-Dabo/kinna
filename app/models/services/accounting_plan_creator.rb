@@ -9,6 +9,30 @@ module Services
       @accounting_group
     end
 
+    def BAS_read_and_save
+      class_id = 'x'
+      group_id = 'x'
+      first = true
+      CSV.foreach('Kontoplan_Normal_2014_ver1.csv', { :col_sep => ';' }) do |row|
+        if first
+          save_account_plan(row[1],'importerat')
+          first = false
+        elsif (row[2] && row[2].length == 1) || (row[2] && row[2].length == 3)
+          class_id = save_account_class(row[2], row[3])
+        elsif (row[2] && row[2].length == 2) || (row[2] && row[2].length == 6)
+          group_id = save_account_group(row[2], row[3])
+        elsif row[2] && row[2].length == 4 && row[5].nil?
+          save_account(row[2], row[3], class_id, group_id)
+        elsif row[2] && row[2].length == 4 && row[5] && row[5].length == 4
+          save_account(row[2], row[3], class_id, group_id)
+          save_account(row[5], row[6], class_id, group_id)
+        elsif row[2].nil? && row[5] && row[5].length == 4
+          save_account(row[5], row[6], class_id, group_id)
+        end
+
+      end
+    end
+
     def K1_read_and_save
       class_id = 'x'
       group_id = 'x'

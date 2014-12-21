@@ -64,7 +64,7 @@ class AccountingPlansController < ApplicationController
   def import
     @accounting_plan_creator = Services::AccountingPlanCreator.new(current_organization, current_user)
     respond_to do |format|
-      if @accounting_plan_creator.K1_read_and_save
+      if @accounting_plan_creator.BAS_read_and_save
         format.html { redirect_to accounting_plans_url, notice: "#{t(:accounting_plan)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_plan)}"
