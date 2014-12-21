@@ -68,7 +68,8 @@ class VerificateItemsController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [[t(:verificates), verificates_path], [@verificate.number, verificate_path(@verificate)], ["#{t(:new)} #{t(:verificate_item)}"]]
+    @verificate.number ? bc = @verificate.number : bc = '*'
+    @breadcrumbs = [[t(:verificates), verificates_path], [bc, verificate_path(@verificate)], ["#{t(:new)} #{t(:verificate_item)}"]]
   end
 
   def show_breadcrumbs

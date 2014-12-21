@@ -13,6 +13,7 @@ class AccountingPlan < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
 
+
   def can_delete?
     true
   end

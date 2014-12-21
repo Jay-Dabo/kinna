@@ -117,6 +117,7 @@ class VerificatesController < ApplicationController
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [["#{t(:verificates)}", verificates_path], [@verificate.number]]
+    @verificate.number ? bc = @verificate.number : bc = '*'
+    @breadcrumbs = [["#{t(:verificates)}", verificates_path], [bc]]
   end
 end

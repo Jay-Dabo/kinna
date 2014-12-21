@@ -14,7 +14,7 @@ class Account < ActiveRecord::Base
   belongs_to :accounting_class
   belongs_to :accounting_group
 
-  validates :number, presence: true, uniqueness: {scope: :organization_id}
+  validates :number, presence: true, uniqueness: {scope: [:organization_id, :accounting_plan]}
   validates :name, presence: true
 
   def can_delete?
