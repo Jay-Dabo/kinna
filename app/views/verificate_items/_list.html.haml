@@ -1,4 +1,4 @@
-- @verificate_items = @verificate.verificate_items.order('account').page(params[:page]).decorate
+- @verificate_items = @verificate.verificate_items.page(params[:page]).decorate
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}

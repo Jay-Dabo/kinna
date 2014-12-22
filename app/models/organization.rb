@@ -10,12 +10,14 @@ class Organization < ActiveRecord::Base
   # t.string :plusgiro
   # t.string :swift
   # t.string :iban
+  # t.integer :accounting_plan_id
   # t.timestamps
 
-  attr_accessible :email, :name, :address, :zip, :vat_number, :bankgiro, :postgiro, :plusgiro, :city
+  attr_accessible :email, :name, :address, :zip, :vat_number, :bankgiro, :postgiro, :plusgiro, :city, :accounting_plan_id
 
   has_many :organization_roles
   has_many :users, through: :organization_roles
+  has_one :accounting_plan
 
   [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :contact_relations, :contacts,
    :opening_balances, :templates, :verificates].each do |model_sym|

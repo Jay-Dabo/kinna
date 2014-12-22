@@ -13,6 +13,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :plusgiro
       t.string :swift
       t.string :iban
+      t.integer :accounting_plan_id
 
       t.timestamps
     end

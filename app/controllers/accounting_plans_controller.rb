@@ -90,6 +90,6 @@ class AccountingPlansController < ApplicationController
 
   def init
     @accounting_plans = current_organization.accounting_plans.order(:name)
-    @accounting_plans = @accounting_plans.page(params[:page])
+    @accounting_plans = @accounting_plans.page(params[:page]).decorate
   end
 end

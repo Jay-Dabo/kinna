@@ -13,7 +13,7 @@ class TemplateItemsController < ApplicationController
 
   # GET
   def new
-    @accounting_groups = current_organization.accounting_groups
+    @accounting_groups = current_organization.accounting_plan.accounting_groups
     gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
   end
 

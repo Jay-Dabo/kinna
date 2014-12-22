@@ -52,28 +52,28 @@ t1.save
 t1i1 = TemplateItem.new({
     account: 4000,
     description: "Varor",
-    enable_debit: 'true',
-    enable_credit: 'false'
+    enable_debit: true,
+    enable_credit: false
 })
 t1i1.organization = o1
-t1i1.template t1
+t1i1.template = t1
 t1i1.save
 t1i2 = TemplateItem.new({
     account: 2640,
     description: "Ingående moms",
-    enable_debit: 'true',
-    enable_credit: 'false'
+    enable_debit: true,
+    enable_credit: false
 })
 t1i2.organization = o1
-t1i2.template t1
+t1i2.template = t1
 t1i2.save
 t1i3 = TemplateItem.new({
     account: 1920,
     description: "PlusGiro",
-    enable_debit: 'false',
-    enable_credit: 'true'
+    enable_debit: false,
+    enable_credit: true
 })
 t1i3.organization = o1
-t1i3.template t1
+t1i3.template = t1
 t1i3.save
 #-----------------------------------------

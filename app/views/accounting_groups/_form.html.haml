@@ -1,6 +1,6 @@
 = simple_form_for([@accounting_plan, @accounting_group], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
-  = f.input :number
+  = f.input :number, disabled: !@accounting_group.new_record?
   = f.input :name
 
   .form-button-group
