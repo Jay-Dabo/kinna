@@ -1,7 +1,9 @@
-app.controller('verificate_item_form_ctrl', function ($scope) {
+app.controller('search_account_ctrl', function ($scope) {
     $scope.options = gon.accounting_groups;
 
-	$scope.init = function() {
+	$scope.init = function(account, description) {
+        $scope.account = '#'+account;
+        $scope.description = '#'+description;
 	};
 
 	$scope.select_accounting_group = function() {
@@ -9,16 +11,16 @@ app.controller('verificate_item_form_ctrl', function ($scope) {
             if (gon.accounting_groups[x].number == $scope.accounting_group) {
                 $scope.accounts = gon.accounting_groups[x].accounts;
                 $scope.acc = gon.accounting_groups[x].accounts[0].number;
-                $('#verificate_item_account').val($scope.accounts[0].number);
-                $('#verificate_item_description').val($scope.accounts[0].name);
+                $($scope.account).val($scope.accounts[0].number);
+                $($scope.description).val($scope.accounts[0].name);
             }
         }
 	};
     $scope.select_account = function() {
         for (x=0; x < $scope.accounts.length; x++) {
             if ($scope.accounts[x].number == $scope.acc) {
-                $('#verificate_item_account').val($scope.accounts[x].number);
-                $('#verificate_item_description').val($scope.accounts[x].name);
+                $($scope.account).val($scope.accounts[x].number);
+                $($scope.description).val($scope.accounts[x].name);
             }
         }
     };

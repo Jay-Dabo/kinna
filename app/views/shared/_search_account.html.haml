@@ -1,0 +1,14 @@
+%div{ng_controller: 'search_account_ctrl', ng_init: 'init("'+account+'","'+ description+'")'}
+  = simple_form_for(model, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    .form-group
+      .labels_width.control-label
+        %label= t(:accounting_group)
+      .fields_width
+        %select{ng_model: 'accounting_group', ng_options: "opt.number as opt.name for opt in options", ng_change: 'select_accounting_group();', class: 'select required form-control'}
+
+    .form-group
+      .labels_width.control-label
+        %label= t(:account)
+      .fields_width
+        %select{include_blank: false, ng_model: 'acc', ng_options: "account.number as account.name for account in accounts", ng_change: 'select_account();', class: 'select required form-control'}
+    %hr

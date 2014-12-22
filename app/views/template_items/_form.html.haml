@@ -1,25 +1,12 @@
-%div{ng_controller: 'template_item_form_ctrl'}
-  = simple_form_for([@template, @template_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
-    = f.error_notification
-    .form-group
-      .labels_width.control-label
-        %label= t(:accounting_group)
-      .fields_width
-        %select{ng_model: 'accounting_group', ng_options: "opt.number as opt.name for opt in options", ng_change: 'select_accounting_group();', class: 'select required form-control'}
+= render partial: 'shared/search_account', locals: {model: @template, account: 'template_item_account', description: 'template_item_description'}
+= simple_form_for([@template, @template_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+  = f.input :account
+  = f.input :description
 
-    .form-group
-      .labels_width.control-label
-        %label= t(:account)
-      .fields_width
-        %select{include_blank: false, ng_model: 'acc', ng_options: "account.number as account.name for account in accounts", ng_change: 'select_account();', class: 'select required form-control'}
-    %hr
+  = f.input :enable_debit
+  = f.input :enable_credit
 
-    = f.input :account
-    = f.input :description
-
-    = f.input :enable_debit
-    = f.input :enable_credit
-
-    .form-button-group
-      .actions
-        = f.submit class: 'btn btn-primary'
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'

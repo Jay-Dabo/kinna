@@ -1,13 +1,6 @@
+= render partial: 'shared/search_account', locals: {model: @opening_balance, account: 'opening_balance_item_account', description: 'opening_balance_item_description'}
 = simple_form_for([@opening_balance, @opening_balance_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
-  .form-group
-    .labels_width.control-label
-      %label= t(:search)
-    .fields_width
-      = select_tag(:name,
-           options_for_select(Account.all.each.collect{|a| [truncate(a.name,length:70), a.number]},
-           params[:state]),
-           class: 'btn btn-default')
   = f.input :account
   = f.input :description
 
