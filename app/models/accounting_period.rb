@@ -9,6 +9,7 @@ class AccountingPeriod < ActiveRecord::Base
 
   belongs_to :organization
   has_many :verificates
+  has_one :opening_balance
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
   validates :accounting_from, presence: true

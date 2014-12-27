@@ -14,7 +14,7 @@
     %tbody{}
       - @opening_balance_items.each do |opening_balance_item|
         %tr
-          %td= opening_balance_item.account
+          %td= opening_balance_item.number
           %td= opening_balance_item.description
           %td= opening_balance_item.debet
           %td= opening_balance_item.kredit

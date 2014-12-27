@@ -12,7 +12,7 @@
     %tbody{}
       - @template_items.each do |template_item|
         %tr
-          %td= template_item.account
+          %td= template_item.account.number
           %td= template_item.description
           %td
             - if template_item.enable_debit

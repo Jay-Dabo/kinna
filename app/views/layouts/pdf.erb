@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>something</title>
+    <style>
+      body, html, table.wrapper {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        font-size: 14px;
+      }
+      /**
+        Subset of bootstrap used only by wicked_pdf / wkhtmltopdf
+        because compat...
+      **/
+      h3, h2, h1 {
+        padding: 0;
+        margin: 10px 0;
+      }
+      h1 { margin-bottom: 2em; }
+      h4 { margin-bottom: 0; }
+      .row { clear: both; }
+      .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-12 {
+        float: left;
+        margin: 5px 10px;
+        /* border: 1px solid red; /* debug */
+      }
+      .col-md-3 { width: 150px; }
+      .col-md-6 { width: 320px; }
+      .col-md-12 { width: 660px; }
+      .row .col-md-3 {
+        margin: 0;
+      }
+      .row .mright { margin-right: 10px; }
+      .text-right { text-align: right; }
+      .pull-right { float: right; }
+      .pull-left { float: left; }
+
+      .table {
+        width: 100%;
+        border-spacing: 0;
+      }
+      .table col {
+        display: table-column;
+      }
+      .table th { text-align: left; border-bottom: 1px solid #aaa; }
+      .table th.numeric, .table td.numeric { text-align: right; }
+      .table td {
+        padding: 5px;
+        margin: 0;
+        display: table-cell;
+        /*border-top: 1px solid #aaa;*/
+      }
+      table td.no-padding { padding: 0; }
+      .table-striped tbody tr:nth-child(even) {
+        /* background: #eee; */
+      }
+      .table-striped td {
+        border-right: 1px solid #aaa;
+      }
+      .table-striped td:last-child {
+        border-right: 0px;
+      }
+
+      /*
+      .table tfoot tr:first-child td {
+        border-top: 2px solid #666;
+      }
+      .table tfoot tr:first-child td {
+        border-top: 2px solid #666;
+      }
+      .table thead td {
+        border-bottom: 1px solid #666;
+      }*/
+
+      .line { margin: 0; padding: 0; display: block; }
+
+      p {
+        margin-top: 0;
+        margin-bottom: 0.5em;
+      }
+
+      /* custom pdf table code */
+      table.wrapper {
+        height: 1000px;
+        /*height: 100%;*/
+      }
+      table.wrapper td { vertical-align: top; width: 50%; }
+      .strong { font-weight: bold; }
+
+      h3 { margin-top: 0; }
+      table.dates td.main-cell{ width: 100%; }
+      table.dates td { padding-left: 1em; }
+      table td { white-space: nowrap; }
+
+      tr.pre_sale_items td { padding-bottom: 2em; }
+      td.sale_item_wrapper { height: 100%; }
+      table.sale_items { height: 100%; }
+      table.sale_items th.main { width: 100%; }
+      table.sale_items thead tr { background: none; }
+      table.sale_items td, table.sale_items th { white-space: nowrap; padding: .5em;}
+      table.sale_items td.numeric { padding-left: 1em; }
+      table.sale_items tfoot tr { background: none; }
+      table.sale_items tr.total td { border: 0; background: transparent; padding: .2em .5em; }
+      table.sale_items tr.filler { background: transparent; }
+      table.sale_items tr.filler td { height: 100%; border: 0; border-top: 1px solid #aaa;}
+      tr.address td.address-inner { padding-top: 1em; }
+      tr.address td table.address-and-numbers { border-top: 2px solid #aaa; }
+      tr.address table td { border: 0; background: transparent; white-space: nowrap;}
+      table.numbers td.main-cell{ text-align: right; width: 100%; }
+
+      td.padding-top-bottom { padding: 1em 0; }
+
+      .watermark {
+        z-index: -1;
+        position: absolute;
+        top: 250px;
+        height: 300px;
+        width: 640px;
+        -moz-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        font-size: 100px;
+        font-weight: bold;
+        border: 20px solid #eee;
+        color: #eee;
+        border-radius: 100px;
+        padding: 40px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

@@ -38,12 +38,19 @@ Rails.application.routes.draw do
       resources :accounts
     end
 
+    resources :closing_balances do
+      resources :closing_balance_items
+    end
+
     resources :contact_relations
     resources :contacts
 
     resources :opening_balances do
       resources :opening_balance_items
     end
+
+    get 'reports/verificates'
+    get 'reports/ledger'
 
     resources :templates do
       resources :template_items

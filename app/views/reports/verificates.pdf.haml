@@ -1,0 +1,26 @@
+%table.wrapper
+  %tr
+    %td{colspan: '2'}
+      .pull-left
+        %h1= t(:verificates)
+      .pull-right
+        %h1= @verificates.first.accounting_period.name
+  %tr
+    %td.sale_item_wrapper{colspan: '2'}
+      %table.table.table-striped
+        - @verificates.each do |ver|
+          %tr
+            %th.main= t(:number) + ": #{ver.number}"
+            %th=ver.posting_date
+            %th=ver.description
+            %th
+            %th
+          - ver.verificate_items.each do |item|
+            - item = item.decorate
+            %tr
+              %td.main= item.account_number
+              %td= item.description
+              %td.numeric= item.debit
+              %td.numeric= item.credit
+          %tr.filler
+            %td{colspan:'5'} &nbsp;

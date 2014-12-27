@@ -32,16 +32,16 @@
                 %b.caret
               %ul.dropdown-menu
                 = nav_link t(:accounting_periods), accounting_periods_path
-                = nav_link t(:opening_balance), opening_balances_path
+                = nav_link t(:opening_balances), opening_balances_path
                 = nav_link t(:verificates), verificates_path
-                = nav_link t(:closing_balance), accounting_periods_path
+                = nav_link t(:closing_balances), closing_balances_path
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
                 = t(:reports)
                 %b.caret
               %ul.dropdown-menu
-                = nav_link t(:verifications), accounting_periods_path
-                = nav_link t(:ledger), accounting_periods_path
+                = nav_link t(:verificates), reports_verificates_path(format: 'pdf'), :target => "_blank"
+                = nav_link t(:ledger), reports_ledger_path(format: 'pdf'), :target => "_blank"
                 = nav_link t(:vat_report), accounting_periods_path
                 = nav_link t(:result_report), accounting_periods_path
                 = nav_link t(:balance_report), accounting_periods_path

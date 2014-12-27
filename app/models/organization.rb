@@ -19,8 +19,8 @@ class Organization < ActiveRecord::Base
   has_many :users, through: :organization_roles
   has_one :accounting_plan
 
-  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :contact_relations, :contacts,
-   :opening_balances, :templates, :verificates].each do |model_sym|
+  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances, :contact_relations,
+   :contacts, :opening_balances, :reports, :templates, :verificates, :verificate_items].each do |model_sym|
     has_many model_sym
   end
 

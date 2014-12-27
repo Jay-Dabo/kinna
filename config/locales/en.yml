@@ -42,6 +42,8 @@ en:
   base_information: "Base information"
   classes: "Classes"
   closing_balance: "Closing balance"
+  closing_balance_item: "Closing balance item"
+  closing_balances: "Closing balances"
   city: "City"
   confirm: "Confirm"
   confirm_delete: "Confirm delete"

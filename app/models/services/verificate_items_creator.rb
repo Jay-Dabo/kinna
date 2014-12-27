@@ -13,7 +13,8 @@ module Services
       @verificate_items[:row].each do |item|
         verificate_item = @verificate.verificate_items.build
         verificate_item.organization = @organization
-        verificate_item.account = item[1][:account]
+        verificate_item.accounting_period = @verificate.accounting_period
+        verificate_item.account_id = item[1][:account_id]
         verificate_item.description = item[1][:description]
         verificate_item.debit = item[1][:debit]
         verificate_item.credit = item[1][:credit]

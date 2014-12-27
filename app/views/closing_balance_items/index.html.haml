@@ -1,0 +1,25 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:opening_balance_item)}", new_opening_balance_item_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:account)
+        %th= t(:description)
+        %th= t(:debet)
+        %th= t(:kredit)
+        %th
+        %th
+    %tbody{}
+      - @opening_balance_items.each do |opening_balance_item|
+        %tr
+          %td= opening_balance_item.account
+          %td= opening_balance_item.description
+          %td= opening_balance_item.debet
+          %td= opening_balance_item.kredit
+          %td.numeric= link_to settings_icon, opening_balance_item_path(opening_balance_item)
+          %td.numeric= delete_modal_for opening_balance_item
+
+  = paginate @opening_balance_items, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

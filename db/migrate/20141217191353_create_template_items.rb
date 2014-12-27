@@ -1,7 +1,7 @@
 class CreateTemplateItems < ActiveRecord::Migration
   def change
     create_table :template_items do |t|
-      t.integer  :account
+      t.integer  :account_id
       t.string   :description
       t.boolean  :enable_debit
       t.boolean  :enable_credit

@@ -45,6 +45,7 @@ gem 'devise', '~> 3.4'
 gem 'simple_form', git: 'https://github.com/plataformatec/simple_form.git'
 gem 'protected_attributes', '~> 1.0.5'
 
+gem 'wicked_pdf'
 gem 'foreman'
 gem 'cancancan', '~> 1.9'
 gem 'state_machine', '~> 1.2'

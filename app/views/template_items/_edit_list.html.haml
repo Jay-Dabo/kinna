@@ -14,7 +14,8 @@
           = f.simple_fields_for item do |i|
             - row = 'row['+index.to_s+']'
             - idx = 'row_'+index.to_s+'-'
-            %td.numeric4= i.input_field :account, id: idx+'account', name: row+'[account]', type:'text', readonly: 'true', class: 'form-control'
+            %td.numeric6= i.input_field :number, type:'text', readonly: 'true', class: 'form-control'
+            %td.hidden= i.input_field :account_id, id: idx+'account_id', name: row+'[account_id]', type:'text', readonly: 'true', class: 'form-control'
             %td= i.input_field :description,  id: idx+'description', name: row+'[description]', readonly: 'true', class: 'form-control'
             %td
               %input{id: idx+'debit', name: row+'[debit]', class: 'numeric6 debit form-control', readonly: !i.object.enable_debit, value: '0'}

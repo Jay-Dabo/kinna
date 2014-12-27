@@ -10,5 +10,5 @@
       .labels_width.control-label
         %label= t(:account)
       .fields_width
-        %select{include_blank: false, ng_model: 'acc', ng_options: "account.number as account.name for account in accounts", ng_change: 'select_account();', class: 'select required form-control'}
+        %select{include_blank: false, ng_model: 'acc', ng_options: "account.number as account.description for account in accounts", ng_change: 'select_account();', class: 'select required form-control'}
     %hr

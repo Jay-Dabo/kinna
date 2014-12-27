@@ -30,6 +30,7 @@ class VerificateItemsController < ApplicationController
     @verificate = current_organization.verificates.find(params[:verificate_id])
     @verificate_item = @verificate.verificate_items.build verificate_item_params
     @verificate_item.organization = current_organization
+    @verificate_item.accounting_period = @verificate.accounting_period
     respond_to do |format|
       if @verificate_item.save
         format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_item)} #{t(:was_successfully_created)}" }

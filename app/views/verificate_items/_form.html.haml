@@ -1,8 +1,8 @@
-= render partial: 'shared/search_account', locals: {model: @verificate, account: 'verificate_item_account', description: 'verificate_item_description'}
+= render partial: 'shared/search_account', locals: {model: @verificate, account: 'verificate_item_account_id', description: 'verificate_item_description'}
 = simple_form_for([@verificate, @verificate_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
-  = f.input :account
-  = f.input :description
+  = f.association :account, input_html: {readonly: true, class: 'numeric'}
+  = f.input       :description
 
   = f.input :debit
   = f.input :credit

@@ -13,7 +13,7 @@
     %tbody{}
       - @verificate_items.each do |verificate_item|
         %tr
-          %td= verificate_item.account
+          %td= verificate_item.account.number
           %td= verificate_item.description
           %td.numeric6= verificate_item.debit
           %td.numeric6= verificate_item.credit

@@ -1,0 +1,23 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:closing_balance)}", new_closing_balance_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:accounting_period)
+        %th= t(:posting_date)
+        %th= t(:description)
+        %th
+        %th
+    %tbody{}
+      - @closing_balances.each do |closing_balance|
+        %tr
+          %td= closing_balance.accounting_period.name
+          %td= closing_balance.posting_date
+          %td= closing_balance.description
+          %td.numeric= link_to settings_icon, closing_balance_path(closing_balance)
+          %td.numeric= delete_modal_for closing_balance
+
+  = paginate @closing_balances, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

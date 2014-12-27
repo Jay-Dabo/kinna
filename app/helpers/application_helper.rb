@@ -71,11 +71,11 @@ module ApplicationHelper
     content_tag(:i, ' ', class: class_string)
   end
 
-  def nav_link link_text, link_path
+  def nav_link link_text, link_path, target=nil
     if current_page? link_path
-      content_tag(:li, class: 'active') { link_to link_text, link_path }
+      content_tag(:li, class: 'active') { link_to link_text, link_path, target }
     else
-      content_tag(:li) { link_to link_text, link_path }
+      content_tag(:li) { link_to link_text, link_path, target }
     end
   end
 

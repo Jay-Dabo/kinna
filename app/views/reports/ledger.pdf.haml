@@ -1,0 +1,22 @@
+%table.wrapper
+  %tr
+    %td{colspan: '2'}
+      .pull-left
+        %h1= t(:ledger)
+      .pull-right
+        %h1= @accounting_period.name
+  %tr
+    %td.sale_item_wrapper{colspan: '2'}
+      %table.table.table-striped
+        %tr
+          %th= t(:account)
+          %th= t(:description)
+          %th= t(:debit)
+          %th= t(:credit)
+
+        - @verificate_items.each do |item|
+          %tr
+            %td=item.num
+            %td=item.desc
+            %td=item.deb
+            %td=item.cre

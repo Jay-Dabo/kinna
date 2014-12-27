@@ -1,7 +1,7 @@
-= render partial: 'shared/search_account', locals: {model: @opening_balance, account: 'opening_balance_item_account', description: 'opening_balance_item_description'}
+= render partial: 'shared/search_account', locals: {model: @opening_balance, account: 'opening_balance_item_account_id', description: 'opening_balance_item_description'}
 = simple_form_for([@opening_balance, @opening_balance_item], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
-  = f.input :account
+  = f.association :account, input_html: {readonly: true, class: 'numeric'}
   = f.input :description
 
   = f.input :debit
@@ -10,15 +10,3 @@
   .form-button-group
     .actions
       = f.submit class: 'btn btn-primary'
-
-:javascript
-  $(document).on('ready page:load', function () {
-    var a = $('#name').val();
-    $('#account').val(a);
-  });
-  $( '#name' ).change(function() {
-    var a = $('#name').val();
-    var n = $("#name option:selected").text();
-    $('#opening_balance_item_account').val(a);
-    $('#opening_balance_item_description').val(n);
-  });

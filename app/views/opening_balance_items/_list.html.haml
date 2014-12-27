@@ -1,4 +1,4 @@
-- @opening_balance_items = @opening_balance.opening_balance_items.order('account').page(params[:page]).decorate
+- @opening_balance_items = @opening_balance.opening_balance_items.joins(:account).order('accounts.number').page(params[:page]).decorate
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
@@ -13,7 +13,7 @@
     %tbody{}
       - @opening_balance_items.each do |opening_balance_item|
         %tr
-          %td= opening_balance_item.account
+          %td= opening_balance_item.number
           %td= opening_balance_item.description
           %td.numeric6= opening_balance_item.debit
           %td.numeric6= opening_balance_item.credit

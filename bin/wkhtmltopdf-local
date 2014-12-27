@@ -1,0 +1,3 @@
+#!/bin/bash
+dir=`dirname $0`
+xvfb-run $dir/wkhtmltopdf --encoding utf8 $@

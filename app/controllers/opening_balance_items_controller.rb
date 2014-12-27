@@ -30,6 +30,7 @@ class OpeningBalanceItemsController < ApplicationController
     @opening_balance = current_organization.opening_balances.find(params[:opening_balance_id])
     @opening_balance_item = @opening_balance.opening_balance_items.build opening_balance_item_params
     @opening_balance_item.organization = current_organization
+    @opening_balance_item.accounting_period = @opening_balance.accounting_period
     respond_to do |format|
       if @opening_balance_item.save
         format.html { redirect_to opening_balance_path(@opening_balance), notice: "#{t(:opening_balance_item)} #{t(:was_successfully_created)}" }

@@ -119,7 +119,7 @@ module Services
     def save_account(number, name, class_id, group_id)
       @account = @accounting_plan.accounts.build
       @account.number = number
-      @account.name = name
+      @account.description = name
       @account.organization_id = @organization.id
       @account.accounting_plan_id = @accounting_plan.id
       @account.accounting_class_id = class_id

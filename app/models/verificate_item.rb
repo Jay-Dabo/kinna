@@ -1,5 +1,5 @@
 class VerificateItem < ActiveRecord::Base
-  # t.string   :account
+  # t.string   :account_id
   # t.string   :description
   # t.integer  :debit
   # t.integer  :credit
@@ -10,14 +10,24 @@ class VerificateItem < ActiveRecord::Base
   # t.integer  :project_id
   # t.timestamps
 
-  attr_accessible :account, :description, :debit, :credit
+  attr_accessible :account_id, :description, :debit, :credit
 
   belongs_to :organization
   belongs_to :accounting_period
   belongs_to :verificate
+  belongs_to :account
 
-  validates :account, presence: true
+  validates :account_id, presence: true
   validates :description, presence: true
+
+
+  def account_number
+    account.number
+  end
+  def final?
+    return true if verificate.final?
+    false
+  end
 
   def can_delete?
     return false if verificate.final?
