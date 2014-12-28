@@ -14,7 +14,7 @@
       - @accounts.each do |account|
         %tr
           %td= account.number
-          %td= account.name
+          %td= account.description
           %td.numeric= link_to settings_icon, edit_accounting_plan_account_path(@accounting_plan, account)
           %td.numeric= delete_modal_for account, accounting_plan_account_path(@accounting_plan, account)
 

@@ -1,20 +1,24 @@
+- save_class = ''
 %table.wrapper
   %tr
     %td{colspan: '2'}
       .pull-left
-        %h1= t(:ledger)
+        %h1= t(:result)
       .pull-right
         %h1= @accounting_period.name
   %tr
     %td.sale_item_wrapper{colspan: '2'}
       %table.table.table-striped
-        %tr
-          %th.main= t(:account)
-          %th= t(:description)
-          %th.numeric= t(:debit)
-          %th.numeric= t(:credit)
-
         - @verificate_items.each do |item|
+          - if save_class != item.cls
+            - save_class = item.cls
+            %tr.filler
+              %td{colspan:'4'} &nbsp;
+            %tr
+              %th.main=item.cls
+              %th= item.cls_dsc
+              %th
+              %th
           %tr
             %td.main=item.num
             %td=item.desc

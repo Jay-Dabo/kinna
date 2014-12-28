@@ -37,6 +37,24 @@ class ReportsController < ApplicationController
     end
   end
 
+  def result
+    @accounting_period = AccountingPeriod.first
+    @verificate_items =
+        VerificateItem
+    .joins(:verificate, :account => :accounting_class)
+    .where("verificate_items.organization_id = ? AND verificate_items.accounting_period_id = ? AND verificates.state = 'final'", current_organization.id, @accounting_period.id)
+    .select('accounting_classes.number AS cls', 'accounting_classes.name AS cls_dsc', 'accounts.number AS num','accounts.description AS desc', "SUM(debit) AS deb", "SUM(credit) AS cre")
+    .group('accounting_classes.number', 'accounting_classes.name', 'accounts.number', 'accounts.description')
+    .order('accounts.number')
+
+    respond_to do |format|
+      format.pdf do
+        render(pdf: 'ledger', template: 'reports/result.pdf.haml', layout: 'pdf')
+      end
+      format.html
+    end
+  end
+
   # GET
   def index
     @breadcrumbs = [['Verificates']]

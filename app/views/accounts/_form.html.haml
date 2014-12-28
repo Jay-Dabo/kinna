@@ -3,7 +3,7 @@
   = f.association :accounting_class, collection: @accounting_plan.accounting_classes, disabled: !@account.new_record?
   = f.association :accounting_group, collection: @accounting_plan.accounting_groups, disabled: !@account.new_record?
   = f.input :number, disabled: !@account.new_record?
-  = f.input :name
+  = f.input :description
 
   .form-button-group
     .actions

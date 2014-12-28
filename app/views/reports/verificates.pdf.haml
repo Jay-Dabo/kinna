@@ -11,9 +11,8 @@
         - @verificates.each do |ver|
           %tr
             %th.main= t(:number) + ": #{ver.number}"
-            %th=ver.posting_date
             %th=ver.description
-            %th
+            %th{colspan: '2'}=ver.posting_date
             %th
           - ver.verificate_items.each do |item|
             - item = item.decorate

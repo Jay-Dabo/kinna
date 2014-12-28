@@ -17,6 +17,8 @@ class Account < ActiveRecord::Base
   validates :number, presence: true, uniqueness: {scope: [:organization_id, :accounting_plan]}
   validates :description, presence: true
 
+  delegate :name, :number, to: :accounting_class, prefix: :class
+
   def name
     number
   end

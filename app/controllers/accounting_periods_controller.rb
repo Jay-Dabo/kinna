@@ -65,6 +65,22 @@ class AccountingPeriodsController < ApplicationController
     end
   end
 
+  def import_sie
+    accounting_period = @accounting_period
+    #accounting_plan = current_organization.accounting_plan
+    accounting_plan = current_organization.accounting_plans.find_by_name("BAS – Kontoplan 2014")
+    opening_balance = @accounting_period.opening_balance
+    @import_sie = Services::ImportSie.new(current_organization, current_user, accounting_period, accounting_plan, opening_balance)
+    respond_to do |format|
+      if @import_sie.read_and_save
+        format.html { redirect_to accounting_periods_url, notice: "#{t(:accounting_period)} #{t(:was_successfully_created)}" }
+      else
+        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:accounting_period)}"
+        format.html { redirect_to accounting_periods_url }
+      end
+    end
+  end
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -29,7 +29,11 @@ Rails.application.routes.draw do
   scope ':organization_slug' do
     get "dashboard", to: "dashboard#index"
 
-    resources :accounting_periods
+    resources :accounting_periods do
+      member do
+        post 'import_sie', as: :import_sie
+      end
+    end
 
     post 'accounting_plan_import', to: 'accounting_plans#import', as: 'accounting_plan_import'
     resources :accounting_plans do
@@ -49,8 +53,9 @@ Rails.application.routes.draw do
       resources :opening_balance_items
     end
 
-    get 'reports/verificates'
     get 'reports/ledger'
+    get 'reports/verificates'
+    get 'reports/result'
 
     resources :templates do
       resources :template_items
