@@ -13,4 +13,5 @@
     .form-button-group
       .actions
         = f.submit class: 'btn btn-primary'
-        = link_to "Import_SIE ", import_sie_accounting_period_path, method: 'post', class: 'btn btn-default'
+        - if !@accounting_period.new_record?
+          = link_to "Import_SIE ", import_sie_accounting_period_path, method: 'post', class: 'btn btn-default'

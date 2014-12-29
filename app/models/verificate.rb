@@ -13,7 +13,7 @@ class Verificate < ActiveRecord::Base
   belongs_to :organization
   belongs_to :accounting_period
   belongs_to :template
-  has_many   :verificate_items
+  has_many   :verificate_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
   validates :posting_date, presence: true

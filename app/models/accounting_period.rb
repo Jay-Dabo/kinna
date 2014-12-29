@@ -8,8 +8,8 @@ class AccountingPeriod < ActiveRecord::Base
   attr_accessible :name, :accounting_from, :accounting_to, :active
 
   belongs_to :organization
-  has_many :verificates
-  has_one :opening_balance
+  has_many :verificates, dependent: :delete_all
+  has_one :opening_balance, dependent: :delete
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
   validates :accounting_from, presence: true

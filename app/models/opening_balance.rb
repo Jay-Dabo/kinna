@@ -9,7 +9,7 @@ class OpeningBalance < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :accounting_period
-  has_many   :opening_balance_items
+  has_many   :opening_balance_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
   validates :posting_date, presence: true
