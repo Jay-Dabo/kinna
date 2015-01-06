@@ -35,6 +35,8 @@ class OpeningBalanceItemsController < ApplicationController
       if @opening_balance_item.save
         format.html { redirect_to opening_balance_path(@opening_balance), notice: "#{t(:opening_balance_item)} #{t(:was_successfully_created)}" }
       else
+        @accounting_groups = current_organization.accounting_plan.accounting_groups
+        gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:opening_balance_item)}"
         format.html { render action: 'new' }
       end

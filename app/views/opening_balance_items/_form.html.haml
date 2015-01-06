@@ -4,8 +4,8 @@
   = f.association :account, input_html: {readonly: true, class: 'numeric'}
   = f.input :description
 
-  = f.input :debit
-  = f.input :credit
+  = f.input :debit, input_html: {value: 0}
+  = f.input :credit, input_html: {value: 0}
 
   .form-button-group
     .actions

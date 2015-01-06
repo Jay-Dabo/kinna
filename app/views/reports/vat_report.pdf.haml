@@ -1,0 +1,47 @@
+%table.wrapper
+  %tr
+    %td{colspan: '2'}
+      .pull-left
+        %h1= t(:vat_report)
+      .pull-right
+        %h2= @report.from_short_date
+        %h2= @report.to_short_date
+  %tr
+    %td.sale_item_wrapper{colspan: '2'}
+      %table.table.table-striped
+        %tr
+          %th{colspan: '4'}
+            =t(:sale)
+        - sum_debit = 0
+        - sum_credit = 0
+        - @sale_items.each do |item|
+          - sum_debit+=item.deb
+          - sum_credit+=item.cre
+          %tr
+            %td.main=item.num
+            %td=item.desc
+            %td.numeric=item.deb
+            %td.numeric=item.cre
+        %tr
+          %td.main
+          %td=  t(:total)
+          %td.numeric=sum_debit
+          %td.numeric=sum_credit
+        %tr.filler
+          %th{colspan: '4'}
+            = t(:vat)
+        - sum_debit = 0
+        - sum_credit = 0
+        - @verificate_items.each do |item|
+          - sum_debit+=item.deb
+          - sum_credit+=item.cre
+          %tr
+            %td.main=item.num
+            %td=item.desc
+            %td.numeric=item.deb
+            %td.numeric=item.cre
+        %tr
+          %td.main
+          %td=  t(:total)
+          %td.numeric=sum_debit
+          %td.numeric=sum_credit

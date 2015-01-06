@@ -10,17 +10,17 @@ class Organization < ActiveRecord::Base
   # t.string :plusgiro
   # t.string :swift
   # t.string :iban
-  # t.integer :accounting_plan_id
   # t.timestamps
 
-  attr_accessible :email, :name, :address, :zip, :vat_number, :bankgiro, :postgiro, :plusgiro, :city, :accounting_plan_id
+  attr_accessible :email, :name, :address, :zip, :vat_number, :bankgiro, :postgiro, :plusgiro, :city, :swift, :iban
 
   has_many :organization_roles
   has_many :users, through: :organization_roles
   has_one :accounting_plan
 
-  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances, :contact_relations,
-   :contacts, :opening_balances, :reports, :templates, :verificates, :verificate_items].each do |model_sym|
+  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances,
+   :contact_relations, :contacts, :employees, :opening_balances, :reports, :templates, :vat_periods, :verificates,
+   :verificate_items].each do |model_sym|
     has_many model_sym
   end
 

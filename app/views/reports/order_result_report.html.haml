@@ -1,0 +1,9 @@
+%h4= t(:result_report)
+= simple_form_for(@report, wrapper: :horizontal_form, html: {class: 'form-horizontal', target: "_blank" }, url: reports_result_report_path(report_id: 0, format: 'pdf')) do |f|
+  = f.error_notification
+  = f.input :accounting_period, as: :select, collection: @accounting_periods, include_blank: false, selected: @accounting_period.id
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+

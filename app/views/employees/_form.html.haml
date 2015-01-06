@@ -1,0 +1,15 @@
+%div{ng_controller: 'employee_form_ctrl', ng_init: 'init()' }
+  = simple_form_for(@employee, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    = f.input :name
+    = render partial: 'shared/date_field', locals: {form: f, field: :begin, in_id: 'in_begin', in_value: @employee.begin, out_id: 'employee[begin]', field_id: 'begin_short_date',  model: 'begin_date', dp_open: 'begin_open', dp_options: 'begin_options', dp_click: 'open_begin_date($event)'}
+    .error_width
+      = f.error :vat_to
+    = render partial: 'shared/date_field', locals: {form: f, field: :end, in_id: 'in_end', in_value: @employee.end, out_id: 'employee[end]', field_id: 'end_short_date',  model: 'end_date', dp_open: 'end_open', dp_options: 'end_options', dp_click: 'open_end_date($event)'}
+    .error_width
+      = f.error :deadline
+
+
+    .form-button-group
+      .actions
+        = f.submit class: 'btn btn-primary'

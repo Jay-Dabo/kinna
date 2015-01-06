@@ -18,10 +18,13 @@ class OpeningBalanceItem < ActiveRecord::Base
   validates :account_id, presence: true
   validates :description, presence: true
 
-  def number
+  def account_number
     account.number
   end
 
+  def posting_date
+    opening_balance.posting_date_formatted
+  end
   def can_delete?
     true
   end

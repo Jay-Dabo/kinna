@@ -20,10 +20,22 @@ class VerificateItem < ActiveRecord::Base
   validates :account_id, presence: true
   validates :description, presence: true
 
+  def verificate_number
+    verificate.number
+  end
+
+  def verificate_description
+    verificate.description
+  end
 
   def account_number
     account.number
   end
+
+  def posting_date
+    verificate.posting_date_formatted
+  end
+
   def final?
     return true if verificate.final?
     false

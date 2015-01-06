@@ -40,7 +40,8 @@ class Ability
     can :manage, AccountingClass, organization_id: oids
     can :manage, ClosingBalance, organization_id: oids
     can :manage, ClosingBalanceItem, organization_id: oids
-    can :read, Organization, id: oids
+    can :manage, Employee, organization_id: oids
+    can :read,   Organization, id: oids
     can :manage, OpeningBalance, organization_id: oids
     can :manage, OpeningBalanceItem, organization_id: oids
     can :manage, Report, organization_id: oids

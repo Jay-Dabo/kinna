@@ -25,6 +25,10 @@ class OpeningBalance < ActiveRecord::Base
     opening_balance_items.inject(0) { |i, item| (item.credit || 0) + i }
   end
 
+  def posting_date_formatted
+    posting_date.strftime("%Y-%m-%d")
+  end
+
   def can_delete?
     true
   end

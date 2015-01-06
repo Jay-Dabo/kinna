@@ -3,6 +3,9 @@ class CreateAccounts < ActiveRecord::Migration
     create_table :accounts do |t|
       t.integer  :number
       t.string   :description
+      t.integer  :tax_base
+      t.integer  :tax_code
+      t.integer  :ink4
       t.integer  :organization_id
       t.integer  :accounting_plan_id
       t.integer  :accounting_class_id

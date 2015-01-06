@@ -9,7 +9,6 @@
   = f.input :bankgiro
   = f.input :postgiro
   = f.input :plusgiro
-  = f.input :accounting_plan_id, as: :select, collection: @accounting_plans
 
   - if can? :manage, current_organization
     .form-button-group

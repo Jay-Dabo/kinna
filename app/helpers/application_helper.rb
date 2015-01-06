@@ -39,7 +39,9 @@ module ApplicationHelper
   def refresh_icon
     glyphicon('refresh', 'refresh-icon')
   end
-
+  def toggle_icon(elem_id, up_cls, dn_cls)
+    "<div id=#{elem_id}><i class=\"glyphicon glyphicon-chevron-up up-icon #{up_cls}\"></i><i class=\"glyphicon glyphicon-chevron-down down-icon #{dn_cls}\"> </i></div>".html_safe
+  end
   def plus_icon
     "<i class=\"glyphicon glyphicon-plus-sign plus-icon\"> </i>".html_safe
   end

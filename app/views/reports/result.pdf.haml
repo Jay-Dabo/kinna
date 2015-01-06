@@ -18,9 +18,8 @@
               %th.main=item.cls
               %th= item.cls_dsc
               %th
-              %th
           %tr
+            - sum = -item.deb + item.cre
             %td.main=item.num
             %td=item.desc
-            %td.numeric=item.deb
-            %td.numeric=item.cre
+            %td.numeric=sum

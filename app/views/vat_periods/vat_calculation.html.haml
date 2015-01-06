@@ -1,0 +1,191 @@
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:number)
+        %th= t(:account)
+        %th= t(:description)
+        %th= t(:box)
+        %th.numeric= t(:debit)
+        %th.numeric= t(:credit)
+        %th.numeric= t(:total)
+    %tbody{}
+      - base_total = 0
+      - vat_total = 0
+      - @vat_base_sum.each do |item|
+        - base_total = base_total + item.debit - item.credit
+        %tr{class:'base_sum'}
+          %td= item.verificate_number
+          %td= item.account_number
+          %td= item.verificate_description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      %tr
+        %td= toggle_icon("bs_id","base_sum", "bs_down")
+        %td
+        %th= @tax_base
+        %th= t(:box_05)
+        %td.numeric
+        %td.numeric
+        %td.numeric= -base_total
+
+      - vat_total -= base_total
+      - vat_10_total = 0
+      - @vat_10_ib.each do |item|
+        - vat_10_total = vat_10_total + item.debit - item.credit
+        %tr{class: 'vat_10'}
+          %td  IB
+          %td= item.account_number
+          %td= item.description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      - @vat_10_ver.each do |item|
+        - vat_10_total = vat_10_total + item.debit - item.credit
+        %tr{class: 'vat_10'}
+          %td= item.verificate_number
+          %td= item.account_number
+          %td= item.verificate_description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      %tr
+        %td= toggle_icon("vat_10_id", "vat_10", "vat_10_down")
+        %td
+        %th= @vat_10_text
+        %th= t(:box_10)
+        %td.numeric
+        %td.numeric
+        %td.numeric= -vat_10_total
+
+      - vat_total -= vat_10_total
+      - vat_11_total = 0
+      - @vat_11_ib.each do |item|
+        - vat_11_total = vat_11_total + item.debit - item.credit
+        %tr{class: 'vat_11'}
+          %td  IB
+          %td= item.account_number
+          %td= item.description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      - @vat_11_ver.each do |item|
+        - vat_11_total = vat_11_total + item.debit - item.credit
+        %tr{class: 'vat_11'}
+          %td= item.verificate_number
+          %td= item.account_number
+          %td= item.verificate_description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      %tr
+        %td= toggle_icon("vat_11_id", "vat_11", "vat_11_down")
+        %td
+        %th= @vat_11_text
+        %th= t(:box_11)
+        %td.numeric
+        %td.numeric
+        %td.numeric= -vat_11_total
+
+      - vat_total -= vat_11_total
+      - vat_12_total = 0
+      - @vat_12_ib.each do |item|
+        - vat_12_total = vat_12_total + item.debit - item.credit
+        %tr{class: 'vat_12'}
+          %td  IB
+          %td= item.account_number
+          %td= item.description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      - @vat_12_ver.each do |item|
+        - vat_12_total = vat_12_total + item.debit - item.credit
+        %tr{class: 'vat_12'}
+          %td= item.verificate_number
+          %td= item.account_number
+          %td= item.verificate_description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      %tr
+        %td= toggle_icon("vat_12_id", "vat_12", "vat_12_down")
+        %td
+        %th= @vat_12_text
+        %th= t(:box_12)
+        %td.numeric
+        %td.numeric
+        %td.numeric= -vat_12_total
+
+      - vat_total -= vat_12_total
+      - vat_in_total = 0
+      - @vat_in_sum.each do |item|
+        - vat_in_total = vat_in_total + item.debit - item.credit
+        %tr{class: 'vat_in'}
+          %td= item.verificate_number
+          %td= item.account_number
+          %td= item.verificate_description
+          %td
+          %td.numeric= item.debit
+          %td.numeric= item.credit
+          %td.numeric= item.debit-item.credit
+      %tr
+        %td= toggle_icon("vi_id", "vat_in", "vi_down")
+        %td
+        %th= @in_sum
+        %th= t(:box_48)
+        %td.numeric
+        %td.numeric
+        %td.numeric= -vat_in_total
+
+      - vat_total -= vat_in_total
+      %tr
+        %td
+        %td
+        %th=  'Moms att betala eller få tillbaka'
+        %th= t(:box_49)
+        %td{colspan: '2', class: 'numeric'}
+          = form_tag vat_calculation_update_vat_period_path(@vat_period), class: 'form-inline', method: :post do
+            = hidden_field_tag 'vat_period[box_05]', base_total
+            = hidden_field_tag 'vat_period[box_10]', vat_10_total
+            = hidden_field_tag 'vat_period[box_11]', vat_11_total
+            = hidden_field_tag 'vat_period[box_12]', vat_12_total
+            = hidden_field_tag 'vat_period[box_48]', vat_in_total
+            = hidden_field_tag 'vat_period[box_49]', vat_total
+            = hidden_field_tag 'event', 'mark_calculated'
+            = submit_tag t(:confirm), class: 'btn btn-primary'
+        %td.numeric= vat_total
+
+:javascript
+  $('.base_sum').hide();
+  $('#bs_id').click(function() {
+    $('.base_sum').toggle();
+    $('.bs_down').toggle();
+    });
+  $('.vat_10').hide();
+  $('#vat_10_id').click(function() {
+    $('.vat_10').toggle();
+    $('.vat_10_down').toggle();
+    });
+  $('.vat_11').hide();
+  $('#vat_11_id').click(function() {
+    $('.vat_11').toggle();
+    $('.vat_11_down').toggle();
+    });
+  $('.vat_12').hide();
+  $('#vat_12_id').click(function() {
+    $('.vat_12').toggle();
+    $('.vat_12_down').toggle();
+    });
+  $('.vat_in').hide();
+  $('#vi_id').click(function() {
+    $('.vat_in').toggle();
+    $('.vi_down').toggle();
+    });

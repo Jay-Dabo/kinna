@@ -49,13 +49,23 @@ Rails.application.routes.draw do
     resources :contact_relations
     resources :contacts
 
+    resources :employees
+
     resources :opening_balances do
       resources :opening_balance_items
     end
 
-    get 'reports/ledger'
-    get 'reports/verificates'
-    get 'reports/result'
+
+
+
+    get 'reports/order_verificates_report'
+    get 'reports/order_ledger_report'
+    get 'reports/order_result_report'
+    get 'reports/order_balance_report'
+    post 'reports/verificates'
+    post 'reports/ledger'
+    post 'reports/result_report'
+    post 'reports/balance_report'
 
     resources :templates do
       resources :template_items
@@ -64,6 +74,14 @@ Rails.application.routes.draw do
     resources :users do
       member do
         patch :update_roles, as: :update_roles
+      end
+    end
+
+    resources :vat_periods do
+      member do
+        get 'vat_calculation', as: :vat_calculation
+        post 'vat_calculation_update', as: :vat_calculation_update
+        post 'vat_reporting', as: :vat_reporting
       end
     end
 

@@ -7,7 +7,7 @@
         .form-group
           = f.input :email, autofocus: true, label:false, placeholder: t(:email), type: 'email'
           = f.input :password, label: false, placeholder: t(:password)
-          = f.input :remember_me, as: :boolean, inline_label: true
+          = f.input :remember_me, as: :boolean, inline_label: true, wrapper: :vertical_boolean
         .form-group
           = f.submit t(:sign_in), class: 'btn btn-primary full-width'
       = render partial: "devise/shared/links"

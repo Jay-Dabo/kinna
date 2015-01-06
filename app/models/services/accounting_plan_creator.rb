@@ -21,7 +21,7 @@ module Services
           save_account(row[5], row[6], class_id, group_id)
         elsif ((row[2] && row[2].strip.length == 1) || (row[2] && row[2].length == 3))
           class_id = save_account_class(row[2], row[3])
-        elsif ((row[2] && row[2].length == 2) || (row[2] && row[2].length == 6))
+        elsif ((row[2] && row[2].length == 2) || (row[2] && row[2].length == 5))
           group_id = save_account_group(row[2], row[3])
         elsif row[2] && row[2].length == 4 && row[5].blank?
           save_account(row[2], row[3], class_id, group_id)

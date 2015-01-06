@@ -18,6 +18,7 @@ class AccountingPeriodsController < ApplicationController
     @accounting_period.name = t(:accounting_period) + " " + (Date.current.year + 1).to_s
     @accounting_period.accounting_from = Date.new(Date.current.year+1, 1, 1)
     @accounting_period.accounting_to = Date.new(Date.current.year+1, 12, 31)
+    @accounting_plans = current_organization.accounting_plans
   end
 
   # GET /vats/1
@@ -26,6 +27,7 @@ class AccountingPeriodsController < ApplicationController
 
   # GET /vat/1/edit
   def edit
+    @accounting_plans = current_organization.accounting_plans
   end
 
   # POST /vats
@@ -37,6 +39,7 @@ class AccountingPeriodsController < ApplicationController
       if @accounting_period.save
         format.html { redirect_to accounting_periods_url, notice: 'Account period was successfully created.' }
       else
+        @accounting_plans = current_organization.accounting_plans
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_period)}"
         format.html { render action: 'new' }
       end
@@ -50,6 +53,7 @@ class AccountingPeriodsController < ApplicationController
       if @accounting_period.update(accounting_period_params)
         format.html { redirect_to accounting_periods_url, notice: 'Account period was successfully updated.' }
       else
+        @accounting_plans = current_organization.accounting_plans
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:accounting_period)}"
         format.html { render action: 'show' }
       end
