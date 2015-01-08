@@ -4,11 +4,12 @@
     = f.input :name
     = render partial: 'shared/date_field', locals: {form: f, field: :begin, in_id: 'in_begin', in_value: @employee.begin, out_id: 'employee[begin]', field_id: 'begin_short_date',  model: 'begin_date', dp_open: 'begin_open', dp_options: 'begin_options', dp_click: 'open_begin_date($event)'}
     .error_width
-      = f.error :vat_to
-    = render partial: 'shared/date_field', locals: {form: f, field: :end, in_id: 'in_end', in_value: @employee.end, out_id: 'employee[end]', field_id: 'end_short_date',  model: 'end_date', dp_open: 'end_open', dp_options: 'end_options', dp_click: 'open_end_date($event)'}
+      = f.error :begin
+    = render partial: 'shared/date_field', locals: {form: f, field: :ending, in_id: 'in_ending', in_value: @employee.ending, out_id: 'employee[ending]', field_id: 'ending_short_date',  model: 'ending_date', dp_open: 'ending_open', dp_options: 'ending_options', dp_click: 'open_ending_date($event)'}
     .error_width
-      = f.error :deadline
-
+      = f.error :ending
+    = f.input :salary
+    = f.input :tax
 
     .form-button-group
       .actions

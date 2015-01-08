@@ -11,24 +11,21 @@ module Services
       @vat_period = @object
       @accounting_period = AccountingPeriod.find(@vat_period.accounting_period_id)
       @verificate = save_verificate('Momsredovisning', @accounting_period)
-      if (@vat_period.box_10 != 0)
-        @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code = 10", @organization.id, @accounting_period.accounting_plan_id).first
-        save_verificate_item(@verificate, @account, -@vat_period.box_10, 0, @accounting_period)
-      end
-      if (@vat_period.box_11 != 0)
-        @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code = 11", @organization.id, @accounting_period.accounting_plan_id).first
-        save_verificate_item(@verificate, @account, -@vat_period.box_11, 0, @accounting_period)
-      end
-      if (@vat_period.box_12 != 0)
-        @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code = 12", @organization.id, @accounting_period.accounting_plan_id).first
-        save_verificate_item(@verificate, @account, -@vat_period.box_12, 0, @accounting_period)
-      end
-      if (@vat_period.box_49 != 0)
-        @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code = 49", @organization.id, @accounting_period.accounting_plan_id).first
-        save_verificate_item(@verificate, @account, 0, @vat_period.box_49, @accounting_period)
-      end
-      if @verificate.balanced?
-        @verificate.state_change('mark_final')
+
+      @vat_period.vat_reports.each do |report|
+        @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code_id = ?",
+                                 @organization.id, @accounting_period.accounting_plan_id, report.tax_code.id).first
+
+        if report.amount != 0 && (report.tax_code.code == 10 || report.tax_code.code == 11 || report.tax_code.code == 12)
+          save_verificate_item(@verificate, @account, report.amount, 0, @accounting_period)
+        elsif report.amount != 0 && report.tax_code.code == 48
+          save_verificate_item(@verificate, @account, 0, -report.amount, @accounting_period)
+        elsif report.tax_code.code == 49
+          @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND number = ?",
+                                   @organization.id, @accounting_period.accounting_plan_id, '1940').first
+          save_verificate_item(@verificate, @account, 0, report.amount, @accounting_period)
+        else
+        end
       end
     end
 

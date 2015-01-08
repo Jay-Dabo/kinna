@@ -20,27 +20,64 @@ r = jtest.organization_roles.build(name: OrganizationRole::ROLE_SUPERADMIN)
 r.organization_id = 0
 jtest.save
 
+# Tax codes ---------------------------
+x05 = TaxCode.new({code: 05, text: "Momspliktig försäljning", sum_method: 'vat_period'})
+x05.organization = o1
+x05.save
+x10 = TaxCode.new({code: 10, text: "Utgående moms på försäljning 25 %", sum_method: 'accounting_period'})
+x10.organization = o1
+x10.save
+x11 = TaxCode.new({code: 11, text: "Utgående moms på försäljning 12 %", sum_method: 'accounting_period'})
+x11.organization = o1
+x11.save
+x12 = TaxCode.new({code: 12, text: "Utgående moms på försäljning 6 %", sum_method: 'accounting_period'})
+x12.organization = o1
+x12.save
+x48 = TaxCode.new({code: 48, text: "Ingående moms", sum_method: 'accounting_period'})
+x48.organization = o1
+x48.save
+x49 = TaxCode.new({code: 49, text: "Moms att betala eller få tillbaka", sum_method: 'total'})
+x49.organization = o1
+x49.save
+# Accounting plan ---------------------
+plan_k1 = Services::AccountingPlanCreator.new(o1, jtest)
+plan_k1.K1_read_and_save
+
+plan_bas = Services::AccountingPlanCreator.new(o1, jtest)
+plan_bas.BAS_read_and_save
+plan_bas.BAS_tax_code_update
+
 # Accounting period --------------------
+ap13 = AccountingPeriod.new({
+  name: "Räkenskapsår 2013",
+  accounting_from: DateTime.new(2013,01,01),
+  accounting_to: DateTime.new(2013,12,31),
+  active: 'true',
+  accounting_plan: plan_bas,
+  vat_period_type: 'month'
+})
+ap13.organization = o1
+ap13.save
 ap14 = AccountingPeriod.new({
-                     name: "Räkenskapsår 2014",
-                     accounting_from: DateTime.new(2014,01,01),
-                     accounting_to: DateTime.new(2014,12,31),
-                    active: 'true'
+  name: "Räkenskapsår 2014",
+  accounting_from: DateTime.new(2014,01,01),
+  accounting_to: DateTime.new(2014,12,31),
+  active: 'true',
+  accounting_plan: plan_bas,
+  vat_period_type: 'month'
 })
 ap14.organization = o1
 ap14.save
 ap15 = AccountingPeriod.new({
-    name: "Räkenskapsår 2015",
-    accounting_from: DateTime.new(2015,01,01),
-    accounting_to: DateTime.new(2015,12,31),
-   active: 'false'
+  name: "Räkenskapsår 2015",
+  accounting_from: DateTime.new(2015,01,01),
+  accounting_to: DateTime.new(2015,12,31),
+  active: 'false',
+  accounting_plan: plan_k1,
+  vat_period_type: 'month'
 })
 ap15.organization = o1
 ap15.save
-
-# Accounting plan ---------------------
-plan = Services::AccountingPlanCreator.new(o1, jtest)
-plan.K1_read_and_save
 
 # Template ----------------------------
 t1 = Template.new({

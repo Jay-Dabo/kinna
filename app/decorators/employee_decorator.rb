@@ -5,8 +5,8 @@ class EmployeeDecorator < Draper::Decorator
     ""
   end
 
-  def end
-    return l(object.end, format: "%Y-%m-%d") if object.end
+  def ending
+    return l(object.ending, format: "%Y-%m-%d") if object.ending
     ""
   end
 end

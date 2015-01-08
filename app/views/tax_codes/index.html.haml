@@ -1,0 +1,21 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:tax_code)}", new_tax_code_path, class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th.numeric= t(:code)
+        %th= t(:text)
+        %th
+        %th
+    %tbody{}
+      - @tax_codes.each do |tax_code|
+        %tr
+          %td.numeric= tax_code.code
+          %td= tax_code.text
+          %td.numeric= link_to settings_icon, edit_tax_code_path(tax_code)
+          %td.numeric= delete_modal_for tax_code
+
+  = paginate @tax_codes, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

@@ -1,8 +1,7 @@
 class Account < ActiveRecord::Base
   # t.string   :number
   # t.string   :description
-  # t.integer  :tax_base
-  # t.integer  :tax_code
+  # t.integer  :tax_code_id
   # t.integer  :ink4
   # t.integer  :organization_id
   # t.integer  :accounting_plan_id
@@ -10,12 +9,13 @@ class Account < ActiveRecord::Base
   # t.integer  :accounting_group_id
   # t.timestamps
 
-  attr_accessible :number, :description, :tax_base, :tax_code, :ink4
+  attr_accessible :number, :description, :tax_code_id, :ink4
 
   belongs_to :organization
   belongs_to :accounting_plan
   belongs_to :accounting_class
   belongs_to :accounting_group
+  belongs_to :tax_code
 
   validates :number, presence: true, uniqueness: {scope: [:organization_id, :accounting_plan]}
   validates :description, presence: true

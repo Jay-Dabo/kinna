@@ -2,10 +2,12 @@ class Employee < ActiveRecord::Base
   # t.string   :name
   # t.datetime :begin
   # t.datetime :end
+  # t.decimal  :salary
+  # t.decimal  :tax
   # t.integer  :organization_id
   # t.timestamps
 
-  attr_accessible :name, :begin, :end
+  attr_accessible :name, :begin, :ending, :salary, :tax
 
   belongs_to :organization
 

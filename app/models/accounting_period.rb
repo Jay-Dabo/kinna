@@ -14,6 +14,7 @@ class AccountingPeriod < ActiveRecord::Base
   has_many :verificates, dependent: :delete_all
   has_one :opening_balance, dependent: :delete
   has_many :vat_periods
+  has_many :wage_periods
 
   VAT_TYPES = ['year', 'quarter', 'month']
 
@@ -67,6 +68,16 @@ class AccountingPeriod < ActiveRecord::Base
         vat_period.deadline = vat_period.vat_to + 1.month + 12.days
     end
     return vat_period
+  end
+
+  def next_wage_period
+    wage_period = WagePeriod.new
+    wage_period.name = 'Löneperiod ' + accounting_from.strftime('%Y') + ':' + (wage_periods.count + 1).to_s
+    wage_period.wage_from = wage_periods.count > 0 ? wage_periods.last.wage_to + 1.days : accounting_from
+    wage_period.wage_to = wage_period.wage_from.end_of_month
+    wage_period.payment_date = wage_period.wage_from + 17.days
+    wage_period.deadline = wage_period.wage_to + 12.days
+    return wage_period
   end
 
   def can_delete?

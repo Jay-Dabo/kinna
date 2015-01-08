@@ -1,7 +1,7 @@
-class VatPeriod < ActiveRecord::Base
+class WagePeriod < ActiveRecord::Base
   # t.string   :name
-  # t.datetime :vat_from
-  # t.datetime :vat_to
+  # t.datetime :wage_from
+  # t.datetime :wage_to
   # t.datetime :deadline
   # t.decimal  :box_05
   # t.decimal  :box_10
@@ -19,34 +19,34 @@ class VatPeriod < ActiveRecord::Base
   # t.timestamps
 
 
-  attr_accessible :name, :vat_from, :vat_to, :accounting_period_id, :deadline, :box_05, :box_10, :box_11, :box_12,
+  attr_accessible :name, :wage_from, :wage_to, :payment_date, :deadline, :accounting_period_id, :box_05, :box_10, :box_11, :box_12,
                   :box_48, :box_49
 
   belongs_to :organization
   belongs_to :accounting_period
-  has_many :vat_reports
   has_one :verificate
 
   validates :accounting_period, presence: true
   validates :name, presence: true, uniqueness: {scope: :organization_id}
-  validates :vat_from, presence: true
-  validates :vat_to, presence: true
+  validates :wage_from, presence: true
+  validates :wage_to, presence: true
   validate :check_to
   validate :overlaping_period
+  validates :payment_date, presence: true
   validates :deadline, presence: true
 
   def check_to
-    if vat_from >= vat_to
-      errors.add(:vat_to, I18n.t(:period_error))
+    if wage_from >= wage_to
+      errors.add(:wage_to, I18n.t(:period_error))
     end
   end
 
   def overlaping_period
-    p = VatPeriod.where('organization_id = ? and vat_to >= ? and vat_from <= ?' , organization_id, vat_from, vat_to).count
+    p = WagePeriod.where('organization_id = ? and wage_to >= ? and wage_from <= ?' , organization_id, wage_from, wage_to).count
     if new_record?
-      errors.add(:vat_to, I18n.t(:within_period)) if p > 0
+      errors.add(:wage_to, I18n.t(:within_period)) if p > 0
     else
-      errors.add(:vat_to, I18n.t(:within_period)) if p > 1
+      errors.add(:wage_to, I18n.t(:within_period)) if p > 1
     end
   end
 

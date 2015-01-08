@@ -33,6 +33,14 @@ module Services
       end
     end
 
+    def BAS_tax_code_update
+      update_account_tax_code('3001', 05)
+      update_account_tax_code('2610', 10)
+      update_account_tax_code('2620', 11)
+      update_account_tax_code('2630', 12)
+      update_account_tax_code('2640', 48)
+    end
+
     def K1_read_and_save
       class_id = 'x'
       group_id = 'x'
@@ -124,6 +132,13 @@ module Services
       @account.accounting_plan_id = @accounting_plan.id
       @account.accounting_class_id = class_id
       @account.accounting_group_id = group_id
+      @account.save
+    end
+
+    def update_account_tax_code(account, tax_code)
+      @account = @accounting_plan.accounts.find_by_number(account)
+      @tax_code = @organization.tax_codes.find_by_code(tax_code)
+      @account.tax_code = @tax_code
       @account.save
     end
   end

@@ -55,9 +55,6 @@ Rails.application.routes.draw do
       resources :opening_balance_items
     end
 
-
-
-
     get 'reports/order_verificates_report'
     get 'reports/order_ledger_report'
     get 'reports/order_result_report'
@@ -66,6 +63,8 @@ Rails.application.routes.draw do
     post 'reports/ledger'
     post 'reports/result_report'
     post 'reports/balance_report'
+
+    resources :tax_codes
 
     resources :templates do
       resources :template_items
@@ -77,11 +76,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :vat_reports do
+      post 'create_period', as: :create_period
+    end
+
     resources :vat_periods do
       member do
-        get 'vat_calculation', as: :vat_calculation
-        post 'vat_calculation_update', as: :vat_calculation_update
-        post 'vat_reporting', as: :vat_reporting
+        post 'create_verificate', as: :create_verificate
+        post 'create_vat_report', as: :create_vat_report
       end
     end
 
@@ -92,6 +94,15 @@ Rails.application.routes.draw do
         post 'add_verificate_items', as: :add_verificate_items
       end
     end
+
+    resources :wage_periods do
+      member do
+        get 'wage_calculation', as: :wage_calculation
+        post 'wage_calculation_update', as: :wage_calculation_update
+        post 'wage_reporting', as: :wage_reporting
+      end
+    end
+    resources :wages
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

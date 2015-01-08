@@ -45,10 +45,14 @@ class Ability
     can :manage, OpeningBalance, organization_id: oids
     can :manage, OpeningBalanceItem, organization_id: oids
     can :manage, Report, organization_id: oids
+    can :manage, TaxCode, organization_id: oids
     can :manage, Template, organization_id: oids
     can :manage, TemplateItem, organization_id: oids
+    can :manage, VatPeriod, organization_id: oids
     can :manage, Verificate, organization_id: oids
     can :manage, VerificateItem, organization_id: oids
+    can :manage, Wage, organization_id: oids
+    can :manage, WagePeriod, organization_id: oids
   end
 
 end
