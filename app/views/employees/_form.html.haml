@@ -2,6 +2,7 @@
   = simple_form_for(@employee, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
     = f.input :name
+    = f.input :birth_year
     = render partial: 'shared/date_field', locals: {form: f, field: :begin, in_id: 'in_begin', in_value: @employee.begin, out_id: 'employee[begin]', field_id: 'begin_short_date',  model: 'begin_date', dp_open: 'begin_open', dp_options: 'begin_options', dp_click: 'open_begin_date($event)'}
     .error_width
       = f.error :begin

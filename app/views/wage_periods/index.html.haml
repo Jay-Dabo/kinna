@@ -2,7 +2,7 @@
   = link_to "#{t(:create)} #{t(:wage_period)}", new_wage_period_path, class: 'btn btn-success'
 
 .col-sm-40.col-md-40.pull-right.text-right
-  = form_tag vat_periods_path, class: 'form-inline submit-on-change', method: :get do
+  = form_tag wage_periods_path, class: 'form-inline submit-on-change', method: :get do
     = select_tag(:accounting_period_id,
       options_for_select(@accounting_periods.each.collect{|w| [w.name, w.id]}, params[:accounting_period_id]),
       class: 'btn btn-default')
@@ -19,6 +19,8 @@
         %th= t(:state)
         %th
         %th
+        %th
+        %th
     %tbody{}
       - @wage_periods.each do |wage_period|
         %tr
@@ -27,6 +29,12 @@
           %td.numeric= wage_period.wage_to
           %td.numeric= wage_period.deadline
           %th= wage_period.state
+          - if !wage_period.preliminary?
+            %td= report_button_for wage_period_wages_path(wage_period)
+            %td= report_button_for wage_period_wage_reports_path(wage_period)
+          - else
+            %td
+            %td
           %td.numeric= link_to settings_icon, edit_wage_period_path(wage_period)
           %td.numeric= delete_modal_for wage_period
 

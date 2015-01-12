@@ -72,20 +72,22 @@ class WagePeriodsController < ApplicationController
     end
   end
 
-  def wage_calculation
+  def create_wage
     @accounting_period = current_organization.accounting_periods.find(@wage_period.accounting_period_id)
     @wage_creator = Services::WageCreator.new(current_organization, current_user, @wage_period)
     @wage_creator.save_wages
     respond_to do |format|
-      format.html {redirect_to wages_url, notice: 'wage was successfully created.'}
+      @wage_period.state_change('mark_calculated', DateTime.now)
+      format.html { redirect_to wage_period_wages_path(@wage_period), notice: 'wage was successfully created.'}
     end
   end
 
-  def wage_calculation_update
+  def create_wage_verificate
+    @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @wage_period)
     respond_to do |format|
-      if @wage_period.update(wage_period_params)
-        @wage_period.state_change('mark_calculated', DateTime.now)
-        format.html { redirect_to wage_periods_url, notice: 'wage period was successfully updated.' }
+      if @verificate_creator.save_wage
+        @wage_period.state_change('mark_confirmed', DateTime.now)
+        format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
@@ -94,11 +96,26 @@ class WagePeriodsController < ApplicationController
     end
   end
 
-  def wage_reporting
+  def create_wage_report
+    @wage_report_creator = Services::WageReportCreator.new(current_organization, current_user, @wage_period)
+    @wage_report_creator.delete_wage_report
+    respond_to do |format|
+      if @wage_report_creator.save_report
+        format.html { redirect_to wage_period_wage_reports_url(@wage_period), notice: 'Wage report was successfully updated.' }
+      else
+        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
+        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_report)}"
+        format.html { render action: 'show' }
+      end
+    end
+  end
+
+  def create_report_verificate
     @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @wage_period)
     respond_to do |format|
       if @verificate_creator.save_wage_report
-        format.html { redirect_to verificate_url, notice: 'wage period was successfully updated.' }
+        @wage_period.state_change('mark_reported', DateTime.now)
+        format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
@@ -106,6 +123,8 @@ class WagePeriodsController < ApplicationController
       end
     end
   end
+
+
 
   private
 

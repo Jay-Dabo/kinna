@@ -10,7 +10,12 @@ class TemplatesController < ApplicationController
   # GET
   def index
     @breadcrumbs = [['Templates']]
-    @templates = current_organization.templates.order(:name)
+    @accounting_plans = current_organization.accounting_plans.order('id')
+    if params[:accounting_plan_id]
+      @templates = current_organization.templates.where('accounting_plan_id=?', params[:accounting_plan_id]).order(:name)
+    else
+      @templates = current_organization.templates.where('accounting_plan_id=?', @accounting_plans.first.id).order(:name)
+    end
     @templates = @templates.page(params[:page])
   end
 

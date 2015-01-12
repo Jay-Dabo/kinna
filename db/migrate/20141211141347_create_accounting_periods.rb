@@ -8,7 +8,6 @@ class CreateAccountingPeriods < ActiveRecord::Migration
       t.boolean  :active
       t.integer  :organization_id
       t.integer  :accounting_plan_id
-
       t.timestamps
     end
   end

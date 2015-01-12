@@ -1,6 +1,7 @@
 class VatReportsController < ApplicationController
   respond_to :html, :json
-  load_and_authorize_resource through: :current_organization
+  load_and_authorize_resource :vat_period, through: :current_organization
+  load_and_authorize_resource :vat_report, through: :vat_period
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
@@ -8,7 +9,8 @@ class VatReportsController < ApplicationController
   # GET /vats
   # GET /vats.json
   def index
-    @breadcrumbs = [['Vat reports']]
+    @breadcrumbs = [['Vat periods', vat_periods_path], [@vat_period.name, vat_period_path(@vat_period.id)],
+                    ['Vat reports']]
     @vat_periods = current_organization.vat_periods.order('id')
     if !params[:vat_period_id] && @vat_periods.count > 0
       params[:vat_period_id] = @vat_periods.first.id
@@ -121,10 +123,12 @@ class VatReportsController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [['Vat reports', vat_reports_path], ["#{t(:new)} #{t(:vat_report)}"]]
+    @breadcrumbs = [['Vat periods', vat_periods_path],['Vat reports', vat_reports_path], ["#{t(:new)} #{t(:vat_report)}"]]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [['Vat reports', vat_reports_path], [@vat_report.tax_code.code]]
+    @breadcrumbs = [['Vat periods', vat_periods_path], [@vat_report.vat_period.name, vat_period_path(@vat_report.vat_period_id)],
+                    ['Vat reports', vat_period_vat_reports_path(@vat_report.vat_period_id)],
+                    [@vat_report.tax_code.code]]
   end
 end

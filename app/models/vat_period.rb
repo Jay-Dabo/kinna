@@ -3,12 +3,6 @@ class VatPeriod < ActiveRecord::Base
   # t.datetime :vat_from
   # t.datetime :vat_to
   # t.datetime :deadline
-  # t.decimal  :box_05
-  # t.decimal  :box_10
-  # t.decimal  :box_11
-  # t.decimal  :box_12
-  # t.decimal  :box_48
-  # t.decimal  :box_49
   # t.string   :state
   # t.datetime :calculated_at
   # t.datetime :reported_at
@@ -19,8 +13,7 @@ class VatPeriod < ActiveRecord::Base
   # t.timestamps
 
 
-  attr_accessible :name, :vat_from, :vat_to, :accounting_period_id, :deadline, :box_05, :box_10, :box_11, :box_12,
-                  :box_48, :box_49
+  attr_accessible :name, :vat_from, :vat_to, :accounting_period_id, :deadline
 
   belongs_to :organization
   belongs_to :accounting_period
@@ -50,7 +43,7 @@ class VatPeriod < ActiveRecord::Base
     end
   end
 
-  STATE_CHANGES = [:mark_calculated, :mark_reported]
+  STATE_CHANGES = [:mark_calculated, :mark_reported, :mark_closed]
 
   def state_change(event, changed_at = nil)
     return false unless STATE_CHANGES.include?(event.to_sym)
@@ -60,6 +53,7 @@ class VatPeriod < ActiveRecord::Base
   state_machine :state, initial: :preliminary do
     before_transition on: :mark_calulated, do: :calculate
     before_transition on: :mark_reported, do: :report
+    before_transition on: :mark_closed, do: :close
 
     event :mark_calculated do
       transition preliminary: :calculated
@@ -67,14 +61,23 @@ class VatPeriod < ActiveRecord::Base
     event :mark_reported do
       transition calculated: :reported
     end
+    event :mark_closed do
+      transition reported: :closed
+    end
   end
 
   def calulate(transition)
+    # här skapas momsunderlager
     self.calculated_at = transition.args[0]
   end
 
   def report(transition)
+    # här skapas verificate
     self.reported_at = transition.args[0]
+  end
+
+  def close(transition)
+    self.closed_at = transition.args[0]
   end
 
   def can_calculate?

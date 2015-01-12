@@ -1,5 +1,6 @@
 .btn-group
-  = link_to "#{t(:create)} #{t(:verificate)}", new_verificate_path, class: 'btn btn-success'
+  - url = new_verificate_path + '&accounting_period_id=' + "#{params[:accounting_period_id]}"
+  = link_to "#{t(:create)} #{t(:verificate)}", url, class: 'btn btn-success'
 
 .col-sm-40.col-md-40.pull-right.text-right
   = form_tag verificates_path, class: 'form-inline submit-on-change', method: :get do

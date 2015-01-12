@@ -1,13 +1,6 @@
 .btn-group
   = link_to "#{t(:create)} #{t(:verificate)}", create_verificate_vat_period_path(params[:vat_period_id]), method: 'post', class: 'btn btn-success'
 
-.col-sm-40.col-md-40.pull-right.text-right
-  = form_tag vat_reports_path, class: 'form-inline submit-on-change', method: :get do
-    = select_tag(:vat_period_id,
-      options_for_select(@vat_periods.each.collect{|w| [w.name, w.id]}, params[:vat_period_id]),
-      class: 'btn btn-default')
-.clear &nbsp;
-
 .table-responsive
   %table{:class => 'table table-striped'}
     %thead
@@ -23,7 +16,7 @@
           %td= vat_report.tax_code.text
           %td.numeric= vat_report.amount
           - if vat_report.tax_code.sum_method != 'total'
-            - url = vat_report_path(vat_report) + "&tax_code_id=#{vat_report.tax_code_id}"
+            - url = vat_period_vat_report_path(vat_report.vat_period_id, vat_report) + "&tax_code_id=#{vat_report.tax_code_id}"
             %td.numeric= link_to settings_icon, url
 
 

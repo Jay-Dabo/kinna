@@ -26,7 +26,7 @@
                 = nav_link t(:tax_codes), tax_codes_path
                 = nav_link t(:templates), templates_path
                 = nav_link t(:employee), employees_path
-                = nav_link t(:wages), wages_path
+
                 = nav_link t(:result_units), templates_path
           - if current_organization
             %li.dropdown
@@ -36,7 +36,6 @@
               %ul.dropdown-menu
                 = nav_link t(:accounting_periods), accounting_periods_path
                 = nav_link t(:vat_periods), vat_periods_path
-                = nav_link t(:vat_reports), vat_reports_path
                 = nav_link t(:wage_periods), wage_periods_path
                 = nav_link t(:opening_balances), opening_balances_path
                 = nav_link t(:verificates), verificates_path

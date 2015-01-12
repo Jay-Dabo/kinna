@@ -1,18 +1,24 @@
 %div{ng_controller: 'verificate_form_ctrl', ng_init: 'init()' }
   = simple_form_for(@verificate, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
+    = f.association :accounting_period, as: :hidden
+    .form-group
+      .labels_width.control-label
+        = f.label :accounting_period
+      .fields_width
+        %input{id: 'show', type: 'text', class: 'form-control', value: f.object.accounting_period.name, disabled: true}
 
-    = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: !@verificate.new_record?, input_html: {ng_model: 'period', ng_change: 'change_period()',}
     - if @verificate.final?
       = f.input :number, disabled: true
-    - if @verificate.new_record?
+    - if @verificate.preliminary?
       = render partial: 'shared/date_field', locals: {form: f, field: :posting_date, in_id: 'in_posting', in_value: @verificate.posting_date, out_id: 'verificate[posting_date]', field_id: 'posting_short_date',  model: 'posting_date', dp_open: 'posting_open', dp_options: 'posting_options', dp_click: 'open_posting_date($event)'}
       .error_width
         = f.error :posting_date
-    - if !@verificate.new_record?
+    - if @verificate.final?
       = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
     = f.input :description, disabled: !@verificate.new_record?
-    = f.association :template, disabled: !@verificate.new_record?
+    - if @verificate.new_record?
+      = f.association :template, collection: @templates
 
     - if !@verificate.new_record?
       = f.input :state, disabled: true
@@ -21,3 +27,17 @@
       .form-button-group
         .actions
           = f.submit class: 'btn btn-primary'
+
+  - if @verificate.template && !@verificate.verificate_items?
+    = render partial: 'template_items/edit_list'
+  - elsif !@verificate.new_record?
+    = render partial: 'verificate_items/list'
+    - if !@verificate.final?
+      .form-button-group
+        .actions
+          = link_to "#{t(:create)} #{t(:verificate_item)}", new_verificate_verificate_item_path(@verificate), class: 'btn btn-primary'
+          - if @verificate.balanced?
+            = form_tag state_change_verificate_path(@verificate), class: 'form-inline', method: :post do
+              = hidden_field_tag 'event', 'mark_final'
+              = hidden_field_tag 'new_posting_date', '{{posting_date}}'
+              = submit_tag t(:confirm), class: 'btn btn-primary'

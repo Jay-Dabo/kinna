@@ -6,6 +6,8 @@ class Verificate < ActiveRecord::Base
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
   # t.integer  :template_id
+  # t.integer  :vat_period_id
+  # t.integer  :wage_period_id
   # t.timestamps
 
   attr_accessible :posting_date, :description, :accounting_period_id, :template_id
@@ -13,6 +15,8 @@ class Verificate < ActiveRecord::Base
   belongs_to :organization
   belongs_to :accounting_period
   belongs_to :template
+  belongs_to :vat_period
+  belongs_to :wage_period
   has_many   :verificate_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
@@ -35,6 +39,7 @@ class Verificate < ActiveRecord::Base
 
   state_machine :state, initial: :preliminary do
     before_transition on: :mark_final, do: :generate_verificate_number
+    after_transition on: :mark_final, do: :set_dependent
 
     event :mark_final do
       transition preliminary: :final
@@ -46,6 +51,10 @@ class Verificate < ActiveRecord::Base
     return false if self.posting_date <  accounting_period.allow_from
     return false if self.posting_date >  accounting_period.allow_to
     self.number = (Verificate.where(organization_id: self.organization_id, accounting_period_id: self.accounting_period_id).maximum(:number) || 0) +1
+  end
+
+  def set_dependent
+    self.vat_period.state_change('mark_closed', DateTime.now) if self.vat_period
   end
 
   def total_debit
@@ -71,6 +80,11 @@ class Verificate < ActiveRecord::Base
   def posting_date_formatted
     return o if !final?
     posting_date.strftime("%Y-%m-%d")
+  end
+
+  def preliminary?
+    return true if state == 'preliminary'
+    false
   end
 
   def final?

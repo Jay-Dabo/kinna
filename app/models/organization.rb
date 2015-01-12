@@ -20,7 +20,7 @@ class Organization < ActiveRecord::Base
 
   [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances,
    :contact_relations, :contacts, :employees, :opening_balances, :reports, :tax_codes, :templates, :vat_periods,
-   :vat_reports, :verificates, :verificate_items, :wage_periods, :wages].each do |model_sym|
+   :vat_reports, :verificates, :verificate_items, :wage_periods, :wage_reports, :wages].each do |model_sym|
     has_many model_sym
   end
 

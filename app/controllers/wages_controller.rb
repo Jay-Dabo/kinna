@@ -1,6 +1,7 @@
 class WagesController < ApplicationController
   respond_to :html, :json
-  load_and_authorize_resource through: :current_organization
+  load_and_authorize_resource :wage_period, through: :current_organization
+  load_and_authorize_resource :wage, through: :wage_period
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
@@ -8,7 +9,9 @@ class WagesController < ApplicationController
   # GET /wages
   # GET /wages.json
   def index
-    @breadcrumbs = [['wages']]
+    @breadcrumbs = [['Wage periods', wage_periods_path],
+                    [@wage_period.name, wage_period_path(@wage_period.id)],
+                    ['Wages']]
     @wage_periods = current_organization.wage_periods.order('id')
     if !params[:wage_period_id] && @wage_periods.count > 0
       params[:wage_period_id] = @wage_periods.first.id
@@ -19,8 +22,7 @@ class WagesController < ApplicationController
 
   # GET /wages/new
   def new
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
-    @wage = @accounting_periods.first.next_wage
+    @wage_periods = current_organization.wage_periods
   end
 
   # GET /wages/1
@@ -30,19 +32,19 @@ class WagesController < ApplicationController
 
   # GET /wage/1/edit
   def edit
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
+    @wage_periods = current_organization.wage_periods
   end
 
   # POST /wages
   # POST /wages.json
   def create
-    @wage = WagePeriod.new(wage_params)
+    @wage = Wage.new(wage_params)
     @wage.organization = current_organization
     respond_to do |format|
       if @wage.save
         format.html { redirect_to wages_url, notice: 'wage period was successfully created.' }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
+        @wage_periods = current_organization.wage_periods
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:wage)}"
         format.html { render action: 'new' }
       end
@@ -56,7 +58,7 @@ class WagesController < ApplicationController
       if @wage.update(wage_params)
         format.html { redirect_to wages_url, notice: 'wage period was successfully updated.' }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
+        @wage_periods = current_organization.wage_periods
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage)}"
         format.html { render action: 'show' }
       end
@@ -72,54 +74,6 @@ class WagesController < ApplicationController
     end
   end
 
-  def wage_calculation
-    @accounting_period = current_organization.accounting_periods.find(@wage.accounting_period_id)
-    @accounting_plan = current_organization.accounting_plans.find(@accounting_period.accounting_plan_id)
-
-    # Momspliktig försäljning
-    @verificates = current_organization.verificates.where("accounting_period_id = ? AND state = 'final' AND posting_date >= ? AND posting_date <= ?", @wage.accounting_period_id, @wage.wage_from, @wage.wage_to).select(:id)
-    @accounts = Account.where('accounting_plan_id = ? AND tax_base = 5', @accounting_plan.id).select(:id)
-    @wage_base_sum = VerificateItem
-    .where("verificate_id IN(?) AND account_id IN(?)", @verificates, @accounts)
-    @tax_base = 'Momspliktig försäljning'
-
-    # Utgående moms 25%
-    @verificates = current_organization.verificates.where("accounting_period_id = ? AND state = 'final' AND posting_date <= ?", @wage.accounting_period_id, @wage.wage_to).select(:id)
-    @accounts = Account.where('accounting_plan_id = ? AND tax_code = 10', @accounting_plan.id).select(:id)
-    @wage_10_ib = OpeningBalanceItem
-    .where("account_id IN(?)", @accounts)
-    @wage_10_ver = VerificateItem
-    .where("verificate_id IN(?) AND account_id IN(?)",@verificates, @accounts)
-    @wage_10_text = 'Utgående moms 25%'
-
-    # Utgående moms 12%
-    @accounts = Account.where('accounting_plan_id = ? AND tax_code = 11', @accounting_plan.id).select(:id)
-    @wage_11_ib = OpeningBalanceItem
-    .where("account_id IN(?)", @accounts)
-    @wage_11_ver = VerificateItem
-    .where("verificate_id IN(?) AND account_id IN(?)",@verificates, @accounts)
-    @wage_11_text = 'Utgående moms 12%'
-
-    # Utgående moms 6%
-    @accounts = Account.where('accounting_plan_id = ? AND tax_code = 12', @accounting_plan.id).select(:id)
-    @wage_12_ib = OpeningBalanceItem
-    .where("account_id IN(?)", @accounts)
-    @wage_12_ver = VerificateItem
-    .where("verificate_id IN(?) AND account_id IN(?)",@verificates, @accounts)
-    @wage_12_text = 'Utgående moms 6%'
-
-    # Ingående moms
-    @accounts = Account.where('accounting_plan_id = ? AND tax_code = 48', @accounting_plan.id).select(:id)
-    @wage_in_ib = OpeningBalanceItem
-    .where("account_id IN(?)", @accounts)
-    @wage_in_sum = VerificateItem
-    .where("verificate_id IN(?) AND account_id IN(?)",@verificates, @accounts)
-    @in_sum = 'Ingående moms'
-
-    respond_to do |format|
-      format.html { render action: 'wage_calculation' }
-    end
-  end
 
   def wage_calculation_update
     respond_to do |format|
@@ -155,10 +109,10 @@ class WagesController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [['Wage periods', wages_path], ["#{t(:new)} #{t(:wage)}"]]
+    @breadcrumbs = [['Wages', wages_path], ["#{t(:new)} #{t(:wage)}"]]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [['Wage periods', wages_path], [@wage.name]]
+    @breadcrumbs = [['Wages', wages_path], [@wage.employee.name]]
   end
 end

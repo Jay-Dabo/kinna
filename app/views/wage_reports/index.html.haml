@@ -1,0 +1,23 @@
+.btn-group
+  = link_to "#{t(:create)} #{t(:verificate)}", create_report_verificate_wage_period_path(params[:wage_period_id]), method: 'post', class: 'btn btn-success'
+
+.table-responsive
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:tax_code)
+        %th= t(:text)
+        %th.numeric= t(:amount)
+        %th
+    %tbody{}
+      - @wage_reports.each do |wage_report|
+        %tr
+          %td= wage_report.tax_code.code
+          %td= wage_report.tax_code.text
+          %td.numeric= wage_report.amount
+          - if wage_report.tax_code.sum_method != 'total'
+            - url = wage_period_wage_report_path(wage_report.wage_period_id, wage_report) + "&tax_code_id=#{wage_report.tax_code_id}"
+            %td.numeric= link_to settings_icon, url
+
+  = paginate @wage_reports, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

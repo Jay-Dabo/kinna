@@ -9,6 +9,10 @@ module Services
       @accounting_group
     end
 
+    def accounting_plan
+      @accounting_plan
+    end
+
     def BAS_read_and_save
       class_id = 'x'
       group_id = 'x'
@@ -39,6 +43,10 @@ module Services
       update_account_tax_code('2620', 11)
       update_account_tax_code('2630', 12)
       update_account_tax_code('2640', 48)
+
+      update_account_tax_code('7210', 50)
+      update_account_tax_code('2730', 78)
+      update_account_tax_code('2710', 82)
     end
 
     def K1_read_and_save
@@ -65,6 +73,18 @@ module Services
         end
 
       end
+    end
+
+    def K1_tax_code_update
+      update_account_tax_code('3000', 05)
+      update_account_tax_code('2610', 10)
+      update_account_tax_code('2620', 11)
+      update_account_tax_code('2630', 12)
+      update_account_tax_code('2640', 48)
+
+      update_account_tax_code('7000', 50)
+      update_account_tax_code('2730', 78)
+      update_account_tax_code('2710', 82)
     end
 
     def K1_mini_read_and_save

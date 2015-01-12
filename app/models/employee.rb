@@ -1,5 +1,6 @@
 class Employee < ActiveRecord::Base
   # t.string   :name
+  # t.integer  :birth_year
   # t.datetime :begin
   # t.datetime :end
   # t.decimal  :salary
@@ -7,7 +8,7 @@ class Employee < ActiveRecord::Base
   # t.integer  :organization_id
   # t.timestamps
 
-  attr_accessible :name, :begin, :ending, :salary, :tax
+  attr_accessible :name, :begin, :ending, :salary, :tax, :birth_year
 
   belongs_to :organization
 

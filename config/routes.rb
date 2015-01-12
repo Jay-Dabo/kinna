@@ -76,11 +76,8 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :vat_reports do
-      post 'create_period', as: :create_period
-    end
-
     resources :vat_periods do
+      resources :vat_reports
       member do
         post 'create_verificate', as: :create_verificate
         post 'create_vat_report', as: :create_vat_report
@@ -96,13 +93,16 @@ Rails.application.routes.draw do
     end
 
     resources :wage_periods do
+      resources :wages
+      resources :wage_reports
       member do
-        get 'wage_calculation', as: :wage_calculation
-        post 'wage_calculation_update', as: :wage_calculation_update
-        post 'wage_reporting', as: :wage_reporting
+        post 'create_wage', as: :create_wage
+        post 'create_wage_verificate', as: :create_wage_verificate
+        post 'create_wage_report', as: :create_wage_report
+        post 'create_report_verificate', as: :create_report_verificate
       end
     end
-    resources :wages
+
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

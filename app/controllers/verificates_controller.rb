@@ -20,15 +20,20 @@ class VerificatesController < ApplicationController
 
   # GET
   def new
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-    gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
-    @templates = current_organization.templates
+    if params[:accounting_period_id]
+      @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
+    else
+      @accounting_period = current_organization.accounting_periods.where('active = ?', true).first
+    end
+    @verificate.accounting_period = @accounting_period
+    @templates = current_organization.templates.where('accounting_plan_id = ?', @accounting_period.accounting_plan_id)
+    gon.push root: AccountingPeriodSerializer.new(@accounting_period)
   end
 
   # GET
   def show
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-    gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
+    @accounting_period = @verificate.accounting_period
+    gon.push root: AccountingPeriodSerializer.new(@accounting_period)
   end
 
   # GET
@@ -37,7 +42,6 @@ class VerificatesController < ApplicationController
 
   # POST
   def create
-    Rails.logger.info "#{params.inspect}"
     if !params[:template].blank?
       template = current_organization.templates.find(params[:template])
       params[:verificate][:description] = template.description + params[:verificate][:description]
@@ -51,8 +55,8 @@ class VerificatesController < ApplicationController
         format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificate)}"
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
+        @accounting_period = @verificate.accounting_period
+        gon.push root: AccountingPeriodSerializer.new(@accounting_period)
         format.html { render action: 'new' }
       end
     end
@@ -65,8 +69,8 @@ class VerificatesController < ApplicationController
         format.html { redirect_to verificates_path, notice: "#{t(:verificate)} #{t(:was_successfully_updated)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:verificate)}"
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
+        @accounting_period = @verificate.accounting_period
+        gon.push root: AccountingPeriodSerializer.new(@accounting_period)
         format.html { render action: 'show' }
       end
     end
@@ -82,6 +86,8 @@ class VerificatesController < ApplicationController
 
   def state_change
     @verificate = current_organization.verificates.find(params[:id])
+    @verificate.posting_date = params[:new_posting_date]
+    @verificate.save
     authorize! :manage, @verificate
     if @verificate.state_change(params[:event])
       msg_h = { notice: t(:success) }
@@ -106,6 +112,10 @@ class VerificatesController < ApplicationController
   end
 
   private
+
+  def init
+
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def verificate_params

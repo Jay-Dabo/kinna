@@ -16,6 +16,7 @@ class VerificateItem < ActiveRecord::Base
   belongs_to :accounting_period
   belongs_to :verificate
   belongs_to :account
+  belongs_to :result_unit
 
   validates :account_id, presence: true
   validates :description, presence: true

@@ -26,7 +26,11 @@
           %td.numeric= vat_period.vat_from
           %td.numeric= vat_period.vat_to
           %td.numeric= vat_period.deadline
-          %th= vat_period.state
+          %td= vat_period.state
+          - if !vat_period.preliminary?
+            %td= report_button_for vat_period_vat_reports_path(vat_period)
+          - else
+            %td
           %td.numeric= link_to settings_icon, edit_vat_period_path(vat_period)
           %td.numeric= delete_modal_for vat_period
 

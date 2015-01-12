@@ -1,12 +1,6 @@
 module Services
   class VatReportCreator
 
-    # t.integer  :amount
-    # t.integer  :organization_id
-    # t.integer  :accounting_period_id
-    # t.integer  :vat_period_id
-    # t.integer  :tax_code_id
-
     def initialize(organization, user, vat_period)
       @user = user
       @organization = organization

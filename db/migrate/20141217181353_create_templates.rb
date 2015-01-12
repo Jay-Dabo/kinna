@@ -4,6 +4,7 @@ class CreateTemplates < ActiveRecord::Migration
       t.string   :name
       t.string   :description
       t.integer  :organization_id
+      t.integer  :accounting_plan_id
       t.timestamps
     end
   end

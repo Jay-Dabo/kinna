@@ -11,10 +11,10 @@ class WagePeriod < ActiveRecord::Base
   # t.decimal  :box_49
   # t.string   :state
   # t.datetime :calculated_at
+  # t.datetime :confirmed_at
   # t.datetime :reported_at
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
-  # t.integer  :verificate_id
 
   # t.timestamps
 
@@ -24,7 +24,9 @@ class WagePeriod < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :accounting_period
-  has_one :verificate
+  has_many :wages
+  has_many :wage_reports
+  has_many :verificates
 
   validates :accounting_period, presence: true
   validates :name, presence: true, uniqueness: {scope: :organization_id}
@@ -50,7 +52,7 @@ class WagePeriod < ActiveRecord::Base
     end
   end
 
-  STATE_CHANGES = [:mark_calculated, :mark_reported]
+  STATE_CHANGES = [:mark_calculated, :mark_confirmed, :mark_reported]
 
   def state_change(event, changed_at = nil)
     return false unless STATE_CHANGES.include?(event.to_sym)
@@ -59,18 +61,26 @@ class WagePeriod < ActiveRecord::Base
 
   state_machine :state, initial: :preliminary do
     before_transition on: :mark_calulated, do: :calculate
+    before_transition on: :mark_confirmed, do: :confirm
     before_transition on: :mark_reported, do: :report
 
     event :mark_calculated do
       transition preliminary: :calculated
     end
+    event :mark_confirmed do
+      transition calculated: :confirmed
+    end
     event :mark_reported do
-      transition calculated: :reported
+      transition confirmed: :reported
     end
   end
 
   def calulate(transition)
     self.calculated_at = transition.args[0]
+  end
+
+  def confirm(transition)
+    # self.confirmed_at = transition.args[0]
   end
 
   def report(transition)
@@ -87,6 +97,9 @@ class WagePeriod < ActiveRecord::Base
     true
   end
 
+  def can_report?
+    return true
+  end
   def can_delete?
     true
   end

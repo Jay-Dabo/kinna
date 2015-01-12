@@ -1,34 +1,29 @@
-.btn-group
-  = link_to "#{t(:create)} #{t(:wage_period)}", new_wage_period_path, class: 'btn btn-success'
-
-.col-sm-40.col-md-40.pull-right.text-right
-  = form_tag wages_path, class: 'form-inline submit-on-change', method: :get do
-    = select_tag(:wage_period_id,
-      options_for_select(@wage_periods.each.collect{|w| [w.name, w.id]}, params[:wage_period_id]),
-      class: 'btn btn-default')
-.clear &nbsp;
+= link_to "#{t(:create)} #{t(:wage)}", new_wage_period_wage_path(@wage_period), class: 'btn btn-success'
+= link_to "#{t(:create)} #{t(:verificate)}", create_wage_verificate_wage_period_path(params[:wage_period_id]), method: 'post', class: 'btn btn-success'
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
     %thead
       %tr
         %th= t(:name)
-        %th.numeric= t(:from)
-        %th.numeric= t(:to)
-        %th.numeric= t(:payment_date)
-        %th= t(:amount)
-        %th= t(:tax)
+        %th= t(:from)
+        %th= t(:to)
+        %th= t(:payment_date)
+        %th.numeric= t(:tax)
+        %th.numeric= t(:amount)
+        %th
+        %th
     %tbody{}
       - @wages.each do |wage|
         %tr
           %td= wage.employee.name
-          %td.numeric= wage.wage_from
-          %td.numeric= wage.wage_to
-          %td.numeric= wage.payment_date
-          %td= wage.amount
-          %td= wage.tax
-          %td.numeric= link_to settings_icon, edit_wage_path(wage)
-          %td.numeric= delete_modal_for wage
+          %td= wage.wage_from
+          %td= wage.wage_to
+          %td= wage.payment_date
+          %td.numeric= wage.tax
+          %td.numeric= wage.amount
+          %td.numeric= link_to settings_icon, edit_wage_period_wage_path(@wage_period, wage)
+          %td.numeric= delete_modal_for wage, wage_period_wage_path(@wage_period, wage)
 
   = paginate @wages, :theme => 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

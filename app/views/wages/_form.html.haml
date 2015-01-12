@@ -1,41 +1,24 @@
-%div{ng_controller: 'wage_period_form_ctrl', ng_init: 'init()' }
-  = simple_form_for(@wage_period, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+%div{ng_controller: 'wage_form_ctrl', ng_init: 'init()' }
+  = simple_form_for(@wage, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
-    = f.association :accounting_period, collection: @accounting_periods, include_blank: false
-    = f.input :name
-    = render partial: 'shared/date_field', locals: {form: f, field: :wage_from, in_id: 'in_from', in_value: @wage_period.wage_from, out_id: 'wage_period[wage_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
+    = f.association :wage_period, collection: @wage_periods, include_blank: false, disabled: true
+    = f.association :employee, disabled: true
+    = render partial: 'shared/date_field', locals: {form: f, field: :wage_from, in_id: 'in_from', in_value: @wage.wage_from, out_id: 'wage[wage_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
     .error_width
       = f.error :wage_from
-    = render partial: 'shared/date_field', locals: {form: f, field: :wage_to, in_id: 'in_to', in_value: @wage_period.wage_to, out_id: 'wage_period[wage_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
+    = render partial: 'shared/date_field', locals: {form: f, field: :wage_to, in_id: 'in_to', in_value: @wage.wage_to, out_id: 'wage[wage_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
     .error_width
       = f.error :wage_to
-    = render partial: 'shared/date_field', locals: {form: f, field: :payment_date, in_id: 'in_payment', in_value: @wage_period.payment_date, out_id: 'wage_period[payment_date]', field_id: 'payment_short_date',  model: 'payment_date', dp_open: 'payment_open', dp_options: 'payment_options', dp_click: 'open_payment_date($event)'}
+    = render partial: 'shared/date_field', locals: {form: f, field: :payment_date, in_id: 'in_payment', in_value: @wage.payment_date, out_id: 'wage[payment_date]', field_id: 'payment_short_date',  model: 'payment_date', dp_open: 'payment_open', dp_options: 'payment_options', dp_click: 'open_payment_date($event)'}
     .error_width
-      = f.error :deadline
-    = render partial: 'shared/date_field', locals: {form: f, field: :deadline, in_id: 'in_deadline', in_value: @wage_period.deadline, out_id: 'wage_period[deadline]', field_id: 'deadline_short_date',  model: 'deadline_date', dp_open: 'deadline_open', dp_options: 'deadline_options', dp_click: 'open_deadline_date($event)'}
-    .error_width
-      = f.error :deadline
-    = f.input :state, disabled: true
+      = f.error :payment_date
+    = f.input :salary
+    = f.input :addition
+    = f.input :discount
+    = f.input :tax
+    = f.input :amount
+    = f.input :payroll_tax
 
-    - if !@wage_period.new_record? && @wage_period.calculated?
-      = f.input :box_05, disabled: true
-      = f.input :box_10, disabled: true
-      = f.input :box_11, disabled: true
-      = f.input :box_12, disabled: true
-      = f.input :box_48, disabled: true
-      = f.input :box_49, disabled: true
-
-    - if !@wage_period.calculated?
-      .form-button-group
-        .actions
-          = f.submit class: 'btn btn-primary'
-          - if !@wage_period.new_record? && @wage_period.can_calculate?
-            = link_to t(:calculate), wage_calculation_wage_period_path(@wage_period), class: 'btn btn-primary'
-
-  - if @wage_period.calculated?
     .form-button-group
       .actions
-        = link_to t(:calculate), vat_calculation_vat_period_path(@vat_period), class: 'btn btn-primary'
-        = form_tag vat_reporting_vat_period_path(@vat_period), class: 'form-inline', method: :post do
-          = hidden_field_tag 'event', 'mark_calculated'
-          = submit_tag t(:report), class: 'btn btn-primary'
+        = f.submit class: 'btn btn-primary'
