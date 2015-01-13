@@ -10,7 +10,7 @@ module Services
     def save_vat_report
       @vat_period = @object
       @accounting_period = AccountingPeriod.find(@vat_period.accounting_period_id)
-      @verificate = save_verificate('Momsredovisning', @accounting_period)
+      @verificate = save_verificate('Momsredovisning', @accounting_period, @vat_period.deadline)
 
       @vat_period.vat_reports.each do |report|
         @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code_id = ?",
@@ -31,7 +31,7 @@ module Services
     def save_wage
       @wage_period = @object
       @accounting_period = AccountingPeriod.find(@wage_period.accounting_period_id)
-      @verificate = save_verificate('Löneutbetalning', @accounting_period)
+      @verificate = save_verificate('Löneutbetalning', @accounting_period, @wage_period.payment_date)
 
       # OBS! utbetalning separat för varje anställd till konto??
       sum_salary = 0
@@ -72,7 +72,7 @@ module Services
     def save_wage_report
       @wage_period = @object
       @accounting_period = AccountingPeriod.find(@wage_period.accounting_period_id)
-      @verificate = save_verificate('Skatteredovisning', @accounting_period)
+      @verificate = save_verificate('Skatteredovisning', @accounting_period, @wage_period.deadline)
 
       @wage_period.wage_reports.each do |report|
         @account = Account.where("organization_id = ? AND accounting_plan_id = ? AND tax_code_id = ?",
@@ -88,9 +88,9 @@ module Services
       end
     end
 
-    def save_verificate(description, accounting_period)
+    def save_verificate(description, accounting_period, posting_date)
       @verificate = Verificate.new
-      @verificate.posting_date = DateTime.now
+      @verificate.posting_date = posting_date
       @verificate.description = description
       @verificate.organization = @organization
       @verificate.accounting_period = accounting_period

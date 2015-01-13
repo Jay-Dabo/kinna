@@ -1,4 +1,4 @@
-- @accounts = @accounting_plan.accounts.order('number').page(params[:page])
+- @accounts = @accounting_plan.accounts.order('number').page(params[:page_account]).decorate
 .btn-group
   = link_to "#{t(:create)} #{t(:account)}", new_accounting_plan_account_path(accounting_plan), class: 'btn btn-success'
 
@@ -8,6 +8,7 @@
       %tr
         %th= t(:number)
         %th= t(:name)
+        %th.numeric= t(:tax_code)
         %th
         %th
     %tbody{}
@@ -15,8 +16,12 @@
         %tr
           %td= account.number
           %td= account.description
+          - if account.tax_code
+            %td.numeric= link_to account.tax_code_code, tax_code_path(account.tax_code_id)
+          - else
+            %td
           %td.numeric= link_to settings_icon, edit_accounting_plan_account_path(@accounting_plan, account)
           %td.numeric= delete_modal_for account, accounting_plan_account_path(@accounting_plan, account)
 
-  = paginate @accounts, :theme => 'twitter-bootstrap-3'
+  = paginate @accounts, param_name: "page_account", theme: 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

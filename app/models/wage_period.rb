@@ -88,8 +88,9 @@ class WagePeriod < ActiveRecord::Base
   end
 
   def can_calculate?
-    return false if state == 'reported'
-    true
+    return true if state == 'preliminary'
+    return true if state == 'calculated'
+    false
   end
 
   def calculated?
@@ -100,6 +101,7 @@ class WagePeriod < ActiveRecord::Base
   def can_report?
     return true
   end
+
   def can_delete?
     true
   end

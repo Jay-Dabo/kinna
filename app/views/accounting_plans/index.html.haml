@@ -1,5 +1,6 @@
-.btn-group
+.input-group
   = link_to "#{t(:create)} #{t(:accounting_plan)}", new_accounting_plan_path, class: 'btn btn-success'
+  = link_to "#{t(:import)} #{t(:accounting_plan)}", accounting_plan_import_path, class: 'btn btn-default', disabled: true
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
@@ -7,7 +8,6 @@
       %tr
         %th= t(:name)
         %th= t(:description)
-        %th= t(:active)
         %th
         %th
     %tbody{}
@@ -15,7 +15,6 @@
         %tr
           %td= accounting_plan.name
           %td= accounting_plan.description
-          %td= accounting_plan.active
           %td.numeric= link_to settings_icon, accounting_plan_path(accounting_plan)
           %td.numeric= delete_modal_for accounting_plan
 

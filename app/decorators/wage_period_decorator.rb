@@ -23,6 +23,9 @@ class WagePeriodDecorator < Draper::Decorator
       when 'calculated'
         l = 'warning'
         str = h.t(:calculated)
+      when 'confirmed'
+        l = 'success'
+        str = h.t(:confirmed)
       when 'reported'
         l = 'success'
         str = h.t(:reported)

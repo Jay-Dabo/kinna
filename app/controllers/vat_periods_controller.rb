@@ -15,41 +15,36 @@ class VatPeriodsController < ApplicationController
     @vat_periods = @vat_periods.page(params[:page]).decorate
   end
 
-
   def new
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
-    @vat_period = @accounting_periods.first.next_vat_period
+    @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
+    @vat_period = @accounting_period.next_vat_period
   end
-
 
   def show
   end
 
-
   def edit
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
   end
-
 
   def create
     @vat_period = VatPeriod.new(vat_period_params)
     @vat_period.organization = current_organization
     respond_to do |format|
       if @vat_period.save
-        format.html { redirect_to vat_periods_url, notice: 'Vat period was successfully created.' }
+        url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
+        format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_created)}" }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:vat_period)}"
         format.html { render action: 'new' }
       end
     end
   end
 
-
   def update
     respond_to do |format|
       if @vat_period.update(vat_period_params)
-        format.html { redirect_to vat_periods_url, notice: 'Vat period was successfully updated.' }
+        url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
+        format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_updated)}"}
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:vat_period)}"
@@ -59,9 +54,10 @@ class VatPeriodsController < ApplicationController
   end
 
   def destroy
+    url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
     @vat_period.destroy
     respond_to do |format|
-      format.html { redirect_to vat_periods_url, notice: 'Vat period was successfully deleted.' }
+      format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_deleted)}"}
     end
   end
 

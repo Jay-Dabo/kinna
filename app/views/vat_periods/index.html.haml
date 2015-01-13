@@ -1,5 +1,6 @@
 .btn-group
-  = link_to "#{t(:create)} #{t(:vat_period)}", new_vat_period_path, class: 'btn btn-success'
+  - url = new_vat_period_path + '&accounting_period_id=' + params[:accounting_period_id].to_s
+  = link_to "#{t(:create)} #{t(:vat_period)}", url, class: 'btn btn-success'
 
 .col-sm-40.col-md-40.pull-right.text-right
   = form_tag vat_periods_path, class: 'form-inline submit-on-change', method: :get do

@@ -5,27 +5,25 @@ class EmployeesController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /vats
-  # GET /vats.json
+  # GET
   def index
     @breadcrumbs = [["#{t(:employees)}"]]
     init
   end
 
-  # GET /vats/new
+  # GET
   def new
   end
 
-  # GET /vats/1
+  # GET
   def show
   end
 
-  # GET /vat/1/edit
+  # GET
   def edit
   end
 
-  # POST /vats
-  # POST /vats.json
+  # POST
   def create
     @employee = Employee.new(employee_params)
     @employee.organization = current_organization
@@ -39,8 +37,7 @@ class EmployeesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT
   def update
     respond_to do |format|
       if @employee.update(employee_params)
@@ -52,8 +49,7 @@ class EmployeesController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE
   def destroy
     @employee.destroy
     respond_to do |format|

@@ -19,18 +19,16 @@ class WagePeriodsController < ApplicationController
 
   # GET /wages/new
   def new
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
-    @wage_period = @accounting_periods.first.next_wage_period
+    @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
+    @wage_period = @accounting_period.next_wage_period
   end
 
   # GET /wages/1
   def show
-
   end
 
   # GET /wage/1/edit
   def edit
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
   end
 
   # POST /wages
@@ -40,21 +38,20 @@ class WagePeriodsController < ApplicationController
     @wage_period.organization = current_organization
     respond_to do |format|
       if @wage_period.save
-        format.html { redirect_to wage_periods_url, notice: 'wage period was successfully created.' }
+        format.html { redirect_to wage_periods_url, notice: "#{t(:wage_period)} #{t(:was_successfully_created)}" }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:wage_period)}"
         format.html { render action: 'new' }
       end
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT /wages/1
+  # PATCH/PUT /wages/1.json
   def update
     respond_to do |format|
       if @wage_period.update(wage_period_params)
-        format.html { redirect_to wage_periods_url, notice: 'wage period was successfully updated.' }
+        format.html { redirect_to wage_periods_url, notice: "#{t(:wage_period)} #{t(:was_successfully_updated)}" }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
@@ -63,12 +60,12 @@ class WagePeriodsController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE /wages/1
+  # DELETE /wages/1.json
   def destroy
     @wage_period.destroy
     respond_to do |format|
-      format.html { redirect_to wage_periods_url, notice: 'wage period was successfully deleted.' }
+      format.html { redirect_to wage_periods_url, notice: "#{t(:wage_period)} #{t(:was_successfully_deleted)}"}
     end
   end
 
@@ -123,8 +120,6 @@ class WagePeriodsController < ApplicationController
       end
     end
   end
-
-
 
   private
 

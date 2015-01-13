@@ -13,11 +13,6 @@ class AccountingPlan < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
 
-  def active?
-    # return true if organization.accounting_plan_id == self.id
-    false
-  end
-
   def can_delete?
     true
   end

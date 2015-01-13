@@ -6,13 +6,13 @@ class Wage < ActiveRecord::Base
   # t.decimal  :addition
   # t.decimal  :discount
   # t.decimal  :tax
-  # t.decimal  :namount
+  # t.decimal  :amount
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
   # t.integer  :wage_period_id
   # t.integer  :employee_id
 
-  attr_accessible :wage_from, :wage_to, :payment_date
+  attr_accessible :wage_from, :wage_to, :payment_date, :salary, :addition, :discount, :tax, :payroll_tax, :amount
 
   belongs_to :organization
   belongs_to :accounting_period

@@ -5,18 +5,18 @@ class AccountingPlansController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /vats
-  # GET /vats.json
+  # GET /accounting_plans
+  # GET /accounting_plans.json
   def index
     @breadcrumbs = [["#{t(:accounting_plans)}"]]
     init
   end
 
-  # GET /vats/new
+  # GET /accounting_plan/new
   def new
   end
 
-  # GET /vats/1
+  # GET /accounting_plan/1
   def show
   end
 
@@ -24,8 +24,8 @@ class AccountingPlansController < ApplicationController
   def edit
   end
 
-  # POST /vats
-  # POST /vats.json
+  # POST /accounting_plan
+  # POST /accounting_plan.json
   def create
     @accounting_plan = AccountingPlan.new(accounting_plan_params)
     @accounting_plan.organization = current_organization
@@ -39,8 +39,8 @@ class AccountingPlansController < ApplicationController
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT /accounting_plan/1
+  # PATCH/PUT /accounting_plan/1.json
   def update
     respond_to do |format|
       if @accounting_plan.update(accounting_plan_params)
@@ -52,8 +52,8 @@ class AccountingPlansController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE /accounting_plan/1
+  # DELETE /accounting_plan/1.json
   def destroy
     @accounting_plan.destroy
     respond_to do |format|

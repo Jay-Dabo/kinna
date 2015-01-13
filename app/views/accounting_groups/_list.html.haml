@@ -1,4 +1,4 @@
-- @accounting_groups = @accounting_plan.accounting_groups.order('number').page(params[:page])
+- @accounting_groups = @accounting_plan.accounting_groups.order('number').page(params[:page_group])
 .btn-group
   = link_to "#{t(:create)} #{t(:accounting_group)}", new_accounting_plan_accounting_group_path(accounting_plan), class: 'btn btn-success'
 
@@ -18,5 +18,5 @@
           %td.numeric= link_to settings_icon, edit_accounting_plan_accounting_group_path(@accounting_plan, accounting_group)
           %td.numeric= delete_modal_for accounting_group, accounting_plan_accounting_group_path(@accounting_plan, accounting_group)
 
-  = paginate @accounting_groups, :theme => 'twitter-bootstrap-3'
+  = paginate @accounting_groups, param_name: "page_group", theme: 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

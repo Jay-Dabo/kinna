@@ -2,11 +2,11 @@
   = link_to "#{t(:create)} #{t(:tax_code)}", new_tax_code_path, class: 'btn btn-success'
 
 .btn-group{"data-toggle" => "buttons"}
-  %label.btn.btn-default
+  %label.btn.btn-default.active
     = radio_button_tag :single_use, 'vat', true
     = t(:vat)
   %label.btn.btn-default
-    = radio_button_tag :single_use, 'wage'
+    = radio_button_tag :single_use, 'wage', false
     = t(:wage)
 
 .table-responsive{:ng_controller=>'ModalCtrl'}

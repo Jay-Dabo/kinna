@@ -1,5 +1,5 @@
 %div{ng_controller: 'wage_form_ctrl', ng_init: 'init()' }
-  = simple_form_for(@wage, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = simple_form_for([@wage_period, @wage], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
     = f.association :wage_period, collection: @wage_periods, include_blank: false, disabled: true
     = f.association :employee, disabled: true

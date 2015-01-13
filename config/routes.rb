@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     post 'reports/result_report'
     post 'reports/balance_report'
 
+    resources :result_units
     resources :tax_codes
 
     resources :templates do

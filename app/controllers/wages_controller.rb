@@ -42,7 +42,7 @@ class WagesController < ApplicationController
     @wage.organization = current_organization
     respond_to do |format|
       if @wage.save
-        format.html { redirect_to wages_url, notice: 'wage period was successfully created.' }
+        format.html { redirect_to wage_period_wages_path, notice: "#{t(:wage)} #{t(:was_successfully_created)}" }
       else
         @wage_periods = current_organization.wage_periods
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:wage)}"
@@ -56,7 +56,7 @@ class WagesController < ApplicationController
   def update
     respond_to do |format|
       if @wage.update(wage_params)
-        format.html { redirect_to wages_url, notice: 'wage period was successfully updated.' }
+        format.html { redirect_to wage_period_wages_path, notice: "#{t(:wage)} #{t(:was_successfully_updated)}" }
       else
         @wage_periods = current_organization.wage_periods
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage)}"
@@ -70,7 +70,7 @@ class WagesController < ApplicationController
   def destroy
     @wage.destroy
     respond_to do |format|
-      format.html { redirect_to wages_url, notice: 'wage period was successfully deleted.' }
+      format.html { redirect_to wage_period_wages_path, notice: "#{t(:wage)} #{t(:was_successfully_deleted)}" }
     end
   end
 
@@ -105,14 +105,18 @@ class WagesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def wage_params
-    params.require(:wage).permit(WagePeriod.accessible_attributes.to_a)
+    params.require(:wage).permit(Wage.accessible_attributes.to_a)
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [['Wages', wages_path], ["#{t(:new)} #{t(:wage)}"]]
+    @breadcrumbs = [['Wage periods', wage_periods_path], [@wage.wage_period.name, wage_period_path(@wage.wage_period_id)],
+                    ['Wages', wage_period_wages_path(@wage.wage_period_id)],
+                    ['New wage']]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [['Wages', wages_path], [@wage.employee.name]]
+    @breadcrumbs = [['Wage periods', wage_periods_path], [@wage.wage_period.name, wage_period_path(@wage.wage_period_id)],
+                    ['Wages', wage_period_wages_path(@wage.wage_period_id)],
+                    [@wage.employee.name]]
   end
 end

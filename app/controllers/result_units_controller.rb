@@ -32,9 +32,8 @@ class ResultUnitsController < ApplicationController
     @result_unit.organization = current_organization
     respond_to do |format|
       if @result_unit.save
-        format.html { redirect_to result_units_url, notice: 'result unit period was successfully created.' }
+        format.html { redirect_to result_units_url, notice: "#{t(:result_unit)} #{t(:was_successfully_created)}" }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:result_unit)}"
         format.html { render action: 'new' }
       end
@@ -46,9 +45,8 @@ class ResultUnitsController < ApplicationController
   def update
     respond_to do |format|
       if @result_unit.update(result_unit_params)
-        format.html { redirect_to result_units_url, notice: 'result unit period was successfully updated.' }
+        format.html { redirect_to result_units_url, notice:  "#{t(:result_unit)} #{t(:was_successfully_updated)}" }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:result_unit)}"
         format.html { render action: 'show' }
       end
@@ -60,7 +58,7 @@ class ResultUnitsController < ApplicationController
   def destroy
     @result_unit.destroy
     respond_to do |format|
-      format.html { redirect_to result_units_url, notice: 'result unit period was successfully deleted.' }
+      format.html { redirect_to result_units_url, notice:  "#{t(:result_unit)} #{t(:was_successfully_deleted)}" }
     end
   end
 

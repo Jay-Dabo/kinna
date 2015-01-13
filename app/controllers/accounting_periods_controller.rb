@@ -5,15 +5,14 @@ class AccountingPeriodsController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /vats
-  # GET /vats.json
+  # GET
   def index
     @breadcrumbs = [['Accounting_periods']]
     @accounting_periods = current_organization.accounting_periods.order(:accounting_from)
     @accounting_periods = @accounting_periods.page(params[:page]).decorate
   end
 
-  # GET /vats/new
+  # GET
   def new
     @accounting_period.name = t(:accounting_period) + " " + (Date.current.year + 1).to_s
     @accounting_period.accounting_from = Date.new(Date.current.year+1, 1, 1)
@@ -21,23 +20,22 @@ class AccountingPeriodsController < ApplicationController
     @accounting_plans = current_organization.accounting_plans
   end
 
-  # GET /vats/1
+  # GET
   def show
   end
 
-  # GET /vat/1/edit
+  # GET
   def edit
     @accounting_plans = current_organization.accounting_plans
   end
 
-  # POST /vats
-  # POST /vats.json
+  # POST
   def create
     @account_period = AccountingPeriod.new(accounting_period_params)
     @account_period.organization = current_organization
     respond_to do |format|
       if @accounting_period.save
-        format.html { redirect_to accounting_periods_url, notice: 'Account period was successfully created.' }
+        format.html { redirect_to accounting_periods_url, notice: "#{t(:accounting_period)} #{t(:was_successfully_created)}"}
       else
         @accounting_plans = current_organization.accounting_plans
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:accounting_period)}"
@@ -46,12 +44,11 @@ class AccountingPeriodsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT
   def update
     respond_to do |format|
       if @accounting_period.update(accounting_period_params)
-        format.html { redirect_to accounting_periods_url, notice: 'Account period was successfully updated.' }
+        format.html { redirect_to accounting_periods_url, notice: "#{t(:accounting_period)} #{t(:was_successfully_updated)}" }
       else
         @accounting_plans = current_organization.accounting_plans
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:accounting_period)}"
@@ -60,12 +57,11 @@ class AccountingPeriodsController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE
   def destroy
     @accounting_period.destroy
     respond_to do |format|
-      format.html { redirect_to accounting_periods_url, notice: 'Account period was successfully deleted.' }
+      format.html { redirect_to accounting_periods_url, notice: "#{t(:accounting_period)} #{t(:was_successfully_deleted)}"}
     end
   end
 

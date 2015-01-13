@@ -8,7 +8,7 @@ class AccountingClassesController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['Accounting_classes']]
+    @breadcrumbs = [['Accounting classes']]
   end
 
   # GET

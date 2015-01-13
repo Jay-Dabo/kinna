@@ -1,8 +1,14 @@
 %div{ng_controller: 'vat_period_form_ctrl', ng_init: 'init()' }
   = simple_form_for(@vat_period, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
-    = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: !@vat_period.new_record?
-    = f.input :name, disabled: !@vat_period.new_record?
+    = f.association :accounting_period, as: :hidden
+    .form-group
+      .labels_width.control-label
+        = f.label :accounting_period
+      .fields_width
+        %input{id: 'show', type: 'text', class: 'form-control', value: f.object.accounting_period.name, disabled: true}
+
+    = f.input :name, disabled: !@vat_period.preliminary?
     = render partial: 'shared/date_field', locals: {form: f, field: :vat_from, in_id: 'in_from', in_value: @vat_period.vat_from, out_id: 'vat_period[vat_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
     .error_width
       = f.error :vat_from
@@ -16,7 +22,7 @@
 
     .form-button-group
       .actions
-        - if @vat_period.new_record?
+        - if @vat_period.new_record? || @vat_period.preliminary?
           = f.submit class: 'btn btn-primary'
         - if !@vat_period.new_record? && @vat_period.can_calculate?
           = link_to t(:create_vat_report), create_vat_report_vat_period_path(@vat_period), method: 'post', class: 'btn btn-primary'

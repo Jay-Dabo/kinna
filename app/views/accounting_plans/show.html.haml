@@ -19,32 +19,14 @@
 
 :javascript
   $(document).ready(function() {
-
-  $('a[data-toggle="tab"]').on("click", function(e) {
-   localStorage.setItem('account_plan_tab', $(e.target).attr("href").substr(1));
-
-  var queryParameters = {};
-  var queryString = location.search.substring(1);
-  //alert(queryString);
-  var re = /([^&=]+)=([^&]*)/g;
-  var m;
-  while (m = re.exec(queryString)) {
-    queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-  }
-  //queryParameters['newParameter'] = 'new parameter';
-  queryParameters['page'] = '1';
-  //alert($.param(queryParameters));
-  //window.history.replaceState({foo: 'bar'}, 'Nice URL Title', $.param(queryParameters));
-  location.search = $.param(queryParameters);
-  e.preventDefault();
-  e.stopPropagation();
-  });
-
-  var lastTab = localStorage.getItem('account_plan_tab');
-  if (lastTab) {
-    $('ul.nav-tabs').children().removeClass('active');
-    $('a[href=#'+ lastTab +']').parents('li:first').addClass('active');
-    $('div.tab-content').children().removeClass('active');
-    $('#'+lastTab).addClass('active');
-  }
+    $('a[data-toggle="tab"]').on("click", function(e) {
+      localStorage.setItem('account_plan_tab', $(e.target).attr("href").substr(1));
+    });
+    var lastTab = localStorage.getItem('account_plan_tab');
+    if (lastTab) {
+      $('ul.nav-tabs').children().removeClass('active');
+      $('a[href=#'+ lastTab +']').parents('li:first').addClass('active');
+      $('div.tab-content').children().removeClass('active');
+      $('#'+lastTab).addClass('active');
+    };
   });

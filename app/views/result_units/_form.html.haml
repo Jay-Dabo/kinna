@@ -1,9 +1,6 @@
-= simple_form_for(@tax_code, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+= simple_form_for(@result_unit, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
-  = f.input :code
-  = f.input :text
-  = f.input :sum_method, as: :select, collection: TaxCode::SUM_METHODS
-  = f.input :code_type, as: :select, collection: TaxCode::CODE_TYPES
+  = f.input :name
 
   .form-button-group
     .actions
