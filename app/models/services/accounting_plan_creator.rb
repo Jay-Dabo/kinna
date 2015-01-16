@@ -47,6 +47,9 @@ module Services
       update_account_tax_code('7210', 50)
       update_account_tax_code('2730', 78)
       update_account_tax_code('2710', 82)
+
+      update_account_tax_code('1920', 101)
+      update_account_tax_code('7500', 102)
     end
 
     def K1_read_and_save
@@ -85,6 +88,9 @@ module Services
       update_account_tax_code('7000', 50)
       update_account_tax_code('2730', 78)
       update_account_tax_code('2710', 82)
+
+      update_account_tax_code('1920', 101)
+      update_account_tax_code('7500', 102)
     end
 
     def K1_mini_read_and_save

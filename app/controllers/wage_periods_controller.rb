@@ -5,8 +5,8 @@ class WagePeriodsController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /wages
-  # GET /wages.json
+  # GET /wage_periods
+  # GET /wage_periods.json
   def index
     @breadcrumbs = [['Wage_periods']]
     @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
@@ -17,13 +17,13 @@ class WagePeriodsController < ApplicationController
     @wage_periods = @wage_periods.page(params[:page]).decorate
   end
 
-  # GET /wages/new
+  # GET /wage_periods/new
   def new
     @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
     @wage_period = @accounting_period.next_wage_period
   end
 
-  # GET /wages/1
+  # GET /wage_periods/1
   def show
   end
 
@@ -31,8 +31,8 @@ class WagePeriodsController < ApplicationController
   def edit
   end
 
-  # POST /wages
-  # POST /wages.json
+  # POST /wage_periods
+  # POST /wage_periods.json
   def create
     @wage_period = WagePeriod.new(wage_period_params)
     @wage_period.organization = current_organization
@@ -46,8 +46,8 @@ class WagePeriodsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /wages/1
-  # PATCH/PUT /wages/1.json
+  # PATCH/PUT /wage_periods/1
+  # PATCH/PUT /wage_periods/1.json
   def update
     respond_to do |format|
       if @wage_period.update(wage_period_params)
@@ -60,8 +60,8 @@ class WagePeriodsController < ApplicationController
     end
   end
 
-  # DELETE /wages/1
-  # DELETE /wages/1.json
+  # DELETE /wage_periods/1
+  # DELETE /wage_periods/1.json
   def destroy
     @wage_period.destroy
     respond_to do |format|
@@ -74,7 +74,6 @@ class WagePeriodsController < ApplicationController
     @wage_creator = Services::WageCreator.new(current_organization, current_user, @wage_period)
     @wage_creator.save_wages
     respond_to do |format|
-      @wage_period.state_change('mark_calculated', DateTime.now)
       format.html { redirect_to wage_period_wages_path(@wage_period), notice: 'wage was successfully created.'}
     end
   end
@@ -83,7 +82,6 @@ class WagePeriodsController < ApplicationController
     @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @wage_period)
     respond_to do |format|
       if @verificate_creator.save_wage
-        @wage_period.state_change('mark_confirmed', DateTime.now)
         format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
@@ -111,7 +109,6 @@ class WagePeriodsController < ApplicationController
     @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @wage_period)
     respond_to do |format|
       if @verificate_creator.save_wage_report
-        @wage_period.state_change('mark_reported', DateTime.now)
         format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)

@@ -29,6 +29,7 @@ module Services
         payroll_tax = (employee.salary * proc).round
         save_wage(employee, employee.salary, employee.tax, payroll_tax, @accounting_period, @wage_period)
       end
+      @wage_period.state_change('mark_wage_calculated', DateTime.now)
     end
 
     def save_wage(employee, salary, tax, payroll_tax, accounting_period, wage_period)

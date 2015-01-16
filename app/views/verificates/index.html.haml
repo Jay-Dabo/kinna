@@ -17,16 +17,17 @@
         %th= t(:posting_date)
         %th= t(:description)
         %th= t(:state)
+        %th= t(:parent)
         %th
         %th
     %tbody{}
       - @verificates.each do |verificate|
         %tr
           %td= verificate.number
-          %td= verificate.wage_period
           %td= verificate.posting_date
           %td= verificate.description
           %td= verificate.pretty_state
+          %td= verificate.parent
           %td.numeric= link_to settings_icon, verificate_path(verificate)
           %td.numeric= delete_modal_for verificate
 

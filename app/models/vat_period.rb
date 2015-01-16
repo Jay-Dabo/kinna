@@ -6,6 +6,7 @@ class VatPeriod < ActiveRecord::Base
   # t.string   :state
   # t.datetime :calculated_at
   # t.datetime :reported_at
+  # t.datetime :closed_at
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
   # t.integer  :verificate_id
@@ -89,8 +90,12 @@ class VatPeriod < ActiveRecord::Base
     return false if state == 'preliminary'
     true
   end
-
+  def final?
+    return true if state == 'final'
+    false
+  end
   def can_delete?
+    return false if vat_reports.size > 0
     true
   end
 end

@@ -15,6 +15,7 @@ class AccountingGroup < ActiveRecord::Base
   validates :name, presence: true
 
   def can_delete?
+    return false if accounts.size > 0
     true
   end
 end

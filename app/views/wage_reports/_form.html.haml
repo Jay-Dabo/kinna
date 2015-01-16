@@ -14,14 +14,6 @@
       = f.error :deadline
     = f.input :state, disabled: true
 
-    - if !@vat_period.new_record? && @vat_period.calculated?
-      = f.input :box_05, disabled: true
-      = f.input :box_10, disabled: true
-      = f.input :box_11, disabled: true
-      = f.input :box_12, disabled: true
-      = f.input :box_48, disabled: true
-      = f.input :box_49, disabled: true
-
     - if !@vat_period.calculated?
       .form-button-group
         .actions

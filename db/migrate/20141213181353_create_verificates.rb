@@ -9,7 +9,8 @@ class CreateVerificates < ActiveRecord::Migration
       t.integer  :accounting_period_id
       t.integer  :template_id
       t.integer  :vat_period_id
-      t.integer  :wage_period_id
+      t.integer  :wage_period_wage_id
+      t.integer  :wage_period_report_id
       t.timestamps
     end
   end

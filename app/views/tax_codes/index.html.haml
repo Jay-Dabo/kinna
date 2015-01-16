@@ -8,6 +8,9 @@
   %label.btn.btn-default
     = radio_button_tag :single_use, 'wage', false
     = t(:wage)
+  %label.btn.btn-default
+    = radio_button_tag :single_use, 'default', false
+    = t(:default)
 
 .table-responsive{:ng_controller=>'ModalCtrl'}
   %table{:class => 'table table-striped'}
@@ -15,6 +18,7 @@
       %tr
         %th.numeric= t(:code)
         %th= t(:text)
+        %th= t(:sum_method)
         %th
         %th
     %tbody{}
@@ -22,12 +26,21 @@
         %tr.show-vat
           %td.numeric= tax_code.code
           %td= tax_code.text
+          %td= tax_code.sum_method
           %td.numeric= link_to settings_icon, edit_tax_code_path(tax_code)
           %td.numeric= delete_modal_for tax_code
       - @tax_codes.wage.each do |tax_code|
         %tr.show-wage
           %td.numeric= tax_code.code
           %td= tax_code.text
+          %td= tax_code.sum_method
+          %td.numeric= link_to settings_icon, edit_tax_code_path(tax_code)
+          %td.numeric= delete_modal_for tax_code
+      - @tax_codes.default.each do |tax_code|
+        %tr.show-default
+          %td.numeric= tax_code.code
+          %td= tax_code.text
+          %td= tax_code.sum_method
           %td.numeric= link_to settings_icon, edit_tax_code_path(tax_code)
           %td.numeric= delete_modal_for tax_code
   = paginate @tax_codes, :theme => 'twitter-bootstrap-3'
@@ -35,10 +48,24 @@
 
 :javascript
   $(document).ready(function () {
-    $('.show-wage').toggle();
-    $('input[name="single_use"]').change(function(){
-        $('.show-vat').toggle();
-        $('.show-wage').toggle();
-    });
+    $('.show-wage').hide();
+    $('.show-default').hide();
 
+    $('input[name="single_use"]').change( function() {
+      $('.show-vat').hide();
+      $('.show-wage').hide();
+      $('.show-default').hide();
+      switch ($(this).val()) {
+      case 'vat':
+        $('.show-vat').show();
+        break;
+      case 'wage':
+        $('.show-wage').show();
+        break;
+      case 'default':
+        $('.show-default').show();
+        break;
+      default:
+      };
+    });
   });

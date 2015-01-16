@@ -78,40 +78,6 @@ class WageReportsController < ApplicationController
     end
   end
 
-  def create_period
-    @accounting_period = current_organization.accounting_periods.find(@wage_base.accounting_period_id)
-    @accounting_plan = current_organization.accounting_plans.find(@accounting_period.accounting_plan_id)
-    respond_to do |format|
-      format.html { render action: 'index' }
-    end
-  end
-
-  def wage_calculation_update
-    respond_to do |format|
-      if @wage_base.update(wage_base_params)
-        @wage_base.state_change('mark_calculated', DateTime.now)
-        format.html { redirect_to wage_bases_url, notice: 'wage period was successfully updated.' }
-      else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_base)}"
-        format.html { render action: 'show' }
-      end
-    end
-  end
-
-  def wage_reporting
-    @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @wage_base)
-    respond_to do |format|
-      if @verificate_creator.save_wage_report
-        format.html { redirect_to verificate_url, notice: 'wage period was successfully updated.' }
-      else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_base)}"
-        format.html { render action: 'show' }
-      end
-    end
-  end
-
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

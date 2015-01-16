@@ -10,7 +10,11 @@ class Employee < ActiveRecord::Base
 
   attr_accessible :name, :begin, :ending, :salary, :tax, :birth_year
 
+  validates :name, presence: true
+  validates :birth_year, presence: true
+
   belongs_to :organization
+  has_many :wages
 
   has_many :contact_relations, as: :parent do
     def search_by_org(o)
@@ -27,6 +31,7 @@ class Employee < ActiveRecord::Base
   validates :name, presence: true, uniqueness: {scope: :organization_id}
 
   def can_delete?
+    retur false if wages.size > 0
     true
   end
 end

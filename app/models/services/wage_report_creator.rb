@@ -53,6 +53,7 @@ module Services
           else
         end
       end
+      @wage_period.state_change('mark_tax_calculated', DateTime.now)
     end
 
     def delete_wage_report

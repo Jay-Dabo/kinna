@@ -20,15 +20,24 @@ class WagePeriodDecorator < Draper::Decorator
       when 'preliminary'
         l = 'info'
         str = h.t(:preliminary)
-      when 'calculated'
+      when 'wage_calculated'
         l = 'warning'
-        str = h.t(:calculated)
-      when 'confirmed'
+        str = h.t(:wage_calculated)
+      when 'wage_reported'
+        l = 'warning'
+        str = h.t(:wage_closed)
+      when 'wage_closed'
         l = 'success'
-        str = h.t(:confirmed)
-      when 'reported'
+        str = h.t(:wage_closed)
+      when 'tax_calculated'
+        l = 'warning'
+        str = h.t(:tax_calculated)
+      when 'tax_reported'
+        l = 'warning'
+        str = h.t(:tax_reported)
+      when 'tax_closed'
         l = 'success'
-        str = h.t(:reported)
+        str = h.t(:tax_closed)
      end
     h.labelify(str, l)
   end

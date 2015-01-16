@@ -8,10 +8,11 @@ class TaxCode < ActiveRecord::Base
   attr_accessible :code, :text, :sum_method, :code_type
 
   belongs_to :organization
+  has_many   :accounts
 
   SUM_METHODS = ['accounting_period', 'vat_period', 'total', 'wage_period', 'subset_55','subset_56','subset_57',
-                 'subset_58', 'subset_59', 'subset_60', 'include_81']
-  CODE_TYPES = ['vat', 'wage']
+                 'subset_58', 'subset_59', 'subset_60', 'include_81', 'none']
+  CODE_TYPES = ['vat', 'wage', 'default']
 
   validates :code, presence: true, uniqueness: {scope: :organization_id}
   validates :text, presence: true
@@ -20,12 +21,16 @@ class TaxCode < ActiveRecord::Base
 
   scope :vat, -> { where(code_type: 'vat') }
   scope :wage, -> { where(code_type: 'wage') }
+  scope :default, -> { where(code_type: 'default') }
 
   def name
     text
   end
 
   def can_delete?
+    return false if accounts.size > 0
+    return false if self.sum_method == 'total'
+    return false if self.code_type == 'default'
     true
   end
 end

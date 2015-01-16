@@ -26,6 +26,9 @@ class VatPeriodDecorator < Draper::Decorator
       when 'reported'
         l = 'success'
         str = h.t(:reported)
+      when 'closed'
+        l = 'success'
+        str = h.t(:closed)
      end
     h.labelify(str, l)
   end

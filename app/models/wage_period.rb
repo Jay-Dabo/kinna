@@ -3,24 +3,20 @@ class WagePeriod < ActiveRecord::Base
   # t.datetime :wage_from
   # t.datetime :wage_to
   # t.datetime :deadline
-  # t.decimal  :box_05
-  # t.decimal  :box_10
-  # t.decimal  :box_11
-  # t.decimal  :box_12
-  # t.decimal  :box_48
-  # t.decimal  :box_49
   # t.string   :state
-  # t.datetime :calculated_at
-  # t.datetime :confirmed_at
-  # t.datetime :reported_at
+  # t.datetime :wage_calculated_at
+  # t.datetime :wage_reported_at
+  # t.datetime :wage_closed_at
+  # t.datetime :tax_calculated_at
+  # t.datetime :tax_reported_at
+  # t.integer  :tax_closed_at
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
 
   # t.timestamps
 
 
-  attr_accessible :name, :wage_from, :wage_to, :payment_date, :deadline, :accounting_period_id, :box_05, :box_10, :box_11, :box_12,
-                  :box_48, :box_49
+  attr_accessible :name, :wage_from, :wage_to, :payment_date, :deadline, :accounting_period_id
 
   belongs_to :organization
   belongs_to :accounting_period
@@ -52,7 +48,8 @@ class WagePeriod < ActiveRecord::Base
     end
   end
 
-  STATE_CHANGES = [:mark_calculated, :mark_confirmed, :mark_reported]
+  STATE_CHANGES = [:mark_wage_calculated, :mark_wage_reported, :mark_wage_closed,
+                   :mark_tax_calculated, :mark_tax_reported, :mark_tax_closed]
 
   def state_change(event, changed_at = nil)
     return false unless STATE_CHANGES.include?(event.to_sym)
@@ -60,49 +57,93 @@ class WagePeriod < ActiveRecord::Base
   end
 
   state_machine :state, initial: :preliminary do
-    before_transition on: :mark_calulated, do: :calculate
-    before_transition on: :mark_confirmed, do: :confirm
-    before_transition on: :mark_reported, do: :report
+    before_transition on: :mark_wage_calculated, do: :wage_calculate
+    before_transition on: :mark_wage_reported, do: :wage_report
+    before_transition on: :mark_wage_closed, do: :wage_close
+    before_transition on: :mark_tax_calculated, do: :tax_calculate
+    before_transition on: :mark_tax_reported, do: :tax_report
+    before_transition on: :mark_tax_closed, do: :tax_close
 
-    event :mark_calculated do
-      transition preliminary: :calculated
+    event :mark_wage_calculated do
+      transition preliminary: :wage_calculated
     end
-    event :mark_confirmed do
-      transition calculated: :confirmed
+    event :mark_wage_reported do
+      transition wage_calculated: :wage_reported
     end
-    event :mark_reported do
-      transition confirmed: :reported
+    event :mark_wage_closed do
+      transition wage_reported: :wage_closed
+    end
+    event :mark_tax_calculated do
+      transition wage_closed: :tax_calculated
+    end
+    event :mark_tax_reported do
+      transition tax_calculated: :tax_reported
+    end
+    event :mark_tax_closed do
+      transition tax_reported: :tax_closed
     end
   end
 
-  def calulate(transition)
-    self.calculated_at = transition.args[0]
+  def wage_calculate(transition)
+    self.wage_calculated_at = transition.args[0]
   end
 
-  def confirm(transition)
-    # self.confirmed_at = transition.args[0]
+  def wage_report(transition)
+    self.wage_reported_at = transition.args[0]
   end
 
-  def report(transition)
-    self.reported_at = transition.args[0]
+  def wage_close(transition)
+    self.wage_closed_at = transition.args[0]
   end
 
-  def can_calculate?
+  def tax_calculate(transition)
+    self.tax_calculated_at = transition.args[0]
+  end
+
+  def tax_report(transition)
+    self.tax_reported_at = transition.args[0]
+  end
+
+  def tax_close(transition)
+    self.tax_closed_at = transition.args[0]
+  end
+
+  def can_calculate_wage?
     return true if state == 'preliminary'
-    return true if state == 'calculated'
+    return true if state == 'wage_calculated'
+    false
+  end
+  def can_calculate_tax?
+    return true if state == 'wage_closed'
+    return true if state == 'tax_calulated'
     false
   end
 
-  def calculated?
+  def can_report_wage?
+    return true if state == 'wage_calculated'
+    return true if state == 'wage_reported'
+    false
+  end
+  def can_report_tax?
+    return true if state == 'tax_calculated'
+    return true if state == 'tax_reported'
+    false
+  end
+
+  def show_wage?
     return false if state == 'preliminary'
     true
   end
-
-  def can_report?
-    return true
+  def show_tax?
+    return false if state == 'preliminary'
+    return false if state == 'wage_calculated'
+    return false if state == 'wage_reported'
+    return false if state == 'wage_closed'
+    true
   end
-
   def can_delete?
+    return false if wages.size > 0
+    return false if wage_reports.size > 0
     true
   end
 end

@@ -10,10 +10,12 @@ class AccountingPlan < ActiveRecord::Base
   has_many :accounting_classes, dependent: :destroy
   has_many :accounting_groups, dependent: :destroy
   has_many :accounts, dependent: :destroy
+  has_many :accounting_periods
 
   validates :name, presence: true, uniqueness: {scope: :organization_id}
 
   def can_delete?
+    return false if accounting_periods.size > 0
     true
   end
 end

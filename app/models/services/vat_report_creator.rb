@@ -47,6 +47,7 @@ module Services
           else
         end
       end
+      @vat_period.state_change('mark_calculated', DateTime.now)
     end
 
     def delete_vat_report

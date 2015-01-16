@@ -7,7 +7,8 @@ class Verificate < ActiveRecord::Base
   # t.integer  :accounting_period_id
   # t.integer  :template_id
   # t.integer  :vat_period_id
-  # t.integer  :wage_period_id
+  # t.integer  :wage_period_wage_id
+  # t.integer  :wage_period_report_id
   # t.timestamps
 
   attr_accessible :posting_date, :description, :accounting_period_id, :template_id
@@ -16,7 +17,8 @@ class Verificate < ActiveRecord::Base
   belongs_to :accounting_period
   belongs_to :template
   belongs_to :vat_period
-  belongs_to :wage_period
+  belongs_to :wage_period_wage, class_name: 'WagePeriod', foreign_key: 'wage_period_wage_id'
+  belongs_to :wage_period_report, class_name: 'WagePeriod', foreign_key: 'wage_period_report_id'
   has_many   :verificate_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
@@ -55,6 +57,8 @@ class Verificate < ActiveRecord::Base
 
   def set_dependent
     self.vat_period.state_change('mark_closed', DateTime.now) if self.vat_period
+    self.wage_period_wage.state_change('mark_wage_closed', DateTime.now) if self.wage_period_wage
+    self.wage_period_report.state_change('mark_tax_closed', DateTime.now) if self.wage_period_report
   end
 
   def total_debit

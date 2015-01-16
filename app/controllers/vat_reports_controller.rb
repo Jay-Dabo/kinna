@@ -81,40 +81,6 @@ class VatReportsController < ApplicationController
     end
   end
 
-  def create_periodx
-    @accounting_period = current_organization.accounting_periods.find(@vat_base.accounting_period_id)
-    @accounting_plan = current_organization.accounting_plans.find(@accounting_period.accounting_plan_id)
-    respond_to do |format|
-      format.html { render action: 'index' }
-    end
-  end
-
-  def vat_calculation_update
-    respond_to do |format|
-      if @vat_base.update(vat_base_params)
-        @vat_base.state_change('mark_calculated', DateTime.now)
-        format.html { redirect_to vat_bases_url, notice: 'Vat period was successfully updated.' }
-      else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:vat_base)}"
-        format.html { render action: 'show' }
-      end
-    end
-  end
-
-  def vat_reporting
-    @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @vat_base)
-    respond_to do |format|
-      if @verificate_creator.save_vat_report
-        format.html { redirect_to verificate_url, notice: 'Vat period was successfully updated.' }
-      else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-        flash.now[:danger] = "#{t(:failed_to_update)} #{t(:vat_base)}"
-        format.html { render action: 'show' }
-      end
-    end
-  end
-
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

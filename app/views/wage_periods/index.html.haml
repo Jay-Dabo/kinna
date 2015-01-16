@@ -30,11 +30,13 @@
           %td.numeric= wage_period.wage_to
           %td.numeric= wage_period.deadline
           %th= wage_period.state
-          - if !wage_period.preliminary?
+          - if wage_period.show_wage?
             %td= report_button_for wage_period_wages_path(wage_period)
-            %td= report_button_for wage_period_wage_reports_path(wage_period)
           - else
             %td
+          - if wage_period.show_tax?
+            %td= report_button_for wage_period_wage_reports_path(wage_period)
+          - else
             %td
           %td.numeric= link_to settings_icon, edit_wage_period_path(wage_period)
           %td.numeric= delete_modal_for wage_period

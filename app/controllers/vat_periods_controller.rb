@@ -67,7 +67,6 @@ class VatPeriodsController < ApplicationController
     @vat_report_creator.delete_vat_report
     respond_to do |format|
       if @vat_report_creator.save_report
-        @vat_period.state_change('mark_calculated', DateTime.now)
         format.html { redirect_to vat_period_vat_reports_url(@vat_period), notice: 'Vat report was successfully updated.' }
       else
         @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
@@ -82,7 +81,6 @@ class VatPeriodsController < ApplicationController
     @verificate_creator = Services::VerificateCreator.new(current_organization, current_user, @vat_period)
     respond_to do |format|
       if @verificate_creator.save_vat_report
-        @vat_period.state_change('mark_reported', DateTime.now)
         format.html { redirect_to verificates_url, notice: 'Vat report was successfully updated.' }
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:vat_report)}"

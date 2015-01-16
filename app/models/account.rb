@@ -16,6 +16,9 @@ class Account < ActiveRecord::Base
   belongs_to :accounting_class
   belongs_to :accounting_group
   belongs_to :tax_code
+  has_many   :opening_balance_items
+  has_many   :verificate_items
+  has_many   :closing_balance_items
 
   validates :number, presence: true, uniqueness: {scope: [:organization_id, :accounting_plan]}
   validates :description, presence: true
@@ -27,6 +30,9 @@ class Account < ActiveRecord::Base
   end
 
   def can_delete?
+    return false if opening_balance_items.size > 0
+    return false if verificate_items.size > 0
+    return false if closing_balance_items.size > 0
     true
   end
 end

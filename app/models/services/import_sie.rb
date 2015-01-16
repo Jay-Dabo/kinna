@@ -1,15 +1,16 @@
 module Services
   class ImportSie
-    def initialize(organization, user, accounting_period, accounting_plan, opening_balance)
+    def initialize(organization, user, accounting_period, accounting_plan)
       @user = user
       @organization = organization
       @accounting_plan = accounting_plan
       @accounting_period = accounting_period
-      @opening_balance = opening_balance
+      @opening_balance = accounting_period.opening_balance
       @sietyp = ''
     end
 
     def read_and_save
+      save_opening_balance if @opening_balance.nil?
       ver_id = 0
       IO.foreach('EXPORT.SE') do |line|
         case @sietyp
@@ -45,6 +46,14 @@ module Services
       #type, account, {}, amount date
       field = line.split(' ')
       save_verificate_item(ver_id, field[1], field[3])
+    end
+
+    def save_opening_balance
+      @opening_balance = OpeningBalance.new
+      @opening_balance.posting_date = DateTime.now
+      @opening_balance.description = 'Imported'
+      @opening_balance.organization = @organization
+      @opening_balance.save
     end
 
     def save_opening_balance_item(number, amount)

@@ -19,6 +19,6 @@ class VatReport < ActiveRecord::Base
   validates :tax_code, presence: true
 
   def can_delete?
-    true
+    false
   end
 end
