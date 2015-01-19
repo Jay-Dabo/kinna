@@ -41,6 +41,20 @@
                 = nav_link t(:closing_balances), closing_balances_path
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
+                = t(:imports)
+                %b.caret
+              %ul.dropdown-menu
+                = nav_link t(:accounting_plan), accounting_plans_path
+                = nav_link t(:sie_file), import_sie_files_order_import_sie_path
+                = nav_link t(:bank_file), import_bank_files_path
+            %li.dropdown
+              %a.dropdown-toggle{'href' => '#'}
+                = t(:exports)
+                %b.caret
+              %ul.dropdown-menu
+                = nav_link t(:bank_file), import_bank_files_path
+            %li.dropdown
+              %a.dropdown-toggle{'href' => '#'}
                 = t(:reports)
                 %b.caret
               %ul.dropdown-menu

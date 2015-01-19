@@ -1,0 +1,33 @@
+- @import_bank_file_rows = @import_bank_file.import_bank_file_rows.order(:posting_date).page(params[:page]).decorate
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:posting_date)
+        %th.numeric= t(:amount)
+        %th= t(:bank_account)
+        %th= t(:name)
+        %th= t(:reference)
+        %th= t(:note)
+        %th
+    %tbody{}
+      - @import_bank_file_rows.each do |bank_file_row|
+        %tr
+          %td= bank_file_row.posting_date
+          %td.numeric= bank_file_row.amount_formatted
+          %td= bank_file_row.bank_account
+          %td= bank_file_row.name
+          %td= bank_file_row.reference
+          %td= bank_file_row.note
+          - if !bank_file_row.posted
+            %td.numeric= import_button_for(import_bank_file_import_bank_file_row_path(@import_bank_file, bank_file_row))
+          - else
+            %td
+
+
+  = paginate @import_bank_file_rows, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
+
+
+

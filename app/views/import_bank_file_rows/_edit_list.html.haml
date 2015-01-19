@@ -1,0 +1,70 @@
+= simple_form_for @verificate, url: add_verificate_items_verificate_path(@verificate),  method: 'post', :html => { :class => 'form-horizontal' } do |f|
+  .table-responsive{:ng_controller=>'ModalCtrl'}
+    %table{:class => 'table table-striped'}
+      %thead
+        %tr
+          %th= t(:account)
+          %th= t(:description)
+          %th= t(:debit)
+          %th= t(:credit)
+          %th
+      %tbody{}
+        - @verificate.template.template_items.each_with_index do |item, index|
+          %tr
+          = f.simple_fields_for item do |i|
+            - row = 'row['+index.to_s+']'
+            - idx = 'row_'+index.to_s+'-'
+            %td.numeric6= i.input_field :number, type:'text', readonly: 'true', class: 'form-control'
+            %td.hidden= i.input_field :account_id, id: idx+'account_id', name: row+'[account_id]', type:'text', readonly: 'true', class: 'form-control'
+            %td= i.input_field :description,  id: idx+'description', name: row+'[description]', readonly: 'true', class: 'form-control'
+            %td
+              %input{id: idx+'debit', name: row+'[debit]', class: 'numeric6 debit form-control', readonly: !i.object.enable_debit, value: '0'}
+            %td
+              %input{id: idx+'kredit', name: row+'[credit]', class: 'numeric6 credit form-control', readonly: !i.object.enable_credit, value: '0'}
+            %td
+
+        %tr
+          %td
+          %td
+            = t(:total)
+          %td.numeric
+            %input{id: 'total_debit', class: 'numeric6 form-control', disabled: 'true', value: '0'}
+          %td.numeric
+            %input{id: 'total_credit', class: 'numeric6 form-control', disabled: 'true', value: '0'}
+          %td
+
+  .form-button-group
+    .actions
+      = f.submit "#{t:confirm}",  id: 'confirm', class: 'btn btn-primary'
+
+:javascript
+  $(document).on('ready page:load', function () {
+  $('#confirm').attr('disabled', 'disabled');
+
+  $(".debit").change(function() {
+      $('#total_debit').val(summa(".debit"));
+      check_balance();
+    });
+    $(".credit").change(function() {
+      $('#total_credit').val(summa(".credit"));
+      check_balance();
+    });
+  function summa(elem) {
+    var sum = 0;
+    $(elem).each(function() {
+      if(!isNaN(this.value) && this.value.length != 0) {
+        sum += parseFloat(this.value);
+      };
+    });
+    return sum;
+  };
+  function check_balance() {
+     if ($('#total_debit').val() ==  $('#total_credit').val()) {
+         $('#confirm').removeAttr("disabled");
+    }
+    else {
+      $('#confirm').attr('disabled', 'disabled');
+    }
+  };
+
+  });

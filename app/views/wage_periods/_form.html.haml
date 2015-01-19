@@ -25,7 +25,8 @@
 
     .form-button-group
       .actions
-        = f.submit class: 'btn btn-primary'
+        - if @wage_period.new_record? || @wage_period.preliminary?
+          = f.submit class: 'btn btn-primary'
         - if !@wage_period.new_record? && @wage_period.can_calculate_wage?
           = link_to t(:create_wage), create_wage_wage_period_path(@wage_period), method: 'post', class: 'btn btn-primary'
 

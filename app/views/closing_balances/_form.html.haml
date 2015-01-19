@@ -10,8 +10,8 @@
     - if !@closing_balance.new_record?
       = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
     = f.input :description, disabled: !@closing_balance.new_record?
+    = f.input :confirmed
 
-    - if @closing_balance.new_record?
-      .form-button-group
-        .actions
-          = f.submit class: 'btn btn-primary'
+    .form-button-group
+      .actions
+        = f.submit class: 'btn btn-primary'

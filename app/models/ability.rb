@@ -41,10 +41,13 @@ class Ability
     can :manage, ClosingBalance, organization_id: oids
     can :manage, ClosingBalanceItem, organization_id: oids
     can :manage, Employee, organization_id: oids
+    can :manage, ImportBankFile, organization_id: oids
+    can :manage, ImportBankFileRow, organization_id: oids
     can :read,   Organization, id: oids
     can :manage, OpeningBalance, organization_id: oids
     can :manage, OpeningBalanceItem, organization_id: oids
     can :manage, Report, organization_id: oids
+    can :manage, SieDiffRow, organization_id: oids
     can :manage, TaxCode, organization_id: oids
     can :manage, Template, organization_id: oids
     can :manage, TemplateItem, organization_id: oids

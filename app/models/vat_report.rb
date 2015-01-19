@@ -19,6 +19,7 @@ class VatReport < ActiveRecord::Base
   validates :tax_code, presence: true
 
   def can_delete?
+    return true if vat_period.can_calculate?
     false
   end
 end

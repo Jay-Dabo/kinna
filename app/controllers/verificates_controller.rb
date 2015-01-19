@@ -15,7 +15,7 @@ class VerificatesController < ApplicationController
       params[:accounting_period_id] = @accounting_periods.first.id
     end
     @verificates = current_organization.verificates.where('accounting_period_id=?', params[:accounting_period_id]).order(:number)
-    @verificates = @verificates.page(params[:page]).decorate
+    @verificates = @verificates.order(:posting_date).page(params[:page]).decorate
   end
 
   # GET
@@ -85,9 +85,12 @@ class VerificatesController < ApplicationController
   end
 
   def state_change
+    Rails.logger.info "->#{params.inspect}"
     @verificate = current_organization.verificates.find(params[:id])
     @verificate.posting_date = params[:new_posting_date]
+    @verificate.description = params[:description]
     @verificate.save
+
     authorize! :manage, @verificate
     if @verificate.state_change(params[:event])
       msg_h = { notice: t(:success) }
@@ -98,12 +101,11 @@ class VerificatesController < ApplicationController
   end
 
   def add_verificate_items
-    Rails.logger.info "Kolla: #{params.inspect}"
     @verificate = current_organization.verificates.find(params[:id])
     @verificate_items_creator = Services::VerificateItemsCreator.new(current_organization, current_user, @verificate, params)
     respond_to do |format|
       if @verificate_items_creator.save
-        format.html { redirect_to verificates_url, notice: "#{t(:verificates_items)} #{t(:was_successfully_created)}" }
+        format.html { redirect_to verificates_url, notice: "#{t(:verificate_items)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificates_items)}"
         format.html { redirect_to verificates_url }

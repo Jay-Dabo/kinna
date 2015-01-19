@@ -86,14 +86,20 @@ class VatPeriod < ActiveRecord::Base
     true
   end
 
+  def can_report?
+    ['calculated', 'reported'].include? state
+  end
+
   def calculated?
     return false if state == 'preliminary'
     true
   end
+
   def final?
     return true if state == 'final'
     false
   end
+
   def can_delete?
     return false if vat_reports.size > 0
     true

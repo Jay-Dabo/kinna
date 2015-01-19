@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
     resources :accounting_periods do
       member do
-        post 'import_sie', as: :import_sie
+        post 'import_sie', as: :import_sie_files
       end
     end
 
@@ -51,6 +51,13 @@ Rails.application.routes.draw do
 
     resources :employees
 
+    resources :import_bank_files do
+      resources :import_bank_file_rows
+    end
+
+    get  'import_sie_files/order_import_sie'
+    post 'import_sie_files/import_sie'
+
     resources :opening_balances do
       resources :opening_balance_items
     end
@@ -65,6 +72,7 @@ Rails.application.routes.draw do
     post 'reports/balance_report'
 
     resources :result_units
+    resources :sie_diff_rows
     resources :tax_codes
 
     resources :templates do

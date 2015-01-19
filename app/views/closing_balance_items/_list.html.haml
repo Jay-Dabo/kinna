@@ -8,8 +8,6 @@
         %th= t(:description)
         %th.numeric6= t(:debit)
         %th.numeric6= t(:credit)
-        %th.nowrap= t(:result_unit)
-        %th
     %tbody{}
       - @closing_balance_items.each do |closing_balance_item|
         %tr
@@ -17,8 +15,6 @@
           %td= closing_balance_item.description
           %td.numeric6= closing_balance_item.debit
           %td.numeric6= closing_balance_item.credit
-          %td
-          %td= delete_modal_for closing_balance_item, closing_balance_closing_balance_item_path(@closing_balance, closing_balance_item)
       %tr
         %td
         %td
@@ -27,8 +23,7 @@
           = number_with_precision(@closing_balance.total_debit, precision: 2)
         %td.numeric
           = number_with_precision(@closing_balance.total_credit, precision: 2)
-        %td
-        %td
+
   = paginate @closing_balance_items, :theme => 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
 

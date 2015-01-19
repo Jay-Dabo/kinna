@@ -1,0 +1,25 @@
+.btn-group
+  = link_to "#{t(:import)} #{t(:bank_file)}", import_bank_files_path, method: 'post', class: 'btn btn-success'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th= t(:imported_at)
+        %th= t(:from)
+        %th= t(:to)
+        %th
+        %th
+    %tbody{}
+      - @import_bank_files.each do |import_bank_file|
+        %tr
+          %td= import_bank_file.reference
+          %td= import_bank_file.import_date
+          %td= import_bank_file.from_date
+          %td= import_bank_file.to_date
+          %td.numeric= link_to settings_icon, import_bank_file_path(import_bank_file)
+          %td.numeric= delete_modal_for import_bank_file
+
+  = paginate @import_bank_files, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

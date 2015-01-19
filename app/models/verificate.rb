@@ -9,6 +9,7 @@ class Verificate < ActiveRecord::Base
   # t.integer  :vat_period_id
   # t.integer  :wage_period_wage_id
   # t.integer  :wage_period_report_id
+  # t.integer  :import_bank_file_row_id
   # t.timestamps
 
   attr_accessible :posting_date, :description, :accounting_period_id, :template_id
@@ -19,6 +20,7 @@ class Verificate < ActiveRecord::Base
   belongs_to :vat_period
   belongs_to :wage_period_wage, class_name: 'WagePeriod', foreign_key: 'wage_period_wage_id'
   belongs_to :wage_period_report, class_name: 'WagePeriod', foreign_key: 'wage_period_report_id'
+  belongs_to :import_bank_file_row
   has_many   :verificate_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
@@ -59,11 +61,25 @@ class Verificate < ActiveRecord::Base
     self.vat_period.state_change('mark_closed', DateTime.now) if self.vat_period
     self.wage_period_wage.state_change('mark_wage_closed', DateTime.now) if self.wage_period_wage
     self.wage_period_report.state_change('mark_tax_closed', DateTime.now) if self.wage_period_report
+    self.import_bank_file_row.set_posted if self.import_bank_file_row
   end
 
   def total_debit
     return 0 if verificate_items.count <= 0
     verificate_items.inject(0) { |i, item| (item.debit || 0) + i }
+  end
+
+  def bank_amount
+    return 0 if final?
+    return 0 if verificate_items.count <= 0
+    verificate_items.each do |verificate_item|
+      if verificate_item.account_number == 1920
+        debit = verificate_item.debit || 0
+        credit = verificate_item.credit || 0
+        return debit - credit
+      end
+    end
+    0
   end
 
   def total_credit

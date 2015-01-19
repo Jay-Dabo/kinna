@@ -13,6 +13,7 @@ class AccountingPeriod < ActiveRecord::Base
   belongs_to :organization
   belongs_to :accounting_plan
   has_one :opening_balance
+  has_one :closing_balance
   has_many :verificates
   has_many :vat_periods, dependent: :delete_all
   has_many :wage_periods, dependent: :delete_all
@@ -82,7 +83,7 @@ class AccountingPeriod < ActiveRecord::Base
   end
 
   def can_delete?
-    return false if opening_balance && opening_balance.size > 0
+    return false if opening_balance
     return false if verificates.size > 0
     true
   end

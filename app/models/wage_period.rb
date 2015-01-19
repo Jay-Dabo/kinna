@@ -109,38 +109,30 @@ class WagePeriod < ActiveRecord::Base
   end
 
   def can_calculate_wage?
-    return true if state == 'preliminary'
-    return true if state == 'wage_calculated'
-    false
+    ['preliminary', 'wage_calculated'].include? state
   end
+
   def can_calculate_tax?
-    return true if state == 'wage_closed'
-    return true if state == 'tax_calulated'
-    false
+    ['wage_closed', 'tax_calculated'].include? state
   end
 
   def can_report_wage?
-    return true if state == 'wage_calculated'
-    return true if state == 'wage_reported'
-    false
+    ['wage_calculated', 'wage_reported'].include? state
   end
+
   def can_report_tax?
-    return true if state == 'tax_calculated'
-    return true if state == 'tax_reported'
-    false
+    ['tax_calculated', 'tax_reported'].include? state
   end
 
   def show_wage?
     return false if state == 'preliminary'
     true
   end
+
   def show_tax?
-    return false if state == 'preliminary'
-    return false if state == 'wage_calculated'
-    return false if state == 'wage_reported'
-    return false if state == 'wage_closed'
-    true
+    ['tax_calculated', 'tax_reported', 'tax_closed'].include? state
   end
+
   def can_delete?
     return false if wages.size > 0
     return false if wage_reports.size > 0

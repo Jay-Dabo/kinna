@@ -1,0 +1,10 @@
+= simple_form_for(@import_sie_file, wrapper: :horizontal_form, html: {class: 'form-horizontal'}, url: import_sie_files_import_sie_path(import_sie_id: 0)) do |f|
+  = f.error_notification
+  = f.input :accounting_period, as: :select, collection: @accounting_periods, include_blank: false
+  = f.input :import_type, as: :select, collection: ['IB', 'Transactrions'], include_blank: false
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+      = link_to "#{t(:sie_diff_rows)}", sie_diff_rows_path, class: 'btn btn-success'
+

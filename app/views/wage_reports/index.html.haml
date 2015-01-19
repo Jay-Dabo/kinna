@@ -1,4 +1,4 @@
-.btn-group
+- if @wage_period.can_report_tax?
   = link_to "#{t(:create)} #{t(:verificate)}", create_report_verificate_wage_period_path(params[:wage_period_id]), method: 'post', class: 'btn btn-success'
 
 .table-responsive

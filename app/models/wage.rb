@@ -26,6 +26,7 @@ class Wage < ActiveRecord::Base
   validates :payment_date, presence: true
 
   def can_delete?
-    true
+    return true if wage_period.can_calculate_wage?
+    false
   end
 end

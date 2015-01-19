@@ -1,4 +1,4 @@
-.btn-group
+- if @vat_period.can_report?
   = link_to "#{t(:create)} #{t(:verificate)}", create_verificate_vat_period_path(params[:vat_period_id]), method: 'post', class: 'btn btn-success'
 
 .table-responsive

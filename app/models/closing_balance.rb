@@ -5,13 +5,13 @@ class ClosingBalance < ActiveRecord::Base
   # t.integer  :accounting_period_id
   # t.timestamps
 
-  attr_accessible :posting_date, :description, :accounting_period_id
+  attr_accessible :posting_date, :description, :accounting_period_id, :confirmed
 
   belongs_to :organization
   belongs_to :accounting_period
   has_many   :closing_balance_items
 
-  validates :accounting_period_id, presence: true
+  validates :accounting_period_id, presence: true, uniqueness: {scope: [:organization_id, :accounting_period_id]}
   validates :posting_date, presence: true
   validates :description, presence: true
 
@@ -26,6 +26,6 @@ class ClosingBalance < ActiveRecord::Base
   end
 
   def can_delete?
-    true
+    !confirmed
   end
 end

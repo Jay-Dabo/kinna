@@ -16,10 +16,11 @@
         = f.error :posting_date
     - if @verificate.final?
       = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
-    = f.input :description, disabled: !@verificate.new_record?
+    = f.input :description, disabled: @verificate.final?, input_html: {ng_model: 'description'}
     - if @verificate.new_record?
       = f.association :template, collection: @templates
-
+    = f.input :reference, disabled: !@verificate.new_record?
+    = f.input :note, disabled: !@verificate.new_record?
     - if !@verificate.new_record?
       = f.input :state, disabled: true
 
@@ -40,4 +41,5 @@
             = form_tag state_change_verificate_path(@verificate), class: 'form-inline', method: :post do
               = hidden_field_tag 'event', 'mark_final'
               = hidden_field_tag 'new_posting_date', '{{posting_date}}'
+              = hidden_field_tag 'description', '{{description}}'
               = submit_tag t(:confirm), class: 'btn btn-primary'

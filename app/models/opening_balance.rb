@@ -1,19 +1,21 @@
 class OpeningBalance < ActiveRecord::Base
   # t.datetime :posting_date
   # t.string   :description
+  # t.boolean  :confirmed
   # t.integer  :organization_id
   # t.integer  :accounting_period_id
   # t.timestamps
 
-  attr_accessible :posting_date, :description, :accounting_period_id
+  attr_accessible :posting_date, :description, :accounting_period_id, :confirmed
 
   belongs_to :organization
   belongs_to :accounting_period
   has_many   :opening_balance_items, dependent: :delete_all
 
-  validates :accounting_period_id, presence: true
+  validates :accounting_period_id, presence: true, uniqueness: {scope: [:organization_id, :accounting_period_id]}
   validates :posting_date, presence: true
   validates :description, presence: true
+
 
   def total_debit
     return 0 if opening_balance_items.count <= 0
@@ -30,6 +32,6 @@ class OpeningBalance < ActiveRecord::Base
   end
 
   def can_delete?
-    true
+    !confirmed
   end
 end

@@ -9,7 +9,6 @@ module Services
     end
 
     def save
-      Rails.logger.info "#{@verificate_items.inspect}"
       @verificate_items[:row].each do |item|
         verificate_item = @verificate.verificate_items.build
         verificate_item.organization = @organization

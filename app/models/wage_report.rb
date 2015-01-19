@@ -19,6 +19,7 @@ class WageReport < ActiveRecord::Base
   validates :tax_code, presence: true
 
   def can_delete?
-    true
+    return true if wage_period.can_calculate_tax?
+    false
   end
 end

@@ -19,8 +19,9 @@ class Organization < ActiveRecord::Base
   has_one :accounting_plan
 
   [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances,
-   :contact_relations, :contacts, :employees, :opening_balances, :reports, :result_units, :tax_codes, :templates,
-   :vat_periods, :vat_reports, :verificates, :verificate_items, :wage_periods, :wage_reports, :wages].each do |model_sym|
+   :contact_relations, :contacts, :employees, :import_bank_files, :import_sie_files, :opening_balances, :reports,
+   :result_units, :sie_diff_rows, :tax_codes, :templates, :vat_periods, :vat_reports, :verificates, :verificate_items,
+   :wage_periods, :wage_reports, :wages].each do |model_sym|
     has_many model_sym
   end
 

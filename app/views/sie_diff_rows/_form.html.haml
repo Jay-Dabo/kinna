@@ -1,0 +1,10 @@
+= simple_form_for(@sie_diff_row, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+  = f.input :old_number
+  = f.input :new_number
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+
+
