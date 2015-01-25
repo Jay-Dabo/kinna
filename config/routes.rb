@@ -58,8 +58,17 @@ Rails.application.routes.draw do
     get  'import_sie_files/order_import_sie'
     post 'import_sie_files/import_sie'
 
+    resources :ink_codes
+    resources :ledgers do
+      resources :ledger_accounts
+    end
+
     resources :opening_balances do
+      post 'create_from_ub'
       resources :opening_balance_items
+      member do
+        post 'state_change', as: :state_change
+      end
     end
 
     get 'reports/order_verificates_report'
@@ -74,6 +83,13 @@ Rails.application.routes.draw do
     resources :result_units
     resources :sie_diff_rows
     resources :tax_codes
+
+    resources :tax_returns do
+      resources :tax_return_reports
+      member do
+        post 'create_tax_return_report', as: :create_tax_return_report
+      end
+    end
 
     resources :templates do
       resources :template_items

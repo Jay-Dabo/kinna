@@ -24,6 +24,7 @@
                 = nav_link t(:users), users_path
                 = nav_link t(:accounting_plans), accounting_plans_path
                 = nav_link t(:tax_codes), tax_codes_path
+                = nav_link t(:ink_codes), ink_codes_path
                 = nav_link t(:templates), templates_path
                 = nav_link t(:employee), employees_path
                 = nav_link t(:result_units), result_units_path
@@ -39,6 +40,8 @@
                 = nav_link t(:opening_balances), opening_balances_path
                 = nav_link t(:verificates), verificates_path
                 = nav_link t(:closing_balances), closing_balances_path
+                = nav_link t(:tax_returns), tax_returns_path
+
             %li.dropdown
               %a.dropdown-toggle{'href' => '#'}
                 = t(:imports)
@@ -59,7 +62,7 @@
                 %b.caret
               %ul.dropdown-menu
                 = nav_link t(:verificates), reports_order_verificates_report_path
-                = nav_link t(:ledger), reports_order_ledger_report_path
+                = nav_link t(:ledger), ledgers_path
                 = nav_link t(:result_report), reports_order_result_report_path
                 = nav_link t(:balance_report), reports_order_balance_report_path
 

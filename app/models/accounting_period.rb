@@ -17,6 +17,7 @@ class AccountingPeriod < ActiveRecord::Base
   has_many :verificates
   has_many :vat_periods, dependent: :delete_all
   has_many :wage_periods, dependent: :delete_all
+  has_one  :ledger, dependent: :delete
 
   VAT_TYPES = ['year', 'quarter', 'month']
 
@@ -42,6 +43,16 @@ class AccountingPeriod < ActiveRecord::Base
     end
   end
 
+  after_create :create_dependent
+
+  def create_dependent
+    ledger = Ledger.new
+    ledger.name =  'Huvudbok ' + accounting_from.strftime('%Y')
+    ledger.accounting_period = self
+    ledger.organization = organization
+    ledger.save
+  end
+
   def allow_from
     return accounting_from if verificates.where("state = 'final'").count == 0
     verificates.where("state = 'final'").maximum(:posting_date)
@@ -50,6 +61,10 @@ class AccountingPeriod < ActiveRecord::Base
   def allow_to
     return accounting_to if DateTime.now > accounting_to
     DateTime.now
+  end
+
+  def previous_accounting_period
+    organization.accounting_periods.where('accounting_from < ? and accounting_to > ?', accounting_from-10.day,accounting_from-10.day ).first
   end
 
   def next_vat_period
@@ -80,6 +95,14 @@ class AccountingPeriod < ActiveRecord::Base
     wage_period.payment_date = wage_period.wage_from + 17.days
     wage_period.deadline = wage_period.wage_to + 12.days
     return wage_period
+  end
+
+  def default_tax_return
+    tax_return = TaxReturn.new
+    tax_return.accounting_period_id = self.id
+    tax_return.name = 'Inkomstdeklaration ' + accounting_from.strftime('%Y')
+    tax_return.deadline = accounting_to + 5.months
+    return tax_return
   end
 
   def can_delete?

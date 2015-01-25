@@ -20,20 +20,23 @@ r = jtest.organization_roles.build(name: OrganizationRole::ROLE_SUPERADMIN)
 r.organization_id = 0
 jtest.save
 
-# Tax codes ---------------------------
-tax_code = Services::TaxCodeCreator.new(o1, jtest)
-tax_code.tax_codes_save
-
 # Accounting plan ---------------------
 plan_k1 = Services::AccountingPlanCreator.new(o1, jtest)
 plan_k1.K1_read_and_save
-plan_k1.K1_tax_code_update
 k1 = plan_k1.accounting_plan
 
 plan_bas = Services::AccountingPlanCreator.new(o1, jtest)
 plan_bas.BAS_read_and_save
-plan_bas.BAS_tax_code_update
 bas = plan_bas.accounting_plan
+
+# Tax codes ---------------------------
+tax_code = Services::TaxCodeCreator.new(o1, jtest, bas)
+tax_code.tax_codes_save
+tax_code.BAS_tax_code_update
+
+# Ink codes ---------------------------
+ink_code = Services::InkCodeCreator.new(o1, jtest, bas)
+ink_code.read_and_save
 
 # Accounting period --------------------
 ap13 = AccountingPeriod.new({

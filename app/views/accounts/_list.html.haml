@@ -9,6 +9,7 @@
         %th= t(:number)
         %th= t(:name)
         %th.numeric= t(:tax_code)
+        %th.numeric= t(:ink_code)
         %th
         %th
     %tbody{}
@@ -18,6 +19,10 @@
           %td= account.description
           - if account.tax_code
             %td.numeric= link_to account.tax_code_code, tax_code_path(account.tax_code_id)
+          - else
+            %td
+          - if account.ink_code
+            %td.numeric= link_to account.ink_code_code, ink_code_path(account.ink_code_id)
           - else
             %td
           %td.numeric= link_to settings_icon, edit_accounting_plan_account_path(@accounting_plan, account)

@@ -3,10 +3,17 @@ app.controller('ModalCtrl', function ($scope, $modal, $log) {
 	$scope.items = ['item1', 'item2', 'item3'];
 	$scope.date = new Date();
 
+    $scope.init = function(min_date, max_date) {
+        $scope.min_date = min_date;
+        $scope.max_date = max_date;
+        $scope.date = min_date;
+    };
+
 	$scope.open = function ($event, size, el) {
 		//$scope.date = new Date();
 		var elem = '#'+el;
 		var temp = $(elem).html();
+
 
 		var modalInstance = $modal.open({
 			template: temp,
@@ -15,7 +22,13 @@ app.controller('ModalCtrl', function ($scope, $modal, $log) {
 			resolve: {
 				dat: function () {
 					return $scope.date;
-				}
+				},
+                min_date: function () {
+                    return $scope.min_date;
+                },
+                max_date: function () {
+                    return $scope.max_date;
+                }
 			}
 		});
 
@@ -54,7 +67,9 @@ app.controller('ModalCtrl', function ($scope, $modal, $log) {
 });
 
 
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, dat) {
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, dat, min_date, max_date) {
+    $scope.min_date = min_date;
+    $scope.max_date = max_date;
 	$scope.date = dat;
 	$scope.dpOptions = {'starting-day': 1,'show-weeks': false};
 	$scope.openDate = function($event) {

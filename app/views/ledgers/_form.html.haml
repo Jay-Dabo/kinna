@@ -1,0 +1,24 @@
+%div{ng_controller: 'wage_form_ctrl', ng_init: 'init()' }
+  = simple_form_for([@wage_period, @wage], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    = f.association :wage_period, collection: @wage_periods, include_blank: false, disabled: true
+    = f.association :employee, disabled: true
+    = render partial: 'shared/date_field', locals: {form: f, field: :wage_from, in_id: 'in_from', in_value: @wage.wage_from, out_id: 'wage[wage_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
+    .error_width
+      = f.error :wage_from
+    = render partial: 'shared/date_field', locals: {form: f, field: :wage_to, in_id: 'in_to', in_value: @wage.wage_to, out_id: 'wage[wage_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
+    .error_width
+      = f.error :wage_to
+    = render partial: 'shared/date_field', locals: {form: f, field: :payment_date, in_id: 'in_payment', in_value: @wage.payment_date, out_id: 'wage[payment_date]', field_id: 'payment_short_date',  model: 'payment_date', dp_open: 'payment_open', dp_options: 'payment_options', dp_click: 'open_payment_date($event)'}
+    .error_width
+      = f.error :payment_date
+    = f.input :salary
+    = f.input :addition
+    = f.input :discount
+    = f.input :tax
+    = f.input :amount
+    = f.input :payroll_tax
+
+    .form-button-group
+      .actions
+        = f.submit class: 'btn btn-primary'

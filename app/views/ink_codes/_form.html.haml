@@ -1,0 +1,12 @@
+= simple_form_for(@ink_code, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+  = f.error_notification
+  = f.input :code
+  = f.input :text
+  = f.input :sum_method, as: :select, collection: InkCode::SUM_METHODS, include_blank: false
+  = f.input :bas_accounts
+
+  .form-button-group
+    .actions
+      = f.submit class: 'btn btn-primary'
+
+

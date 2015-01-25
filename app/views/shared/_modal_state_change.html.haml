@@ -1,0 +1,18 @@
+%script{ :type=>"text/ng_template", :id=>idx}
+  .modal-header
+    %h3{ :class=>"modal-title"}
+      = t(:set_date)
+
+  .modal-body
+    = simple_form_for(model, url: form_path, method: :post) do |f|
+      = hidden_field_tag 'event', event
+      = hidden_field_tag 'return_path', return_path
+      .form-group
+        .input-group
+          = hidden_field_tag "state_change_at", "{{date}}"
+          = text_field_tag "short_date", '', class: 'form-control', ng_model: 'date', datepicker_popup: 'yyyy-MM-dd', is_open: 'isOpen', min_date: 'min_date', max_date: 'max_date', datepicker_options: 'dpOptions', show_button_bar: 'false', readonly: true
+          %span{:class => "input-group-btn"}
+            %button{:class => "btn btn-default", :ng_click=>'openDate($event)' }
+              %span{ :class => "glyphicon glyphicon-calendar"}
+      = submit_tag t(:confirm), class: 'btn btn-primary'
+      = button_tag t(:back), class: 'btn btn-danger reseter', type: 'reset', :ng_click=>"cancel()"

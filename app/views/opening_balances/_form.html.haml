@@ -3,13 +3,10 @@
     = f.error_notification
 
     = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: !@opening_balance.new_record?, input_html: {ng_model: 'period', ng_change: 'change_period()',}
-    - if @opening_balance.new_record?
-      = render partial: 'shared/date_field', locals: {form: f, field: :posting_date, in_id: 'in_posting', in_value: @opening_balance.posting_date, out_id: 'opening_balance[posting_date]', field_id: 'posting_short_date',  model: 'posting_date', dp_open: 'posting_open', dp_options: 'posting_options', dp_click: 'open_posting_date($event)'}
-      .error_width
-        = f.error :posting_date
+    = f.input :description, disabled: !@opening_balance.new_record?
+    = f.input :state, disabled: true
     - if !@opening_balance.new_record?
       = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
-    = f.input :description, disabled: !@opening_balance.new_record?
 
     - if @opening_balance.new_record?
       .form-button-group

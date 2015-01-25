@@ -1,14 +1,19 @@
 = simple_form_for(@opening_balance, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
   = f.association :accounting_period, collection: @accounting_periods, include_blank: false, disabled: true
-  = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
   = f.input :description, disabled: true
-  = f.input :confirmed
+  = f.input :state, disabled: true
+  - if @opening_balance.final?
+    = f.input :posting_date, as: :string, disabled: true, :input_html => { :class => 'date', :value => localize(f.object.posting_date, :format => "%Y-%m-%d"), :readonly => 'readonly'}
+
 
   = render partial: 'opening_balance_items/list'
   .form-button-group
     .actions
-      = f.submit class: 'btn btn-primary'
-      - if !@opening_balance.confirmed
+      - if @opening_balance.preliminary?
         = link_to "#{t(:create)} #{t(:opening_balance_item)}", new_opening_balance_opening_balance_item_path(@opening_balance), class: 'btn btn-primary'
-
+        = link_to "#{t(:create)} #{t(:from_ub)}", opening_balance_create_from_ub_path(@opening_balance), method: 'post', class: 'btn btn-success'
+        %div{ng_controller: 'ModalCtrl'}
+          %button{:class=>'btn btn-primary', :ng_click=>"open($event, 'sm','balanceContent' )"}
+            = t(:confirm)
+          = render partial: 'shared/modal_state_change', locals: {idx: 'balanceContent', model: @opening_balance, form_path: state_change_opening_balance_path(@opening_balance), event: 'mark_final', return_path: opening_balances_path}
 

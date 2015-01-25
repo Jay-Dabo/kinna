@@ -9,7 +9,7 @@ class ClosingBalance < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :accounting_period
-  has_many   :closing_balance_items
+  has_many   :closing_balance_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true, uniqueness: {scope: [:organization_id, :accounting_period_id]}
   validates :posting_date, presence: true

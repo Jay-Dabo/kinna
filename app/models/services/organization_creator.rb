@@ -7,8 +7,8 @@ module Services
     end
 
     def save
-      @organization.organization_roles.build(name : OrganizationRole::ROLE_ADMIN,
-          user_id : @user.id)
+      @organization.organization_roles.build(name: OrganizationRole::ROLE_ADMIN,
+          user_id: @user.id)
       @organization.save
     end
   end

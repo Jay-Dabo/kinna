@@ -1,0 +1,39 @@
+%div{ng_controller: 'vat_period_form_ctrl', ng_init: 'init()' }
+  = simple_form_for(@vat_period, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    = f.association :accounting_period, collection: @accounting_periods, include_blank: false
+    = f.input :name
+    = render partial: 'shared/date_field', locals: {form: f, field: :vat_from, in_id: 'in_from', in_value: @vat_period.vat_from, out_id: 'vat_period[vat_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
+    .error_width
+      = f.error :vat_from
+    = render partial: 'shared/date_field', locals: {form: f, field: :vat_to, in_id: 'in_to', in_value: @vat_period.vat_to, out_id: 'vat_period[vat_to]', field_id: 'to_short_date',  model: 'to_date', dp_open: 'to_open', dp_options: 'to_options', dp_click: 'open_to_date($event)'}
+    .error_width
+      = f.error :vat_to
+    = render partial: 'shared/date_field', locals: {form: f, field: :deadline, in_id: 'in_deadline', in_value: @vat_period.deadline, out_id: 'vat_period[deadline]', field_id: 'deadline_short_date',  model: 'deadline_date', dp_open: 'deadline_open', dp_options: 'deadline_options', dp_click: 'open_deadline_date($event)'}
+    .error_width
+      = f.error :deadline
+    = f.input :state, disabled: true
+
+    - if !@vat_period.new_record? && @vat_period.calculated?
+      = f.input :box_05, disabled: true
+      = f.input :box_10, disabled: true
+      = f.input :box_11, disabled: true
+      = f.input :box_12, disabled: true
+      = f.input :box_48, disabled: true
+      = f.input :box_49, disabled: true
+
+    - if !@vat_period.calculated?
+      .form-button-group
+        .actions
+          = f.submit class: 'btn btn-primary'
+          - if !@vat_period.new_record? && @vat_period.can_calculate?
+            = link_to t(:calculate), vat_calculation_vat_period_path(@vat_period), class: 'btn btn-primary'
+            = link_to t(:create_vat_bases), vat_report_create_vat_period_path(@vat_period), method: 'post', class: 'btn btn-primary'
+
+  - if @vat_period.calculated?
+    .form-button-group
+      .actions
+        = link_to t(:calculate), vat_calculation_vat_period_path(@vat_period), class: 'btn btn-primary'
+        = form_tag vat_reporting_vat_period_path(@vat_period), class: 'form-inline', method: :post do
+          = hidden_field_tag 'event', 'mark_calculated'
+          = submit_tag t(:report), class: 'btn btn-primary'

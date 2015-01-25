@@ -1,0 +1,15 @@
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th
+    %tbody{}
+      - @ledgers.each do |ledger|
+        %tr
+          %td= ledger.name
+          %td.numeric= link_to settings_icon, ledger_ledger_accounts_path(ledger)
+          %td.numeric= delete_modal_for ledger, ledger_path(ledger)
+
+  = paginate @ledgers, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

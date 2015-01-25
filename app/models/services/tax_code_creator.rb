@@ -1,9 +1,10 @@
 module Services
   class TaxCodeCreator
 
-    def initialize(organization, user)
+    def initialize(organization, user, accounting_plan)
       @user = user
       @organization = organization
+      @accounting_plan = accounting_plan
     end
 
     def tax_codes_save
@@ -30,6 +31,21 @@ module Services
       add_tax_code(102, "Motkonto sociala avgifter", 'none', 'default')
     end
 
+    def BAS_tax_code_update
+      update_account_tax_code('3001', 05)
+      update_account_tax_code('2610', 10)
+      update_account_tax_code('2620', 11)
+      update_account_tax_code('2630', 12)
+      update_account_tax_code('2640', 48)
+
+      update_account_tax_code('7210', 50)
+      update_account_tax_code('2730', 78)
+      update_account_tax_code('2710', 82)
+
+      update_account_tax_code('1920', 101)
+      update_account_tax_code('7500', 102)
+    end
+
     def add_tax_code(code, text, sum_method, code_type)
       tax_code = TaxCode.new
       tax_code.code = code
@@ -38,6 +54,13 @@ module Services
       tax_code.code_type = code_type
       tax_code.organization = @organization
       tax_code.save
+    end
+
+    def update_account_tax_code(account, tax_code)
+      @account = @accounting_plan.accounts.find_by_number(account)
+      @tax_code = @organization.tax_codes.find_by_code(tax_code)
+      @account.tax_code = @tax_code
+      @account.save
     end
   end
 end

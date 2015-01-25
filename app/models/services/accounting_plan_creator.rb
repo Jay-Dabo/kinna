@@ -167,5 +167,12 @@ module Services
       @account.tax_code = @tax_code
       @account.save
     end
+
+    def update_account_ink_code(account, ink_code)
+      @account = @accounting_plan.accounts.find_by_number(account)
+      @ink_code = @organization.ink_codes.find_by_code(ink_code)
+      @account.ink_code = @ink_code
+      @account.save
+    end
   end
 end

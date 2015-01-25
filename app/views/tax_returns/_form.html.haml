@@ -1,0 +1,22 @@
+%div{ng_controller: 'tax_return_form_ctrl', ng_init: 'init()' }
+  = simple_form_for(@tax_return, wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
+    = f.error_notification
+    = f.association :accounting_period, as: :hidden
+    .form-group
+      .labels_width.control-label
+        = f.label :accounting_period
+      .fields_width
+        %input{id: 'show', type: 'text', class: 'form-control', value: f.object.accounting_period.name, disabled: true}
+
+    = f.input :name, disabled: !@tax_return.preliminary?
+    = render partial: 'shared/date_field', locals: {form: f, field: :deadline, in_id: 'in_deadline', in_value: @tax_return.deadline, out_id: 'tax_return[deadline]', field_id: 'deadline_short_date',  model: 'deadline_date', dp_open: 'deadline_open', dp_options: 'deadline_options', dp_click: 'open_deadline_date($event)'}
+    .error_width
+      = f.error :deadline
+    = f.input :state, disabled: true
+
+    .form-button-group
+      .actions
+        - if @tax_return.new_record? || @tax_return.preliminary?
+          = f.submit class: 'btn btn-primary'
+        - if !@tax_return.new_record? && @tax_return.can_calculate?
+          = link_to t(:create_tax_return_report), create_tax_return_report_tax_return_path(@tax_return), method: 'post', class: 'btn btn-primary'

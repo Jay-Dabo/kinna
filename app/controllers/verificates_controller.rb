@@ -86,29 +86,30 @@ class VerificatesController < ApplicationController
 
   def state_change
     Rails.logger.info "->#{params.inspect}"
-    @verificate = current_organization.verificates.find(params[:id])
-    @verificate.posting_date = params[:new_posting_date]
-    @verificate.description = params[:description]
-    @verificate.save
+    #@verificate = current_organization.verificates.find(params[:id])
+    #@verificate.posting_date = params[:new_posting_date]
+    #@verificate.description = params[:description]
+    #@verificate.save
 
     authorize! :manage, @verificate
-    if @verificate.state_change(params[:event])
+    if @verificate.state_change(params[:event], params[:state_change_at])
       msg_h = { notice: t(:success) }
     else
       msg_h = { alert: t(:fail) }
     end
-    redirect_to @verificate, msg_h
+    redirect_to verificates_url, msg_h
   end
 
   def add_verificate_items
     @verificate = current_organization.verificates.find(params[:id])
+    Rails.logger.info "->#{params.inspect}"
     @verificate_items_creator = Services::VerificateItemsCreator.new(current_organization, current_user, @verificate, params)
     respond_to do |format|
       if @verificate_items_creator.save
         format.html { redirect_to verificates_url, notice: "#{t(:verificate_items)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificates_items)}"
-        format.html { redirect_to verificates_url }
+        format.html { render action: 'show' }
       end
     end
   end

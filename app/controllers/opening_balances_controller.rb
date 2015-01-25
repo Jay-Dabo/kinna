@@ -66,6 +66,35 @@ class OpeningBalancesController < ApplicationController
     end
   end
 
+  def state_change
+    Rails.logger.info "->#{params.inspect}"
+
+    authorize! :manage, @verificate
+    if @opening_balance.state_change(params[:event], params[:state_change_at])
+      msg_h = { notice: t(:success) }
+    else
+      msg_h = { alert: t(:fail) }
+    end
+    redirect_to opening_balances_url, msg_h
+  end
+
+  def create_from_ub
+    @opening_balance = current_organization.opening_balances.find(params[:opening_balance_id])
+    @accounting_period = @opening_balance.accounting_period
+    @from = @accounting_period.previous_accounting_period
+
+    Rails.logger.info "->#{@opening_balance.inspect}"
+    Rails.logger.info "->#{@from.inspect}"
+    respond_to do |format|
+      @opening_balance_creator = Services::OpeningBalanceCreator.new(current_organization, current_user, @accounting_period, @opening_balance)
+      if @opening_balance_creator.add_from_ub(@from.closing_balance)
+        format.html { redirect_to opening_balances_path, notice:  "#{t(:opening_balance)} #{t(:was_successfully_deleted)}" }
+      else
+        format.html { redirect_to opening_balances_path, notice:  "#{t(:opening_balance)} #{t(:faild_to_update)}" }
+      end
+
+    end
+  end
 
   private
 

@@ -24,12 +24,11 @@ class Verificate < ActiveRecord::Base
   has_many   :verificate_items, dependent: :delete_all
 
   validates :accounting_period_id, presence: true
-  validates :posting_date, presence: true
   validates :description, presence: true
   validate :check_date
 
   def check_date
-    if posting_date < accounting_period.accounting_from
+    if posting_date && (posting_date < accounting_period.accounting_from || posting_date > accounting_period.accounting_to)
       errors.add(:posting_date, I18n.t(:within_period))
     end
   end
@@ -44,14 +43,16 @@ class Verificate < ActiveRecord::Base
   state_machine :state, initial: :preliminary do
     before_transition on: :mark_final, do: :generate_verificate_number
     after_transition on: :mark_final, do: :set_dependent
+    after_transition on: :mark_final, do: :create_ledger_transactions
 
     event :mark_final do
       transition preliminary: :final
     end
   end
 
-  def generate_verificate_number
+  def generate_verificate_number(transition)
     return false if !self.balanced?
+    self.posting_date = transition.args[0]
     return false if self.posting_date <  accounting_period.allow_from
     return false if self.posting_date >  accounting_period.allow_to
     self.number = (Verificate.where(organization_id: self.organization_id, accounting_period_id: self.accounting_period_id).maximum(:number) || 0) +1
@@ -62,6 +63,21 @@ class Verificate < ActiveRecord::Base
     self.wage_period_wage.state_change('mark_wage_closed', DateTime.now) if self.wage_period_wage
     self.wage_period_report.state_change('mark_tax_closed', DateTime.now) if self.wage_period_report
     self.import_bank_file_row.set_posted if self.import_bank_file_row
+  end
+
+  def create_ledger_transactions
+    verificate_items.each do |verificate_item|
+      debit = verificate_item.debit || 0
+      credit = verificate_item.credit || 0
+      ledger_transaction = LedgerTransaction.new(
+          parent: self,
+          accounting_period: accounting_period,
+          ledger: accounting_period.ledger,
+          account: verificate_item.account,
+          sum: debit - credit)
+      ledger_transaction.organization_id = organization_id
+      ledger_transaction.save
+    end
   end
 
   def total_debit

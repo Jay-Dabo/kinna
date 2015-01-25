@@ -5,30 +5,30 @@ class TaxCodesController < ApplicationController
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
-  # GET /wages
-  # GET /wages.json
+  # GET /tax_codes
+  # GET /tax_codes.json
   def index
     @breadcrumbs = [['Tax codes']]
     @tax_codes = current_organization.tax_codes.order(:code)
     @tax_codes = @tax_codes.page(params[:page])
   end
 
-  # GET /wages/new
+  # GET /tax_codes/new
   def new
     @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
   end
 
-  # GET /wages/1
+  # GET /tax_codes/1
   def show
   end
 
-  # GET /wage/1/edit
+  # GET /tax_code/1/edit
   def edit
     @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
   end
 
-  # POST /wages
-  # POST /wages.json
+  # POST /tax_codes
+  # POST /tax_codes.json
   def create
     @tax_code = TaxCode.new(tax_code_params)
     @tax_code.organization = current_organization
@@ -43,8 +43,8 @@ class TaxCodesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /units/1
-  # PATCH/PUT /units/1.json
+  # PATCH/PUT /tax_codes/1
+  # PATCH/PUT /tax_codes/1.json
   def update
     respond_to do |format|
       if @tax_code.update(tax_code_params)
@@ -57,8 +57,8 @@ class TaxCodesController < ApplicationController
     end
   end
 
-  # DELETE /units/1
-  # DELETE /units/1.json
+  # DELETE /tax_codes/1
+  # DELETE /tax_codes/1.json
   def destroy
     @tax_code.destroy
     respond_to do |format|

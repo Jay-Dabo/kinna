@@ -1,0 +1,36 @@
+.btn-group
+  - url = new_tax_return_path + '&accounting_period_id=' + params[:accounting_period_id].to_s
+  = link_to "#{t(:create)} #{t(:tax_return)}", url, class: 'btn btn-success'
+
+.col-sm-40.col-md-40.pull-right.text-right
+  = form_tag tax_returns_path, class: 'form-inline submit-on-change', method: :get do
+    = select_tag(:accounting_period_id,
+      options_for_select(@accounting_periods.each.collect{|w| [w.name, w.id]}, params[:accounting_period_id]),
+      class: 'btn btn-default')
+.clear &nbsp;
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:name)
+        %th.numeric= t(:deadline)
+        %th= t(:state)
+        %th
+        %th
+        %th
+    %tbody{}
+      - @tax_returns.each do |tax_return|
+        %tr
+          %td= tax_return.name
+          %td.numeric= tax_return.deadline
+          %td= tax_return.state
+          - if !tax_return.preliminary?
+            %td= report_button_for tax_return_tax_return_reports_path(tax_return)
+          - else
+            %td
+          %td.numeric= link_to settings_icon, edit_tax_return_path(tax_return)
+          %td.numeric= delete_modal_for tax_return
+
+  = paginate @tax_returns, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

@@ -18,6 +18,10 @@ class ClosingBalanceItem < ActiveRecord::Base
   validates :account_id, presence: true
   validates :description, presence: true
 
+  def account_number
+    account.number
+  end
+
   def can_delete?
     true
   end

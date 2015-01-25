@@ -43,6 +43,9 @@ class Ability
     can :manage, Employee, organization_id: oids
     can :manage, ImportBankFile, organization_id: oids
     can :manage, ImportBankFileRow, organization_id: oids
+    can :manage, InkCode, organization_id: oids
+    can :manage, Ledger, organization_id: oids
+    can :manage, LedgerAccount, organization_id: oids
     can :read,   Organization, id: oids
     can :manage, OpeningBalance, organization_id: oids
     can :manage, OpeningBalanceItem, organization_id: oids

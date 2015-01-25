@@ -20,7 +20,7 @@ module Services
         verificate_item.save
       end
       if @verificate.balanced?
-        @verificate.state_change('mark_final')
+        @verificate.state_change('mark_final', @verificate_items[:verificate][:posting_date])
       end
     end
   end

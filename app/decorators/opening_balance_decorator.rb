@@ -11,5 +11,16 @@ class OpeningBalanceDecorator < Draper::Decorator
   def total_credit
     number_with_precision(object.total_credit, precision: 2)
   end
-
+  def pretty_state
+    l = 'default'
+    case object.state
+      when 'preliminary'
+        l = 'info'
+        str = h.t(:preliminary)
+      when 'final'
+        l = 'success'
+        str = h.t(:final)
+    end
+    h.labelify(str, l)
+  end
 end
