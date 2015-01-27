@@ -45,6 +45,8 @@ class OpeningBalance < ActiveRecord::Base
           accounting_period: accounting_period,
           ledger: accounting_period.ledger,
           account: opening_balance_item.account,
+          posting_date: posting_date,
+          text: description,
           sum: debit - credit)
       ledger_transaction.organization_id = organization_id
       ledger_transaction.save

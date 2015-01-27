@@ -11,7 +11,8 @@
     .actions
       - if @opening_balance.preliminary?
         = link_to "#{t(:create)} #{t(:opening_balance_item)}", new_opening_balance_opening_balance_item_path(@opening_balance), class: 'btn btn-primary'
-        = link_to "#{t(:create)} #{t(:from_ub)}", opening_balance_create_from_ub_path(@opening_balance), method: 'post', class: 'btn btn-success'
+        - if  @previous_accounting_period && !@previous_accounting_period.closing_balance.nil?
+          = link_to "#{t(:create)} #{t(:from_ub)}", opening_balance_create_from_ub_path(@opening_balance), method: 'post', class: 'btn btn-primary'
         %div{ng_controller: 'ModalCtrl'}
           %button{:class=>'btn btn-primary', :ng_click=>"open($event, 'sm','balanceContent' )"}
             = t(:confirm)

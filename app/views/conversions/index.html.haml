@@ -1,0 +1,22 @@
+= link_to "#{t(:create)} #{t(:conversion)}", new_conversion_path, class: 'btn btn-success'
+= link_to "#{t(:clear)}", conversion_clear_path(0), class: 'btn btn-warning'
+
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:old_number)
+        %th= t(:new_number)
+        %th
+        %th
+    %tbody{}
+      - @conversions.each do |conversion|
+        %tr
+          %td= conversion.old_number
+          %td= conversion.new_number
+          %td.numeric= link_to settings_icon, edit_conversion_path(conversion)
+          %td.numeric= delete_modal_for conversion
+
+  = paginate @conversions, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}
+

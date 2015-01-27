@@ -19,13 +19,14 @@ module Services
           when '4'
             set_ub(line) if line.starts_with?('#UB') if import_type == 'UB'
             set_ib(line) if line.starts_with?('#IB') if import_type == 'IB'
-            ver_id = set_ver(line) if line.starts_with?('#VER') if import_type == "Trans"
-            set_trans(ver_id, line) if line.starts_with?('#TRANS') if import_type == "Trans"
-            close_verificate(ver_id) if line.starts_with?('}') if import_type == "Trans"
+            ver_id = set_ver(line) if line.starts_with?('#VER') if import_type == "Transactions"
+            set_trans(ver_id, line) if line.starts_with?('#TRANS') if import_type == "Transactions"
+            close_verificate(ver_id) if line.starts_with?('}') if import_type == "Transactions"
           else
         end
         set_type(line) if line.starts_with?('#SIETYP')
       end
+      return true
     end
 
     def set_type(line)
@@ -157,17 +158,17 @@ module Services
     end
 
     def get_diff_account(number)
-      sie_diff_row = @organization.sie_diff_rows.where('old_number = ?', number).first
-      return nil if sie_diff_row.nil?
-      @account = @accounting_plan.accounts.where('number = ?', sie_diff_row.new_number).first
+      conversion = @organization.conversions.where('old_number = ?', number).first
+      return nil if conversion.nil?
+      @account = @accounting_plan.accounts.where('number = ?', conversion.new_number).first
       return @account
     end
 
     def set_diff_account(number)
-        sie_diff_row = SieDiffRow.new
-        sie_diff_row.old_number = number
-        sie_diff_row.organization = @organization
-        sie_diff_row.save
+        conversion = Conversion.new
+        conversion.old_number = number
+        conversion.organization = @organization
+        conversion.save
     end
 
     def save_verificate(number, date, text)
@@ -213,7 +214,7 @@ module Services
     def close_verificate(ver_id)
       @verificate = @accounting_period.verificates.where('id = ?', ver_id).first
       if @verificate.balanced?
-        @verificate.state_change('mark_final')
+        @verificate.state_change('mark_final', @verificate.posting_date)
       end
     end
   end

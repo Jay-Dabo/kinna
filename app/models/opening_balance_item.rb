@@ -25,6 +25,7 @@ class OpeningBalanceItem < ActiveRecord::Base
   def posting_date
     opening_balance.posting_date_formatted
   end
+
   def can_delete?
     true
   end

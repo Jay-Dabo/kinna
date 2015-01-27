@@ -7,7 +7,7 @@ class ClosingBalancesController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['closing_balances']]
+    @breadcrumbs = [['Closing balances']]
     @closing_balances = current_organization.closing_balances
     @closing_balances = @closing_balances.page(params[:page]).decorate
   end
@@ -36,7 +36,7 @@ class ClosingBalancesController < ApplicationController
       if @closing_balance.save
         @accounting_period = current_organization.accounting_periods.find(@closing_balance.accounting_period)
         @closing_balance_creator = Services::ClosingBalanceCreator.new(current_organization, current_user, @closing_balance, @accounting_period)
-        @closing_balance_creator.sum_verificates_and_save
+        @closing_balance_creator.add_from_ledger
         format.html { redirect_to closing_balance_path(@closing_balance), notice: "#{t(:closing_balance)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:closing_balance)}"

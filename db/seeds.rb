@@ -54,7 +54,7 @@ ap14 = AccountingPeriod.new({
   accounting_from: DateTime.new(2014,01,01),
   accounting_to: DateTime.new(2014,12,31),
   active: 'true',
-  accounting_plan: k1,
+  accounting_plan: bas,
   vat_period_type: 'month'
 })
 ap14.organization = o1
@@ -64,7 +64,7 @@ ap15 = AccountingPeriod.new({
   accounting_from: DateTime.new(2015,01,01),
   accounting_to: DateTime.new(2015,12,31),
   active: 'false',
-  accounting_plan: k1,
+  accounting_plan: bas,
   vat_period_type: 'month'
 })
 ap15.organization = o1

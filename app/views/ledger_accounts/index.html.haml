@@ -12,7 +12,8 @@
           %td= ledger_account.account_number
           %td= ledger_account.account_text
           %td.numeric= ledger_account.sum
-          %td.numeric= link_to settings_icon, edit_ledger_ledger_account_path(ledger_account.ledger_id, ledger_account)
+          - url = ledger_transactions_path + '&ledger_id=' + @ledger.id.to_s + '&account_id=' + ledger_account.account_id.to_s
+          %td.numeric= link_to settings_icon, url
 
   = paginate @ledger_accounts, :theme => 'twitter-bootstrap-3'
   = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

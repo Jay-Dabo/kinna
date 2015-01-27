@@ -18,6 +18,8 @@ class LedgerAccount < ActiveRecord::Base
   validates :ledger, presence: true
   validates :account, presence: true
 
+  delegate :number, to: :account
+
   def account_number
     account.number
   end

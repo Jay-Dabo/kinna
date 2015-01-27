@@ -9,19 +9,15 @@ class Job::LedgerTransactionEvent
 
   def self.sum_ledger(trans)
     Rails.logger.info "-->>LedgerTransactionEvent.sum_ledger(#{trans.inspect})"
-    # ledger_accounts = Ledger_accounts.where('ledger_id = ? AND account_id = ? ', trans.ledger_id, trans.account_id)
     ledger_accounts = trans.ledger.ledger_accounts.where(account_id: trans.account_id)
-    Rails.logger.info "-->>LedgerAccounts(#{ledger_accounts.inspect})"
     unless ledger_accounts.size > 0
       Rails.logger.info "-->>New LedgerAccount"
       ledger_account = LedgerAccount.new
-      Rails.logger.info "-->>New LedgerAccount1"
       ledger_account.name = "MM"
       ledger_account.organization_id = trans.organization_id
       ledger_account.accounting_period_id = trans.accounting_period_id
       ledger_account.ledger_id = trans.ledger_id
       ledger_account.account_id = trans.account_id
-      Rails.logger.info "-->>New LedgerAccount2"
       ledger_account.sum = trans.sum
       ledger_account.save
       Rails.logger.info "-->>New LedgerAccount finish"

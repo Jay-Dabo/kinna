@@ -5,9 +5,12 @@ class LedgerTransaction < ActiveRecord::Base
   # t.integer  :accounting_period_id
   # t.integer  :ledger_id
   # t.integer  :account_id
+  # t.datetime :posting_date
+  # t.interger :number
+  # t.string   :text
   # t.decimal  :sum
 
-  attr_accessible :name, :parent, :accounting_period, :ledger, :account, :sum
+  attr_accessible :name, :parent, :accounting_period, :ledger, :account, :posting_date, :number, :text, :sum
 
   belongs_to :organization
   belongs_to :accounting_period

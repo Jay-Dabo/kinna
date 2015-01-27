@@ -8,35 +8,31 @@ class LedgersController < ApplicationController
   # GET /ledgers
   # GET /ledgers.json
   def index
-    @breadcrumbs = [['Ledger', ledgers_path]]
+    @breadcrumbs = [['Ledgers']]
     @ledgers = current_organization.ledgers.page(params[:page])
   end
 
   # GET /ledgers/new
   def new
-    @ledger_periods = current_organization.ledger_periods
   end
 
   # GET /ledgers/1
   def show
-
   end
 
   # GET /ledger/1/edit
   def edit
-    @ledger_periods = current_organization.ledger_periods
   end
 
   # POST /ledgers
   # POST /ledgers.json
   def create
-    @ledger = ledger.new(ledger_params)
+    @ledger = Ledger.new(ledger_params)
     @ledger.organization = current_organization
     respond_to do |format|
       if @ledger.save
-        format.html { redirect_to ledger_period_ledgers_path, notice: "#{t(:ledger)} #{t(:was_successfully_created)}" }
+        format.html { redirect_to ledgers_path, notice: "#{t(:ledger)} #{t(:was_successfully_created)}" }
       else
-        @ledger_periods = current_organization.ledger_periods
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:ledger)}"
         format.html { render action: 'new' }
       end
@@ -48,9 +44,8 @@ class LedgersController < ApplicationController
   def update
     respond_to do |format|
       if @ledger.update(ledger_params)
-        format.html { redirect_to ledger_period_ledgers_path, notice: "#{t(:ledger)} #{t(:was_successfully_updated)}" }
+        format.html { redirect_to ledgers_path, notice: "#{t(:ledger)} #{t(:was_successfully_updated)}" }
       else
-        @ledger_periods = current_organization.ledger_periods
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:ledger)}"
         format.html { render action: 'show' }
       end
@@ -74,14 +69,8 @@ class LedgersController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [['ledger periods', ledger_periods_path], [@ledger.ledger_period.name, ledger_period_path(@ledger.ledger_period_id)],
-                    ['ledgers', ledger_period_ledgers_path(@ledger.ledger_period_id)],
-                    ['New ledger']]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [['ledger periods', ledger_periods_path], [@ledger.ledger_period.name, ledger_period_path(@ledger.ledger_period_id)],
-                    ['ledgers', ledger_period_ledgers_path(@ledger.ledger_period_id)],
-                    [@ledger.employee.name]]
   end
 end

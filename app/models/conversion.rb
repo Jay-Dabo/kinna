@@ -1,4 +1,4 @@
-class SieDiffRow  < ActiveRecord::Base
+class Conversion < ActiveRecord::Base
   # t.integer  :old_number
   # t.integer  :new_number
   # t.integer  :organization_id

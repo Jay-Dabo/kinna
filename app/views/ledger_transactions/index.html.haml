@@ -1,0 +1,24 @@
+.table-responsive{:ng_controller=>'ModalCtrl'}
+  %table{:class => 'table table-striped'}
+    %thead
+      %tr
+        %th= t(:date)
+        %th= t(:number)
+        %th= t(:text)
+        %th.numeric= t(:sum)
+        %th
+    %tbody{}
+      - @ledger_transactions.each do |ledger_transaction|
+        %tr
+          %td= ledger_transaction.posting_date
+          %td= ledger_transaction.number
+          %td= ledger_transaction.text
+          %td.numeric= ledger_transaction.sum
+          - if ledger_transaction.parent_type == 'OpeningBalance'
+            - url = opening_balance_path(ledger_transaction.parent_id)
+          - else
+            - url = verificate_path(ledger_transaction.parent_id)
+          %td.numeric= link_to settings_icon, url
+
+  = paginate @ledger_transactions, :theme => 'twitter-bootstrap-3'
+  = render partial: 'shared/modal_delete', locals: {idx: 'deleteContent'}

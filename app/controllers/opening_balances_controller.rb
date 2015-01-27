@@ -7,7 +7,7 @@ class OpeningBalancesController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['opening_balances']]
+    @breadcrumbs = [['Opening balances']]
     @opening_balances = current_organization.opening_balances
     @opening_balances = @opening_balances.page(params[:page]).decorate
   end
@@ -22,6 +22,7 @@ class OpeningBalancesController < ApplicationController
   def show
     @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
     gon.push accounting_periods: ActiveModel::ArraySerializer.new(@accounting_periods, each_serializer: AccountingPeriodSerializer)
+    @previous_accounting_period = @opening_balance.accounting_period.previous_accounting_period
   end
 
   # GET
@@ -67,8 +68,6 @@ class OpeningBalancesController < ApplicationController
   end
 
   def state_change
-    Rails.logger.info "->#{params.inspect}"
-
     authorize! :manage, @verificate
     if @opening_balance.state_change(params[:event], params[:state_change_at])
       msg_h = { notice: t(:success) }
@@ -82,9 +81,6 @@ class OpeningBalancesController < ApplicationController
     @opening_balance = current_organization.opening_balances.find(params[:opening_balance_id])
     @accounting_period = @opening_balance.accounting_period
     @from = @accounting_period.previous_accounting_period
-
-    Rails.logger.info "->#{@opening_balance.inspect}"
-    Rails.logger.info "->#{@from.inspect}"
     respond_to do |format|
       @opening_balance_creator = Services::OpeningBalanceCreator.new(current_organization, current_user, @accounting_period, @opening_balance)
       if @opening_balance_creator.add_from_ub(@from.closing_balance)

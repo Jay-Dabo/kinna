@@ -48,7 +48,9 @@ Rails.application.routes.draw do
 
     resources :contact_relations
     resources :contacts
-
+    resources :conversions do
+      delete 'clear'
+    end
     resources :employees
 
     resources :import_bank_files do
@@ -62,6 +64,7 @@ Rails.application.routes.draw do
     resources :ledgers do
       resources :ledger_accounts
     end
+    resources :ledger_transactions
 
     resources :opening_balances do
       post 'create_from_ub'
@@ -81,7 +84,6 @@ Rails.application.routes.draw do
     post 'reports/balance_report'
 
     resources :result_units
-    resources :sie_diff_rows
     resources :tax_codes
 
     resources :tax_returns do

@@ -7,6 +7,9 @@ class CreateLedgerTransactions < ActiveRecord::Migration
       t.integer  :accounting_period_id
       t.integer  :ledger_id
       t.integer  :account_id
+      t.datetime :posting_date
+      t.integer  :number
+      t.string   :text
       t.decimal  :sum, precision: 11, scale: 2
 
       t.timestamps

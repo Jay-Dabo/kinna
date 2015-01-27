@@ -8,7 +8,7 @@ class ClosingBalanceItemsController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['closing_balance_item']]
+    @breadcrumbs = [['Closing balance items']]
   end
 
   # GET
@@ -35,6 +35,8 @@ class ClosingBalanceItemsController < ApplicationController
       if @closing_balance_item.save
         format.html { redirect_to closing_balance_path(@closing_balance), notice: "#{t(:closing_balance_item)} #{t(:was_successfully_created)}" }
       else
+        @accounting_groups = current_organization.accounting_plan.accounting_groups
+        gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:closing_balance_item)}"
         format.html { render action: 'new' }
       end

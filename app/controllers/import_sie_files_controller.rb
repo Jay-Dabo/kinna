@@ -18,6 +18,7 @@ class ImportSieFilesController < ApplicationController
         accounting_period = current_organization.accounting_periods.find(params[:import_sie_file][:accounting_period])
         accounting_plan = accounting_period.accounting_plan
         @import_sie = Services::ImportSie.new(current_organization, current_user, accounting_period, accounting_plan)
+        Rails.logger.info "->#{import_type}"
         if @import_sie.read_and_save(import_type)
           format.html { redirect_to opening_balance_path(accounting_period.opening_balance), notice: "#{t(:opening_balance)} #{t(:was_successfully_created)}" }
         else

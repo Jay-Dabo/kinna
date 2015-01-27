@@ -9,23 +9,20 @@ class LedgerAccountsController < ApplicationController
   # GET
   def index
     @breadcrumbs = [[t(:ledgers), ledgers_path], [@ledger.name]]
-    @ledger_accounts = @ledger_accounts.page(params[:page]).decorate
+    @ledger_accounts = @ledger_accounts.decorate.sort_by { |ledger_account| ledger_account.account_number}
+    @ledger_accounts = Kaminari.paginate_array(@ledger_accounts).page(params[:page])
   end
 
   # GET
   def new
-    @accounting_groups = current_organization.accounting_plan.accounting_groups
-    gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
   end
 
   # GET
   def show
-
   end
 
   # GET
   def edit
-    @ledger_transactions = @ledger_account.ledger.ledger_transactions.page(params[:page])
   end
 
   # POST
@@ -35,7 +32,7 @@ class LedgerAccountsController < ApplicationController
     @ledger_account.organization = current_organization
     respond_to do |format|
       if @ledger_account.save
-        format.html { redirect_to ledger_path(@ledger), notice: "#{t(:ledger_account)} #{t(:was_successfully_created)}" }
+        format.html { redirect_to ledger_accounts_path, notice: "#{t(:ledger_account)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:ledger_account)}"
         format.html { render action: 'new' }
@@ -47,7 +44,7 @@ class LedgerAccountsController < ApplicationController
   def update
     respond_to do |format|
       if @ledger_account.update(ledger_account_params)
-        format.html { redirect_to ledger_path(@ledger), notice: "#{t(:ledger_account)} #{t(:was_successfully_updated)}" }
+        format.html { redirect_to ledger_accounts_path, notice: "#{t(:ledger_account)} #{t(:was_successfully_updated)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:ledger_account)}"
         format.html { render action: 'show' }
@@ -59,7 +56,7 @@ class LedgerAccountsController < ApplicationController
   def destroy
     @ledger_account.destroy
     respond_to do |format|
-      format.html { redirect_to ledger_path(@ledger), notice:  "#{t(:ledger_account)} #{t(:was_successfully_deleted)}" }
+      format.html { redirect_to ledger_account_path, notice:  "#{t(:ledger_account)} #{t(:was_successfully_deleted)}" }
     end
   end
 
@@ -71,10 +68,8 @@ class LedgerAccountsController < ApplicationController
   end
 
   def new_breadcrumbs
-    @breadcrumbs = [[t(:ledgers), ledgers_path], [@ledger.name, ledger_path(@ledger)], ["#{t(:new)} #{t(:ledger_account)}"]]
   end
 
   def show_breadcrumbs
-    @breadcrumbs = [[t(:ledgers), ledgers_path], [@ledger.name, ledger_ledger_account_path(@ledger, @ledger_account)], [@ledger_account.name]]
   end
 end

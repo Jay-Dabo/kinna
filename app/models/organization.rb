@@ -18,11 +18,11 @@ class Organization < ActiveRecord::Base
   has_many :users, through: :organization_roles
   has_one :accounting_plan
 
-  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :closing_balances,
-   :contact_relations, :contacts, :employees, :import_bank_files, :import_sie_files, :ink_codes, :ledgers,
-   :ledger_accounts, :ledger_transactions, :opening_balances, :reports, :result_units, :sie_diff_rows, :tax_codes,
-   :tax_returns, :tax_return_reports, :templates, :vat_periods, :vat_reports, :verificates, :verificate_items,
-   :wage_periods, :wage_reports, :wages].each do |model_sym|
+  [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :accounts, :conversions,
+   :closing_balances,    :contact_relations, :contacts, :employees, :import_bank_files, :import_sie_files,
+   :ink_codes, :ledgers, :ledger_accounts, :ledger_transactions, :opening_balances, :reports, :result_units,
+   :tax_codes, :tax_returns, :tax_return_reports, :templates, :vat_periods, :vat_reports, :verificates,
+   :verificate_items, :wage_periods, :wage_reports, :wages].each do |model_sym|
     has_many model_sym
   end
 

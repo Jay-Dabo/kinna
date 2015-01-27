@@ -8,7 +8,7 @@ class OpeningBalanceItemsController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['Opening_balance_item']]
+    @breadcrumbs = [[t(:opening_balances), opening_balances_path],['Opening balance items']]
   end
 
   # GET
