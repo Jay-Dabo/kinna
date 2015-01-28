@@ -2,7 +2,7 @@
   = simple_form_for([@wage_period, @wage], wrapper: :horizontal_form, html: {class: 'form-horizontal'}) do |f|
     = f.error_notification
     = f.association :wage_period, collection: @wage_periods, include_blank: false, disabled: true
-    = f.association :employee, disabled: true
+    = f.association :employee, disabled: !@wage.new_record?
     = render partial: 'shared/date_field', locals: {form: f, field: :wage_from, in_id: 'in_from', in_value: @wage.wage_from, out_id: 'wage[wage_from]', field_id: 'from_short_date',  model: 'from_date', dp_open: 'from_open', dp_options: 'from_options', dp_click: 'open_from_date($event)'}
     .error_width
       = f.error :wage_from
@@ -19,6 +19,7 @@
     = f.input :amount
     = f.input :payroll_tax
 
-    .form-button-group
-      .actions
-        = f.submit class: 'btn btn-primary'
+    - if @wage.can_delete?
+      .form-button-group
+        .actions
+          = f.submit class: 'btn btn-primary'

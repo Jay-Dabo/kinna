@@ -7,16 +7,22 @@ class VatPeriodsController < ApplicationController
 
   def index
     @breadcrumbs = [['Vat periods']]
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
-    if !params[:accounting_period_id] && @accounting_periods.count > 0
-      params[:accounting_period_id] = @accounting_periods.first.id
+    @accounting_periods = current_organization.accounting_periods.order('id')
+    if params[:accounting_period_id]
+      session[:accounting_period_id] = params[:accounting_period_id]
+      @period = params[:accounting_period_id]
+    elsif session[:accounting_period_id]
+      @period = session[:accounting_period_id]
+    else
+      @period = @accounting_periods.last.id
+      session[:accounting_period_id] = @period
     end
-    @vat_periods = current_organization.vat_periods.where('accounting_period_id=?', params[:accounting_period_id]).order('id')
+    @vat_periods = current_organization.vat_periods.where('accounting_period_id=?', @period).order('id')
     @vat_periods = @vat_periods.page(params[:page]).decorate
   end
 
   def new
-    @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
+    @accounting_period = current_organization.accounting_periods.find(session[:accounting_period_id])
     @vat_period = @accounting_period.next_vat_period
   end
 
@@ -31,8 +37,7 @@ class VatPeriodsController < ApplicationController
     @vat_period.organization = current_organization
     respond_to do |format|
       if @vat_period.save
-        url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
-        format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_created)}" }
+          format.html { redirect_to vat_periods_path, notice: "#{t(:vat_period)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:vat_period)}"
         format.html { render action: 'new' }
@@ -43,10 +48,8 @@ class VatPeriodsController < ApplicationController
   def update
     respond_to do |format|
       if @vat_period.update(vat_period_params)
-        url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
-        format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_updated)}"}
+        format.html { redirect_to vat_periods_path, notice: "#{t(:vat_period)} #{t(:was_successfully_updated)}"}
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:vat_period)}"
         format.html { render action: 'edit' }
       end
@@ -54,10 +57,9 @@ class VatPeriodsController < ApplicationController
   end
 
   def destroy
-    url = vat_periods_path + '&accounting_period_id=' + @vat_period.accounting_period_id.to_s
     @vat_period.destroy
     respond_to do |format|
-      format.html { redirect_to url, notice: "#{t(:vat_period)} #{t(:was_successfully_deleted)}"}
+      format.html { redirect_to vat_periods_path, notice: "#{t(:vat_period)} #{t(:was_successfully_deleted)}"}
     end
   end
 

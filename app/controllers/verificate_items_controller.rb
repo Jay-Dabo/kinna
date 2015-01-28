@@ -8,7 +8,7 @@ class VerificateItemsController < ApplicationController
 
   # GET
   def index
-    @breadcrumbs = [['Verificate_item']]
+    @breadcrumbs = [['Verificate item']]
   end
 
   # GET
@@ -35,6 +35,8 @@ class VerificateItemsController < ApplicationController
       if @verificate_item.save
         format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_item)} #{t(:was_successfully_created)}" }
       else
+        @accounting_groups = current_organization.accounting_plan.accounting_groups
+        gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificate_item)}"
         format.html { render action: 'new' }
       end

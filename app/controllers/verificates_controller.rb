@@ -10,21 +10,23 @@ class VerificatesController < ApplicationController
   # GET
   def index
     @breadcrumbs = [['Verificates']]
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
-    if !params[:accounting_period_id] && @accounting_periods.count > 0
-      params[:accounting_period_id] = @accounting_periods.first.id
+    @accounting_periods = current_organization.accounting_periods.order('id')
+    if params[:accounting_period_id]
+      session[:accounting_period_id] = params[:accounting_period_id]
+      @period = params[:accounting_period_id]
+    elsif session[:accounting_period_id]
+      @period = session[:accounting_period_id]
+    else
+      @period = @accounting_periods.last.id
+      session[:accounting_period_id] = @period
     end
-    @verificates = current_organization.verificates.where('accounting_period_id=?', params[:accounting_period_id]).order(:number)
+    @verificates = current_organization.verificates.where('accounting_period_id=?', @period).order(:number)
     @verificates = @verificates.order(:posting_date).page(params[:page]).decorate
   end
 
   # GET
   def new
-    if params[:accounting_period_id]
-      @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
-    else
-      @accounting_period = current_organization.accounting_periods.where('active = ?', true).first
-    end
+    @accounting_period = current_organization.accounting_periods.find(session[:accounting_period_id])
     @verificate.accounting_period = @accounting_period
     @templates = current_organization.templates.where('accounting_plan_id = ?', @accounting_period.accounting_plan_id)
     gon.push root: AccountingPeriodSerializer.new(@accounting_period)
@@ -46,8 +48,6 @@ class VerificatesController < ApplicationController
       template = current_organization.templates.find(params[:template])
       params[:verificate][:description] = template.description + params[:verificate][:description]
     end
-    #@accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
-    #@verificate = @accounting_period.verificates.build verificate_params
     @verificate = Verificate.new(verificate_params)
     @verificate.organization = current_organization
     respond_to do |format|
@@ -85,12 +85,6 @@ class VerificatesController < ApplicationController
   end
 
   def state_change
-    Rails.logger.info "->#{params.inspect}"
-    #@verificate = current_organization.verificates.find(params[:id])
-    #@verificate.posting_date = params[:new_posting_date]
-    #@verificate.description = params[:description]
-    #@verificate.save
-
     authorize! :manage, @verificate
     if @verificate.state_change(params[:event], params[:state_change_at])
       msg_h = { notice: t(:success) }
@@ -102,7 +96,6 @@ class VerificatesController < ApplicationController
 
   def add_verificate_items
     @verificate = current_organization.verificates.find(params[:id])
-    Rails.logger.info "->#{params.inspect}"
     @verificate_items_creator = Services::VerificateItemsCreator.new(current_organization, current_user, @verificate, params)
     respond_to do |format|
       if @verificate_items_creator.save
@@ -115,10 +108,6 @@ class VerificatesController < ApplicationController
   end
 
   private
-
-  def init
-
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def verificate_params

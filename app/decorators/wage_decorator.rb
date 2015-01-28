@@ -23,7 +23,7 @@ class WageDecorator < Draper::Decorator
       when 'calculated'
         l = 'warning'
         str = h.t(:calculated)
-      when 'reported'
+      when 'wage_reported'
         l = 'success'
         str = h.t(:reported)
      end

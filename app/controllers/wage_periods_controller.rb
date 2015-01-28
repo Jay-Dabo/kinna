@@ -8,18 +8,24 @@ class WagePeriodsController < ApplicationController
   # GET /wage_periods
   # GET /wage_periods.json
   def index
-    @breadcrumbs = [['Wage_periods']]
-    @accounting_periods = current_organization.accounting_periods.where('active = ?', true).order('id')
-    if !params[:accounting_period_id] && @accounting_periods.count > 0
-      params[:accounting_period_id] = @accounting_periods.first.id
+    @breadcrumbs = [['Wage periods']]
+    @accounting_periods = current_organization.accounting_periods.order('id')
+    if params[:accounting_period_id]
+      session[:accounting_period_id] = params[:accounting_period_id]
+      @period = params[:accounting_period_id]
+    elsif session[:accounting_period_id]
+      @period = session[:accounting_period_id]
+    else
+      @period = @accounting_periods.last.id
+      session[:accounting_period_id] = @period
     end
-    @wage_periods = current_organization.wage_periods.where('accounting_period_id=?', params[:accounting_period_id])
+    @wage_periods = current_organization.wage_periods.where('accounting_period_id=?', @period)
     @wage_periods = @wage_periods.page(params[:page]).decorate
   end
 
   # GET /wage_periods/new
   def new
-    @accounting_period = current_organization.accounting_periods.find(params[:accounting_period_id])
+    @accounting_period = current_organization.accounting_periods.find(session[:accounting_period_id])
     @wage_period = @accounting_period.next_wage_period
   end
 
@@ -53,9 +59,8 @@ class WagePeriodsController < ApplicationController
       if @wage_period.update(wage_period_params)
         format.html { redirect_to wage_periods_url, notice: "#{t(:wage_period)} #{t(:was_successfully_updated)}" }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
-        format.html { render action: 'show' }
+        format.html { render action: 'edit' }
       end
     end
   end
@@ -84,7 +89,6 @@ class WagePeriodsController < ApplicationController
       if @verificate_creator.save_wage
         format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
         format.html { render action: 'show' }
       end
@@ -98,7 +102,6 @@ class WagePeriodsController < ApplicationController
       if @wage_report_creator.save_report
         format.html { redirect_to wage_period_wage_reports_url(@wage_period), notice: 'Wage report was successfully updated.' }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_report)}"
         format.html { render action: 'show' }
       end
@@ -111,7 +114,6 @@ class WagePeriodsController < ApplicationController
       if @verificate_creator.save_wage_report
         format.html { redirect_to verificates_url, notice: 'wage period was successfully updated.' }
       else
-        @accounting_periods = current_organization.accounting_periods.where('active = ?', true)
         flash.now[:danger] = "#{t(:failed_to_update)} #{t(:wage_period)}"
         format.html { render action: 'show' }
       end

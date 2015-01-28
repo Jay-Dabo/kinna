@@ -23,6 +23,9 @@ class WagesController < ApplicationController
   # GET /wages/new
   def new
     @wage_periods = current_organization.wage_periods
+    @wage.wage_from = @wage_period.wage_from
+    @wage.wage_to = @wage_period.wage_to
+    @wage.payment_date = @wage_period.payment_date
   end
 
   # GET /wages/1

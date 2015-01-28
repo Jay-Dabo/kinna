@@ -16,7 +16,6 @@ class Organization < ActiveRecord::Base
 
   has_many :organization_roles
   has_many :users, through: :organization_roles
-  has_one :accounting_plan
 
   [:accounting_classes, :accounting_groups, :accounting_periods, :accounting_plans,  :accounts, :conversions,
    :closing_balances,    :contact_relations, :contacts, :employees, :import_bank_files, :import_sie_files,

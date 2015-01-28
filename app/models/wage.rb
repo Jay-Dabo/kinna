@@ -21,6 +21,7 @@ class Wage < ActiveRecord::Base
   has_one :verificate
 
   validates :accounting_period, presence: true
+  validates :employee, presence: true
   validates :wage_from, presence: true
   validates :wage_to, presence: true
   validates :payment_date, presence: true

@@ -23,13 +23,13 @@
       = f.error :deadline
     = f.input :state, disabled: true
 
-    .form-button-group
-      .actions
-        - if @wage_period.new_record? || @wage_period.preliminary?
-          = f.submit class: 'btn btn-primary'
-        - if !@wage_period.new_record? && @wage_period.can_calculate_wage?
-          = link_to t(:create_wage), create_wage_wage_period_path(@wage_period), method: 'post', class: 'btn btn-primary'
-
-        - if !@wage_period.new_record? && @wage_period.can_calculate_tax?
-          = link_to t(:create_wage_report), create_wage_report_wage_period_path(@wage_period), method: 'post', class: 'btn btn-primary'
+    - if !@wage_period.tax_closed?
+      .form-button-group
+        .actions
+          - if @wage_period.new_record? || @wage_period.preliminary?
+            = f.submit class: 'btn btn-primary'
+          - if !@wage_period.new_record? && @wage_period.can_calculate_wage?
+            = link_to t(:create_wage), create_wage_wage_period_path(@wage_period), method: 'post', class: 'btn btn-primary'
+          - if !@wage_period.new_record? && @wage_period.can_calculate_tax?
+            = link_to t(:create_wage_report), create_wage_report_wage_period_path(@wage_period), method: 'post', class: 'btn btn-primary'
 

@@ -1,7 +1,7 @@
 class OpeningBalanceItemsController < ApplicationController
   respond_to :html, :json
   load_and_authorize_resource :opening_balance, through: :current_organization
-  load_and_authorize_resource :opening_balance_item, through: :opening_balance
+  load_and_authorize_resource :opening_balance_item, through: :current_organization
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
@@ -13,7 +13,8 @@ class OpeningBalanceItemsController < ApplicationController
 
   # GET
   def new
-    @accounting_groups = current_organization.accounting_plan.accounting_groups
+    @accounting_period = current_organization.accounting_periods.last
+    @accounting_groups = @accounting_period.accounting_plan.accounting_groups
     gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
   end
 
