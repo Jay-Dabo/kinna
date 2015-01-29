@@ -71,5 +71,5 @@ ap15.organization = o1
 ap15.save
 
 # Templates ----------------------------
-templates = Services::TemplateCreator.new(o1, jtest, k1)
-templates.save_templates
+templates = Services::TemplateCreator.new(o1, jtest, bas)
+templates.save_templates_bas

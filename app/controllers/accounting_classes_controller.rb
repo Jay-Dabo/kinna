@@ -1,7 +1,7 @@
 class AccountingClassesController < ApplicationController
   respond_to :html, :json
   load_and_authorize_resource :accounting_plan, through: :current_organization
-  load_and_authorize_resource :accounting_class, through: :accounting_plan
+  load_and_authorize_resource :accounting_class, through: :current_organization
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]

@@ -1,7 +1,7 @@
 class VerificateItemsController < ApplicationController
   respond_to :html, :json
   load_and_authorize_resource :verificate, through: :current_organization
-  load_and_authorize_resource :verificate_item, through: :verificate
+  load_and_authorize_resource :verificate_item, through: :current_organization
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
@@ -13,7 +13,7 @@ class VerificateItemsController < ApplicationController
 
   # GET
   def new
-    @accounting_groups = current_organization.accounting_plan.accounting_groups
+    @accounting_groups = current_organization.verificates.find(@verificate).accounting_period.accounting_plan.accounting_groups
     gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
   end
 
@@ -35,7 +35,7 @@ class VerificateItemsController < ApplicationController
       if @verificate_item.save
         format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_item)} #{t(:was_successfully_created)}" }
       else
-        @accounting_groups = current_organization.accounting_plan.accounting_groups
+        @accounting_groups = current_organization.verificates.find(@verificate).accounting_period.accounting_plan.accounting_groups
         gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificate_item)}"
         format.html { render action: 'new' }

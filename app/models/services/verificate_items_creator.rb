@@ -17,10 +17,11 @@ module Services
         verificate_item.description = item[1][:description]
         verificate_item.debit = item[1][:debit]
         verificate_item.credit = item[1][:credit]
-        verificate_item.save
+        verificate_item.save if item[1][:debit] != '0' || item[1][:credit] != '0'
       end
       if @verificate.balanced?
-        @verificate.state_change('mark_final', @verificate_items[:verificate][:posting_date])
+        # @verificate.state_change('mark_final', @verificate_items[:verificate][:posting_date])
+        return true
       end
     end
   end

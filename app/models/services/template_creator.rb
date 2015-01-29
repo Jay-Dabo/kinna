@@ -7,19 +7,32 @@ module Services
       @accounting_plan = accounting_plan
     end
 
-    def save_templates
+    def save_templates_bas
       template = save_template( "Inköp kontant",  "Inköp kontant direktavskrivning")
-      save_template_item(template, '4000','Varor', true, false)
+      save_template_item(template, '4000','Inköp av varor från Sverige', true, false)
       save_template_item(template, '2640','Ingående moms', true, false)
       save_template_item(template, '1920','PlusGiro', false, true)
 
-      template = save_template( "Försäljning faktura",  "Försäljning 25% moms")
-      save_template_item(template, '3000','Försäljning och utfört arbete samt övriga momspliktiga intäkter', false, true)
-      save_template_item(template, '2610','Utgående moms', false, true)
-      save_template_item(template, '1500','Kundfordringar', true, false)
+      template = save_template( "Försäljning faktura 25% moms",  "Försäljning 25% moms")
+      save_template_item(template, '3001','Försäljning inom Sverige, 25 % moms', false, true)
+      save_template_item(template, '2610','Utgående moms, 25 %', false, true)
+      save_template_item(template, '3740','Öres- och kronutjämning', true, true)
+      save_template_item(template, '1510','Kundfordringar', true, false)
 
-      template = save_template( "Kundbetalning",  "Betalning kundfaktura 25% moms")
-      save_template_item(template, '1500','Kundfordringar', false, true)
+      template = save_template( "Försäljning faktura 12% moms",  "Försäljning 12% moms")
+      save_template_item(template, '3002','Försäljning inom Sverige, 12 % moms', false, true)
+      save_template_item(template, '2620','Utgående moms, 12 %', false, true)
+      save_template_item(template, '3740','Öres- och kronutjämning', true, true)
+      save_template_item(template, '1510','Kundfordringar', true, false)
+
+      template = save_template( "Försäljning faktura 6% moms",  "Försäljning 6% moms")
+      save_template_item(template, '3003','Försäljning inom Sverige, 6 % moms', false, true)
+      save_template_item(template, '2630','Utgående moms, 6 %', false, true)
+      save_template_item(template, '3740','Öres- och kronutjämning', true, true)
+      save_template_item(template, '1510','Kundfordringar', true, false)
+
+      template = save_template( "Kundbetalning",  "Betalning kundfaktura")
+      save_template_item(template, '1510','Kundfordringar', false, true)
       save_template_item(template, '1920','PlusGiro', true, false)
     end
 

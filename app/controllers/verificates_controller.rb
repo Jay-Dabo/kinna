@@ -57,6 +57,7 @@ class VerificatesController < ApplicationController
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificate)}"
         @accounting_period = @verificate.accounting_period
         gon.push root: AccountingPeriodSerializer.new(@accounting_period)
+        @templates = current_organization.templates.where('accounting_plan_id = ?', @accounting_period.accounting_plan_id)
         format.html { render action: 'new' }
       end
     end
@@ -99,10 +100,14 @@ class VerificatesController < ApplicationController
     @verificate_items_creator = Services::VerificateItemsCreator.new(current_organization, current_user, @verificate, params)
     respond_to do |format|
       if @verificate_items_creator.save
-        format.html { redirect_to verificates_url, notice: "#{t(:verificate_items)} #{t(:was_successfully_created)}" }
+        @accounting_period = @verificate.accounting_period
+        gon.push root: AccountingPeriodSerializer.new(@accounting_period)
+        format.html { redirect_to verificate_path(@verificate), notice: "#{t(:verificate_items)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:verificates_items)}"
-        format.html { render action: 'show' }
+        @accounting_period = @verificate.accounting_period
+        gon.push root: AccountingPeriodSerializer.new(@accounting_period)
+        format.html {  redirect_to verificate_path(@verificate)}
       end
     end
   end

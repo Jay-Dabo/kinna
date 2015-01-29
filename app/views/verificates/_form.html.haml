@@ -23,7 +23,7 @@
         .actions
           = f.submit class: 'btn btn-primary'
 
-  - if @verificate.template && !@verificate.verificate_items?
+  - if @verificate.template && !@verificate.verificate_items? && !@verificate.new_record?
     = render partial: 'template_items/edit_list'
   - elsif !@verificate.new_record?
     = render partial: 'verificate_items/list'

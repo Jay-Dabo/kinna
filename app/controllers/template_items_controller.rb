@@ -1,19 +1,22 @@
 class TemplateItemsController < ApplicationController
   respond_to :html, :json
   load_and_authorize_resource :template, through: :current_organization
-  load_and_authorize_resource :template_item, through: :template
+  load_and_authorize_resource :template_item, through: :current_organization
 
   before_filter :new_breadcrumbs, only: [:new, :create]
   before_filter :show_breadcrumbs, only: [:edit, :show, :update]
 
   # GET
   def index
-    @breadcrumbs = [['Template_item']]
+    @breadcrumbs = [['Template item']]
   end
 
   # GET
   def new
-    @accounting_groups = current_organization.accounting_plan.accounting_groups
+    # segt
+    # @accounting_plan = AccountingPlan.find(@template.accounting_plan)
+    # @accounting_groups = @accounting_plan.accounting_groups
+    @accounting_groups = current_organization.templates.find(@template).accounting_plan.accounting_groups
     gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
   end
 
@@ -35,6 +38,8 @@ class TemplateItemsController < ApplicationController
         format.html { redirect_to template_path(@template), notice: "#{t(:template_item)} #{t(:was_successfully_created)}" }
       else
         flash.now[:danger] = "#{t(:failed_to_create)} #{t(:template_item)}"
+        @accounting_groups = current_organization.templates.find(@template).accounting_plan.accounting_groups
+        gon.push accounting_groups: ActiveModel::ArraySerializer.new(@accounting_groups, each_serializer: AccountingGroupSerializer)
         format.html { render action: 'new' }
       end
     end

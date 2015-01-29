@@ -1,5 +1,5 @@
 = simple_form_for @verificate, url: add_verificate_items_verificate_path(@verificate),  method: 'post', :html => { :class => 'form-horizontal' } do |f|
-  = render partial: 'shared/date_field', locals: {form: f, field: :posting_date, in_id: 'in_posting_date', in_value: @verificate.posting_date, out_id: 'verificate[posting_date]', field_id: 'posting_short_date',  model: 'posting_date', dp_open: 'posting_open', dp_options: 'posting_options', dp_click: 'open_posting_date($event)'}
+  / = render partial: 'shared/date_field', locals: {form: f, field: :posting_date, in_id: 'in_posting_date', in_value: @verificate.posting_date, out_id: 'verificate[posting_date]', field_id: 'posting_short_date',  model: 'posting_date', dp_open: 'posting_open', dp_options: 'posting_options', dp_click: 'open_posting_date($event)'}
   .table-responsive{}
     %table{:class => 'table table-striped'}
       %thead
@@ -36,7 +36,7 @@
 
   .form-button-group
     .actions
-      = f.submit "#{t:confirm}",  id: 'confirm', class: 'btn btn-primary'
+      = f.submit "#{t:add_template}",  id: 'confirm', class: 'btn btn-primary'
 
 :javascript
   $(document).on('ready page:load', function () {

@@ -12,7 +12,7 @@ class Verificate < ActiveRecord::Base
   # t.integer  :import_bank_file_row_id
   # t.timestamps
 
-  attr_accessible :posting_date, :description, :accounting_period_id, :template_id
+  attr_accessible :posting_date, :description, :accounting_period_id, :reference, :note, :template_id
 
   belongs_to :organization
   belongs_to :accounting_period
